@@ -15,7 +15,7 @@ The information is
   + Instructor
   + Price
   + Duration
-  + Meeting times
+  + Meeting Times
   + Rate My Professor URLs
 
 ## Installation
