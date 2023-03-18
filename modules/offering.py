@@ -21,3 +21,13 @@ class Offering:
 
     def rate_my_professor_urls(self) -> str:
         return self._rate_my_professor_urls
+
+    def to_string(self) -> str:
+        info = (
+            f" Instructor {self.instructor()}\n"
+            f" Price {self.price()}\n" 
+            f" Duration {self.duration()}\n" 
+            f" Meeting Times\n {self.meeting_times()}\n" 
+            f" Rate My Professor URLs {self.rate_my_professor_urls()}\n"
+        )
+        return info

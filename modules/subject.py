@@ -34,6 +34,8 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
         html_parser = HTMLParser(response.text)
 
         code_and_name = html_parser.css_first('h1[class="h1 page-hero__title"]').text(strip=True)
+        subject, code = code_and_name[-9:].split(" ")
+        name = code_and_name[:-9]
         prerequisites = html_parser.css_first('div[id="prereq"] ul li').text()
         _credits = html_parser.css_first('div[id="credits"] p').text(False)
 
@@ -75,10 +77,7 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
             if status_node is None or status_node.text(False) == "Sneak Preview":
                 offerings.append(Offering(instructor, price, duration, meeting_times, rate_my_professor_urls.strip()))
 
-        if offerings:
-            return Course(code_and_name[-9:], code_and_name[:-9], prerequisites, _credits, url, offerings)
-
-        return None
+        return Course(subject, code, name, prerequisites, _credits, url, offerings)
 
 
 def available_courses(urls: list[str]) -> list[Course | None]:
@@ -105,7 +104,7 @@ class Subject:
         if self._response.status_code != 200:
             raise Exception(f"Active urls response status code {self._response.status_code}")
         self._name = name
-        self._courses = self.get_courses()
+        self._courses = self._get_courses()
 
     def name(self) -> str:
         return self._name
@@ -113,26 +112,21 @@ class Subject:
     def courses(self) -> list[Course]:
         return self._courses
 
-    def get_courses(self) -> list[Course]:
-        return available_courses([url for url in self._response.json()["data"] if f"-{self.name()}-" in url[-11:]])
+    def _get_courses(self) -> list[Course]:
+        urls = []
+        for url in self._response.json()["data"]:
+            if f"-{self.name()}-" in url[-11:]:
+                urls.append(url)
+        return available_courses(urls)
 
     def to_file(self):
-        with open(rf"..\{self.name()}_courses.txt", "w") as file:
+        filename = f"{self.name()}_courses.txt"
+        with open(filename, "w") as file:
             for course in self.courses():
                 if course:
-                    file.write(f"Code {course.code()}\n"
-                               f"Name {course.name()}\n"
-                               f"Prerequisites {course.prerequisites()}\n"
-                               f"Credits {course.credits()}\n"
-                               f"URL {course.url()}\n"
-                               f"Offerings\n")
+                    file.write(course.to_string())
 
-                    for offering in course.offerings():
-                        file.write(f" Instructor {offering.instructor()}\n"
-                                   f" Price {offering.price()}\n"
-                                   f" Duration {offering.duration()}\n"
-                                   f" Meeting Times\n {offering.meeting_times()}\n"
-                                   f" Rate My Professor URLs {offering.rate_my_professor_urls()}\n\n")
+        return filename
 
     def has_course(self, code: str) -> bool:
         for course in self.courses():
