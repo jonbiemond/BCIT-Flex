@@ -1,3 +1,5 @@
+import re
+
 from modules.course import Course
 from modules.subject import Subject
 
@@ -12,19 +14,23 @@ def valid_subject() -> str:
 
 
 def get_valid_course(subject: Subject) -> Course:
-    course = input("Enter a course: ").strip().lower()
+    course_code = input("Enter a course code: ").strip().lower()
 
-    while not subject.has_course(course):
-        course = input(f"\"{course}\" is not a valid course, please try again: ").strip().lower()
+    while not subject.has_course(course_code):
+        if not re.match(r"^\d{4}$", course_code):
+            msg = "Course codes must be 4 digits long"
+        else:
+            msg = f"\"{course_code}\" is not a valid course for \"{subject.name()}\""
+        course_code = input(msg + ", please try again: ").strip().lower()
 
-    return subject.get_course(course)
+    return subject.get_course(course_code)
 
 
 def main():
     subject_name = valid_subject()
     subject = Subject(subject_name)
     course = get_valid_course(subject)
-    print(course.name())
+    print(course.to_string())
 
 
 if __name__ == '__main__':
