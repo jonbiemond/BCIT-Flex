@@ -46,20 +46,25 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
 
         offerings = []
         for offering in html_parser.css(f'div[id="{term}"] div[class="sctn"]'):
-            instructor = offering.css_first('div[class="sctn-instructor"] p').text(False)
+            instructor_node = offering.css_first('div[class="sctn-instructor"] p')
+            
+            instructor = "Not Available"
+            if instructor_node:
+                instructor = instructor_node.text(False)
+            
             price = offering.css_first('li[class="sctn-block-list-item cost"').text(False)
             duration = offering.css_first('li[class="sctn-block-list-item duration"]').text(False)
 
-            no_meeting_element = offering.css_first('div[class="sctn-no-meets"] p')
+            no_meetings_node = offering.css_first('div[class="sctn-no-meets"] p')
 
             meeting_times = []
-            if no_meeting_element is None:
+            if no_meetings_node is None:
                 for meeting_time in offering.css('div[class="sctn-meets"]'):
                     for row in meeting_time.css('tr'):
                         meeting_times.append(row.text(separator=" ", strip=True).strip())
 
             else:
-                meeting_times.append(no_meeting_element.text())
+                meeting_times.append(no_meetings_node.text())
 
             ids = names_and_ids.get(instructor.lower())
 
@@ -69,11 +74,11 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
                     rate_my_professor_urls += f"https://www.ratemyprofessors.com/professor?tid={_id} "
 
             else:
-                rate_my_professor_urls = "Not Found"
+                rate_my_professor_urls = "Not Available"
 
-            status_element = offering.css_first(f'p[class="sctn-status-lbl"]')
+            status_node = offering.css_first(f'p[class="sctn-status-lbl"]')
 
-            if status_element is None or status_element.text(False) == "Sneak Preview":
+            if status_node is None or status_node.text(False) == "Sneak Preview":
                 offerings.append(Offering(instructor, price, duration, meeting_times, rate_my_professor_urls.strip()))
 
         if offerings:
@@ -110,7 +115,7 @@ def main():
 
     else:
         with open(f"{subject}_courses.txt", "w") as file:
-            for course in available_courses([url for url in response.json()["data"] if f"-{subject}-" in url]):
+            for course in available_courses([url for url in response.json()["data"] if f"-{subject}-" in url[-11:]]):
                 if course:
                     file.write(f"Code {course.code()}\n"
                                f"Name {course.name()}\n"
