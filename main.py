@@ -55,16 +55,16 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
             price = offering.css_first('li[class="sctn-block-list-item cost"').text(False)
             duration = offering.css_first('li[class="sctn-block-list-item duration"]').text(False)
 
-            no_meeting_node = offering.css_first('div[class="sctn-no-meets"] p')
+            no_meetings_node = offering.css_first('div[class="sctn-no-meets"] p')
 
             meeting_times = []
-            if no_meeting_node is None:
+            if no_meetings_node is None:
                 for meeting_time in offering.css('div[class="sctn-meets"]'):
                     for row in meeting_time.css('tr'):
                         meeting_times.append(row.text(separator=" ", strip=True).strip())
 
             else:
-                meeting_times.append(no_meeting_node.text())
+                meeting_times.append(no_meetings_node.text())
 
             ids = names_and_ids.get(instructor.lower())
 
