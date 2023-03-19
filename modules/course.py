@@ -17,7 +17,7 @@ class Course:
         self.__credits = _credits
         self._url = url
         self._offerings = offerings
-        self._offerings_count = len(offerings)
+        self._offering_count = len(offerings)
 
     def subject(self) -> str:
         return self._subject
@@ -40,16 +40,24 @@ class Course:
     def offerings(self) -> list[Offering]:
         return self._offerings
 
-    def to_string(self) -> str:
-        info = (
-            f"Code: {self.subject()} {self.code()}\n"
+    def to_string(self, available_only=True) -> str:
+        offering_count = 0
+        offering_info = ""
+
+        for offering in self.offerings():
+            if available_only:
+                if not offering.available():
+                    continue
+            offering_count += 1
+            offering_info += offering.to_string() + "\n"
+
+        course_info = (
+            f"Course: {self.subject()} {self.code()}\n"
             f"Name: {self.name()}\n"
             f"Prerequisites: {self.prerequisites()}\n"
             f"Credits: {self.credits()}\n"
             f"URL: {self.url()}\n"
-            f"Offerings: {self._offerings_count}\n"
+            f"Offerings: {self._offering_count}\n"
         )
-        for offering in self.offerings():
-            info += offering.to_string() + "\n"
-        info += "\n"
+        info = course_info + offering_info + "\n"
         return info
