@@ -16,6 +16,7 @@ The information is
   + Price
   + Duration
   + Meeting Times
+  + Status
   + Rate My Professor URLs
 
 ## Installation
@@ -25,10 +26,13 @@ The information is
 When prompted `"Enter a subject"` enter a subject from the subjects.txt
 
 ## Supports
-+ One subject at a time from user input
++ Displaying all course offerings for specific course
++ Saving all courses to a text file for a specific subject
 
 ## TODO
 + Filter by prerequisites
 + ~~Individual Course Offerings~~
 + ~~Rate My Professors~~
 + WebAssembly
++ ~~GUI~~
++ Return RMP rating
