@@ -1,4 +1,5 @@
 import re
+import PySimpleGUI as sg
 
 from modules.course import Course
 from modules.subject import Subject
@@ -26,7 +27,61 @@ def get_valid_course(subject: Subject) -> Course:
     return subject.get_course(course_code)
 
 
-def main():
+def simple_gui():
+    layout = [
+        [sg.Text("Enter a subject: ", key='-INSTRUCTION-')],
+        [sg.InputText(key="-IN-")],
+        [sg.Text(size=(19, 1), key="-OUT-")],
+        [sg.Submit(), sg.Cancel(), sg.Button("Back", visible=False)]
+    ]
+
+    window = sg.Window("BCIT Course Finder", layout)
+
+    while True:
+        event, values = window.read()
+        if event in (sg.WIN_CLOSED, "Cancel"):
+            break
+        if event == "Submit":
+            subject_code = values["-IN-"]
+            if subject_code:
+                window["-OUT-"].update(f'Loading {subject_code} courses...')
+                window.refresh()
+
+                subject = Subject(subject_code)
+
+                window["-OUT-"].update('')
+                window["-IN-"].update('')
+                window.refresh()
+
+                window["-INSTRUCTION-"].update("Enter a course code: ")
+                window["Back"].update(visible=True)
+
+                while True:
+                    event, values = window.read()
+                    if event in (sg.WIN_CLOSED, "Cancel"):
+                        break
+                    elif event == "Back":
+                        window["-IN-"].update('')
+                        window["-INSTRUCTION-"].update("Enter a subject: ")
+                        window["Back"].update(visible=False)
+                        break
+                    if event == "Submit":
+                        course_code = values["-IN-"]
+                        if course_code:
+                            if subject.has_course(course_code):
+                                course = subject.get_course(course_code)
+                                sg.popup_scrolled(course.to_string(), title=course.code())
+                            else:
+                                sg.popup_scrolled(f"\"{course_code}\" is not a valid course for \"{subject_code}\"")
+                        else:
+                            sg.popup_scrolled("Please enter a course code.")
+            else:
+                sg.popup_scrolled("Please enter a subject.")
+
+    window.close()
+
+
+def console_input():
     subject_name = valid_subject()
     subject = Subject(subject_name)
     course = get_valid_course(subject)
@@ -34,4 +89,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    simple_gui()
