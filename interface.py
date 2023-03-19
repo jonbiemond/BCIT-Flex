@@ -32,8 +32,10 @@ def simple_gui():
         [sg.Text("Enter a subject: ", key='-INSTRUCTION-')],
         [sg.InputText(key="-IN-")],
         [sg.Text(size=(19, 1), key="-OUT-")],
-        [sg.Submit(), sg.Cancel(), sg.Button("Back", visible=False)]
+        [sg.Submit(), sg.Button("To File"), sg.Button("Back", visible=False), sg.Cancel()]
     ]
+
+    subjects = {}
 
     window = sg.Window("BCIT Course Finder", layout)
 
@@ -41,40 +43,61 @@ def simple_gui():
         event, values = window.read()
         if event in (sg.WIN_CLOSED, "Cancel"):
             break
-        if event == "Submit":
+
+        if event in ["Submit", "To File"]:
             subject_code = values["-IN-"]
             if subject_code:
-                window["-OUT-"].update(f'Loading {subject_code} courses...')
+                window["-OUT-"].update(f'Loading {subject_code.upper()} courses...')
                 window.refresh()
 
-                subject = Subject(subject_code)
+                if subject_code in subjects:
+                    subject = subjects[subject_code]
+                else:
+                    subject = Subject(subject_code)
+                    subjects[subject_code] = subject
 
                 window["-OUT-"].update('')
-                window["-IN-"].update('')
                 window.refresh()
 
-                window["-INSTRUCTION-"].update("Enter a course code: ")
-                window["Back"].update(visible=True)
+                if event == "Submit":
+                    window["-IN-"].update('')
+                    window.refresh()
 
-                while True:
-                    event, values = window.read()
-                    if event in (sg.WIN_CLOSED, "Cancel"):
-                        break
-                    elif event == "Back":
-                        window["-IN-"].update('')
-                        window["-INSTRUCTION-"].update("Enter a subject: ")
-                        window["Back"].update(visible=False)
-                        break
-                    if event == "Submit":
-                        course_code = values["-IN-"]
-                        if course_code:
-                            if subject.has_course(course_code):
-                                course = subject.get_course(course_code)
-                                sg.popup_scrolled(course.to_string(), title=course.code())
+                    window["-INSTRUCTION-"].update(f"Enter a {subject_code.upper()} course code: ")
+                    window["Back"].update(visible=True)
+                    window["To File"].update(visible=False)
+
+                    while True:
+                        event, values = window.read()
+                        if event in (sg.WIN_CLOSED, "Cancel"):
+                            break
+
+                        elif event == "Back":
+                            window["-IN-"].update('')
+                            window["-INSTRUCTION-"].update("Enter a subject: ")
+                            window["Back"].update(visible=False)
+                            window["To File"].update(visible=True)
+                            break
+
+                        elif event == "To File":
+                            filename = subject.to_file()
+                            sg.popup_scrolled(f"Saved courses to \"{filename}\"", title="Success")
+
+                        elif event == "Submit":
+                            course_code = values["-IN-"]
+                            if course_code:
+                                if subject.has_course(course_code):
+                                    course = subject.get_course(course_code)
+                                    sg.popup_scrolled(course.to_string(), title=course.code())
+                                else:
+                                    sg.popup_scrolled(f"\"{course_code}\" is not a valid course for \"{subject_code}\"")
                             else:
-                                sg.popup_scrolled(f"\"{course_code}\" is not a valid course for \"{subject_code}\"")
-                        else:
-                            sg.popup_scrolled("Please enter a course code.")
+                                sg.popup_scrolled("Please enter a course code.")
+
+                elif event == "To File":
+                    filename = subject.to_file()
+                    sg.popup_scrolled(f"Saved courses to \"{filename}\"", title="Success")
+
             else:
                 sg.popup_scrolled("Please enter a subject.")
 
