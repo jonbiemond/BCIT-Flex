@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 
 import requests
@@ -98,9 +98,11 @@ def available_courses(urls: list[str]) -> list[Course | None]:
         names_and_ids.update({name_and_id[0]: name_and_id[1]})
 
     courses = []
-    with ThreadPoolExecutor() as executor:
-        for i in range(len(urls)):
-            courses.append(executor.submit(parse_url, f"{base_url}{urls[i]}", term, names_and_ids).result())
+
+    with ThreadPoolExecutor(len(urls)) as executor:
+        futures = [executor.submit(parse_url, f"{base_url}{url}", term, names_and_ids) for url in urls]
+        for future in as_completed(futures):
+            courses.append(future.result())
 
     return courses
 
