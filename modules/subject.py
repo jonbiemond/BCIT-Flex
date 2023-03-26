@@ -14,7 +14,7 @@ def next_term(url: str) -> str:
     response = requests.get(url)
 
     if response.status_code != 200:
-        print(f"next term response status code {response.status_code}")
+        raise Exception(f"Next term response status code: {response.status_code}")
 
     else:
         html_parser = HTMLParser(response.text)
@@ -28,7 +28,7 @@ def parse_url(url: str, term: str, rmp_ids: dict[str, str]) -> Course:
     response = requests.get(url)
 
     if response.status_code != 200:
-        print(f"parse url response status code {response.status_code}")
+        raise Exception(f"Parse url response status code: {response.status_code}")
 
     else:
         html_parser = HTMLParser(response.text)
