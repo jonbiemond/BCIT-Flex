@@ -27,9 +27,29 @@ def get_valid_course(subject: Subject) -> Course:
     return subject.get_course(course_code)
 
 
+def set_theme(name: str = "Violet"):
+    violet = {'BACKGROUND': '#1A1F30',
+              'TEXT': '#B9C3CD',
+              'INPUT': '#281E32',
+              'TEXT_INPUT': '#B9C3CD',
+              'SCROLL': '#173D59',
+              'BUTTON': ('#E18CF5', '#202040'),
+              'PROGRESS': ('#000000', '#000000'),
+              'BORDER': 1,
+              'SLIDER_DEPTH': 0,
+              'PROGRESS_DEPTH': 0,
+              'COLOR_LIST': ['#202040', '#1A1F30', '#281E32', '#B9C3CD']}
+
+    sg.theme_add_new('Violet', violet)
+    sg.theme(name)
+
+
 def simple_gui():
     subjects = {}
     courses = []
+
+    set_theme()
+
     dropdown = sg.Combo(courses, size=(24, 1), expand_x=True, enable_events=True, readonly=True, key='-COMBO-')
     layout = [
         [sg.Push(), sg.Text("Subject"), sg.InputText(size=(20, 1), key="-IN-"), sg.Submit("Load")],
