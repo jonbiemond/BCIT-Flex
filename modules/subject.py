@@ -24,7 +24,7 @@ def next_term(url: str) -> str:
                 return f"{date.today().year}{term}"
 
 
-def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | None:
+def parse_url(url: str, term: str, rmp_ids: dict[str, str]) -> Course:
     response = requests.get(url)
 
     if response.status_code != 200:
@@ -62,7 +62,7 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
             else:
                 meeting_times.append(no_meeting_node.text())
 
-            ids = names_and_ids.get(instructor.lower())
+            ids = rmp_ids.get(instructor.lower())
 
             rate_my_professor_urls = ""
             if ids:
@@ -87,20 +87,20 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
         return Course(subject, code, name, prerequisites, _credits, url, offerings)
 
 
-def available_courses(urls: list[str]) -> list[Course | None]:
+def available_courses(urls: list[str]) -> list[Course]:
     base_url = "https://www.bcit.ca"
 
     term = next_term(f"{base_url}{urls[0]}")
 
-    names_and_ids = {}
+    rmp_ids = {}
     for line in open("bcit_rate_my_professors.txt"):
         name_and_id = line.rstrip("\n").split("|")
-        names_and_ids.update({name_and_id[0]: name_and_id[1]})
+        rmp_ids.update({name_and_id[0]: name_and_id[1]})
 
     courses = []
 
-    with ThreadPoolExecutor(len(urls)) as executor:
-        futures = [executor.submit(parse_url, f"{base_url}{url}", term, names_and_ids) for url in urls]
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(parse_url, f"{base_url}{url}", term, rmp_ids) for url in urls]
         for future in as_completed(futures):
             courses.append(future.result())
 
@@ -113,7 +113,7 @@ class Subject:
         if self._response.status_code != 200:
             raise Exception(f"Active urls response status code {self._response.status_code}")
         self._name = name
-        self._courses = self._get_courses()
+        self._courses = self.__get_courses()
 
     def name(self) -> str:
         return self._name
@@ -121,11 +121,13 @@ class Subject:
     def courses(self) -> list[Course]:
         return self._courses
 
-    def _get_courses(self) -> list[Course]:
+    def __get_courses(self) -> list[Course]:
         urls = []
         for url in self._response.json()["data"]:
             if f"-{self.name()}-" in url[-11:]:
                 urls.append(url)
+        if len(urls) == 0:
+            raise ValueError(f"Subject {self.name()} does not contain any courses.")
         return available_courses(urls)
 
     def to_file(self):
