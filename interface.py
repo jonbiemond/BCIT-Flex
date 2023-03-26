@@ -30,13 +30,12 @@ def get_valid_course(subject: Subject) -> Course:
 def simple_gui():
     subjects = {}
     courses = []
-    dropdown = sg.Combo(courses, expand_x=True, enable_events=True, readonly=False, key='-COMBO-')
+    dropdown = sg.Combo(courses, size=(24, 1), expand_x=True, enable_events=True, readonly=True, key='-COMBO-')
     layout = [
-        [sg.Text("Enter a subject: ", key='-INSTRUCTION-')],
-        [sg.InputText(key="-IN-")],
-        [dropdown],
+        [sg.Push(), sg.Text("Subject"), sg.InputText(size=(20, 1), key="-IN-"), sg.Submit("Load")],
+        [sg.Push(), sg.Text("Course"), dropdown],
         [sg.Text(size=(19, 1), key="-OUT-")],
-        [sg.Submit("Load"), sg.Button("Save"), sg.Cancel()]
+        [sg.Button("Save"), sg.Cancel()]
     ]
 
     window = sg.Window("BCIT Course Finder", layout)
