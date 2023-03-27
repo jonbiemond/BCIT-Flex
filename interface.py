@@ -68,6 +68,10 @@ def simple_gui():
         if event in ["Load", "Save"]:
             subject_code = values["-IN-"]
             if subject_code:
+                if subject_code not in open("subjects.txt").read().splitlines():
+                    sg.popup(f"\"{subject_code}\" is not a valid subject.", title="Error")
+                    continue
+
                 window["-OUT-"].update(f'Loading {subject_code.upper()} courses...')
                 window.refresh()
 
@@ -78,7 +82,10 @@ def simple_gui():
                     subjects[subject_code] = subject
 
                 window["-OUT-"].update(f'{subject_code.upper()} courses loaded.')
-                courses = [f'{course.code()} ({course.offering_count()})' for course in subject.courses()]
+                courses = [
+                    f'{subject_code.upper()} {course.code()} ({course.offering_count(True)}/{course.offering_count()})'
+                    for course in subject.courses()
+                ]
                 courses.sort()
                 window["-COMBO-"].update(values=courses)
                 window.refresh()
@@ -91,7 +98,7 @@ def simple_gui():
                 sg.popup_scrolled("Please enter a subject.")
 
         if event == "-COMBO-":
-            course_code = values["-COMBO-"].split(" ")[0]
+            course_code = values["-COMBO-"].split(" ")[1]
             if course_code:
                 subject_code = values["-IN-"]
                 subject = subjects[subject_code]
