@@ -55,7 +55,7 @@ def simple_gui():
         [sg.Push(), sg.Text("Subject"), sg.InputText(size=(20, 1), key="-IN-"), sg.Submit("Load")],
         [sg.Push(), sg.Text("Course"), dropdown],
         [sg.Text(size=(19, 1), key="-OUT-")],
-        [sg.Button("Save"), sg.Cancel()]
+        [sg.Button("Save", tooltip='Save all courses from loaded subject to a text file.'), sg.Cancel()]
     ]
 
     window = sg.Window("BCIT Course Finder", layout)
@@ -92,10 +92,10 @@ def simple_gui():
 
                 if event == "Save":
                     filename = subject.to_file()
-                    sg.popup_scrolled(f"Saved courses to \"{filename}\"", title="Success")
+                    sg.popup(f"Saved courses to \"{filename}\"", title="Success")
 
             else:
-                sg.popup_scrolled("Please enter a subject.")
+                sg.popup("Please enter a subject.", title="Error")
 
         if event == "-COMBO-":
             course_code = values["-COMBO-"].split(" ")[1]
@@ -103,7 +103,7 @@ def simple_gui():
                 subject_code = values["-IN-"]
                 subject = subjects[subject_code]
                 course = subject.get_course(course_code)
-                sg.popup_scrolled(course.to_string(), title=course.code())
+                sg.popup_scrolled(course.to_string(), title=f'{subject_code.upper()} {course.code()}')
 
     window.close()
 
