@@ -58,7 +58,7 @@ def simple_gui():
         [sg.Button("Save", tooltip='Save all courses from loaded subject to a text file.'), sg.Cancel()]
     ]
 
-    window = sg.Window("BCIT Course Finder", layout)
+    window = sg.Window("BCIT Course Finder", layout, icon=r'images\search_page.ico')
 
     while True:
         event, values = window.read()
