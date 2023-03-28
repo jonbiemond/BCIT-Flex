@@ -78,7 +78,7 @@ def parse_url(url: str, term: str, names_and_ids: dict[str, str]) -> Course | No
 
             status_node = offering.css_first(f'p[class="sctn-status-lbl"]')
 
-            if status_node is None or status_node.text(False) == "Sneak Preview":
+            if status_node is None or status_node.text(False) == "Sneak Preview" or status_node.text(False) == "Seats Available":
                 offerings.append(Offering(instructor, price, duration, meeting_times, rate_my_professor_urls.strip()))
 
         if offerings:
