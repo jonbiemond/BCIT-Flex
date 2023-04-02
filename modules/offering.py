@@ -1,10 +1,30 @@
+from tabulate import tabulate
+
+
+class MeetingTable:
+    def __init__(self):
+        self._headers = ["Dates", "Days", "Times", "Locations"]
+        self._rows = []
+        self._status = "Available"
+
+    def add_meeting(self, dates: str, days: str, times: str, locations: str):
+        self._rows.append([dates, days, times, locations])
+
+    def set_status(self, status: str):
+        self._status = status
+
+    def to_string(self) -> str:
+        table = tabulate(self._rows, headers=self._headers, tablefmt="grid")
+        return table
+
+
 class Offering:
     def __init__(
             self,
             instructor: str,
             price: str,
             duration: str,
-            meeting_times: list[str],
+            meeting_times: MeetingTable,
             status: str,
             rate_my_professor_urls: str
     ):
@@ -26,7 +46,7 @@ class Offering:
         return self._duration
 
     def meeting_times(self) -> str:
-        return "\n ".join(self._meeting_times)
+        return self._meeting_times.to_string()
 
     def status(self) -> str:
         return self._status
@@ -42,7 +62,7 @@ class Offering:
             f" Instructor: {self.instructor()}\n"
             f" Price: {self.price()}\n" 
             f" Duration: {self.duration()}\n" 
-            f" Meeting Times:\n {self.meeting_times()}\n" 
+            f" Meeting Times:\n{self.meeting_times()}\n" 
             f" Status: {self.status()}\n"
             f" Rate My Professor URLs: {self.rate_my_professor_urls()}\n"
         )

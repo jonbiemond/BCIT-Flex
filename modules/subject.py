@@ -5,7 +5,7 @@ import requests
 from selectolax.parser import HTMLParser
 
 from modules.course import Course
-from modules.offering import Offering
+from modules.offering import Offering, MeetingTable
 
 URL = "https://www.bcit.ca/wp-json/bcit/ptscc/v1/list-active-urls"
 
@@ -53,14 +53,15 @@ def parse_url(url: str, term: str, rmp_ids: dict[str, str]) -> Course:
 
             no_meeting_node = offering.css_first('div[class="sctn-no-meets"] p')
 
-            meeting_times = []
+            meeting_times = MeetingTable()
             if no_meeting_node is None:
                 for meeting_time in offering.css('div[class="sctn-meets"]'):
-                    for row in meeting_time.css('tr'):
-                        meeting_times.append(row.text(separator=" ", strip=True).strip())
+                    for row in meeting_time.css('tr')[1:]:
+                        row_elements = list(filter(None, [element.strip() for element in row.text().split("\n")]))
+                        meeting_times.add_meeting(*row_elements)
 
             else:
-                meeting_times.append(no_meeting_node.text())
+                meeting_times.set_status(no_meeting_node.text(False))
 
             ids = rmp_ids.get(instructor.lower())
 
