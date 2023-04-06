@@ -103,7 +103,12 @@ def simple_gui():
                 subject_code = values["-IN-"]
                 subject = subjects[subject_code]
                 course = subject.get_course(course_code)
-                sg.popup_scrolled(course.to_string(), title=f'{subject_code.upper()} {course.code()}')
+                sg.popup_scrolled(
+                    course.to_string(),
+                    title=f'{subject_code.upper()} {course.code()}',
+                    font='Courier 10',
+                    size=(80, 30)
+                )
 
     window.close()
 
