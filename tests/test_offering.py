@@ -1,7 +1,7 @@
 import pytest
 import datetime
 
-from modules.offering import Offering, MeetingTable
+from modules.offering import Offering, MeetingTable, EmptyMeetingError
 
 
 @pytest.fixture
@@ -16,13 +16,18 @@ def meeting_times():
 @pytest.fixture
 def offering(meeting_times):
     return Offering(
-        'John Smith',
-        '$546.00',
-        '12 weeks',
+        "John Smith",
+        "$546.00",
+        "12 weeks",
         meeting_times,
-        'Available',
-        'https://www.ratemyprofessors.com/ShowRatings.jsp?tid=123456'
+        "Available",
+        "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=123456",
     )
+
+
+@pytest.fixture
+def empty_meeting():
+    return MeetingTable()
 
 
 # MeetingTable tests
@@ -36,34 +41,48 @@ def test_meeting_get_start_date(meeting_times):
     year = datetime.datetime.now().year
     assert meeting_times.start_date() == datetime.date(year, 4, 4)
 
-    meeting_times_1 = MeetingTable()
-    meeting_times_1.add_meeting("N/A", "Tue", "18:00 - 21:30", "Burnaby")
-    assert meeting_times_1.start_date() is None
+    meeting_times_2 = MeetingTable()
+    meeting_times_2.add_meeting("Apr 04", "Tue", "18:00 - 21:30", "Burnaby")
+    assert meeting_times_2.start_date() == datetime.date(year, 4, 4)
 
 
 def test_meeting_get_end_date(meeting_times):
     year = datetime.datetime.now().year
     assert meeting_times.end_date() == datetime.date(year, 6, 20)
 
-    meeting_times_1 = MeetingTable()
-    meeting_times_1.add_meeting("N/A", "Tue", "18:00 - 21:30", "Burnaby")
-    assert meeting_times_1.end_date() is None
-
     meeting_times_2 = MeetingTable()
     meeting_times_2.add_meeting("Apr 04 - Jun 20", "Tue", "18:00 - 21:30", "Burnaby")
-    meeting_times_2.add_meeting("July 04", "Tue", "18:00 - 21:30", "Burnaby SW01 Rm. 3190")
+    meeting_times_2.add_meeting(
+        "Jul 04", "Tue", "18:00 - 21:30", "Burnaby SW01 Rm. 3190"
+    )
     assert meeting_times_2.end_date() == datetime.date(year, 7, 4)
+
+
+def test_meeting_invalid_start_date():
+    meeting_times = MeetingTable()
+    meeting_times.add_meeting("N/A", "Tue", "18:00 - 21:30", "Burnaby")
+    with pytest.raises(ValueError):
+        meeting_times.start_date()
+
+
+def test_empty_meeting_start_date(empty_meeting):
+    with pytest.raises(EmptyMeetingError):
+        empty_meeting.start_date()
 
 
 def test_meeting_get_days(meeting_times):
     assert meeting_times.days() == ["Tue"]
 
     meeting_days_1 = MeetingTable()
-    meeting_days_1.add_meeting("Apr 04 - Jun 20", "Tue, Thu", "18:00 - 21:30", "Burnaby")
+    meeting_days_1.add_meeting(
+        "Apr 04 - Jun 20", "Tue, Thu", "18:00 - 21:30", "Burnaby"
+    )
     assert meeting_days_1.days() == ["Tue", "Thu"]
 
     meeting_days_2 = MeetingTable()
-    meeting_days_2.add_meeting("Apr 04 - Jun 20", "Tue - Fri", "18:00 - 21:30", "Burnaby")
+    meeting_days_2.add_meeting(
+        "Apr 04 - Jun 20", "Tue - Fri", "18:00 - 21:30", "Burnaby"
+    )
     assert meeting_days_2.days() == ["Tue", "Wed", "Thu", "Fri"]
 
     meeting_days_3 = MeetingTable()
