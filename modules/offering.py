@@ -1,4 +1,10 @@
 from tabulate import tabulate
+import datetime
+
+
+class EmptyMeetingError(Exception):
+    def __init__(self):
+        super().__init__("Offering has no meetings.")
 
 
 class MeetingTable:
@@ -6,6 +12,12 @@ class MeetingTable:
         self._headers = ["Dates", "Days", "Times", "Locations"]
         self._rows = []
         self._status = "Available"
+
+    def status(self) -> str:
+        return self._status
+
+    def __bool__(self):
+        return bool(self._rows)
 
     def add_meeting(self, dates: str, days: str, times: str, locations: str):
         self._rows.append([dates, days, times, locations])
@@ -16,6 +28,38 @@ class MeetingTable:
     def to_string(self) -> str:
         table = tabulate(self._rows, headers=self._headers, tablefmt="grid")
         return table
+
+    def __get_dates(self, idx: int) -> list[datetime.date]:
+        if idx not in [0, -1]:
+            raise ValueError("Index must be 0 or -1")
+
+        if not self:
+            raise EmptyMeetingError()
+
+        dates = []
+
+        for meeting in self._rows:
+            dates_str = meeting[0]
+            date_str = dates_str.split(" - ")[idx]
+            year = datetime.datetime.now().year
+
+            try:
+                end_date = datetime.datetime.strptime(date_str, "%b %d").date()
+            except ValueError:
+                raise ValueError(f"Invalid date format: {date_str}")
+
+            end_date = end_date.replace(year=year)
+            dates.append(end_date)
+
+        return dates
+
+    def start_date(self) -> datetime.date:
+        dates = self.__get_dates(0)
+        return min(dates)
+
+    def end_date(self) -> datetime.date:
+        dates = self.__get_dates(-1)
+        return max(dates)
 
 
 class Offering:
