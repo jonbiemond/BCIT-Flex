@@ -16,6 +16,9 @@ class MeetingTable:
     def status(self) -> str:
         return self._status
 
+    def __len__(self):
+        return len(self._rows)
+
     def __bool__(self):
         return bool(self._rows)
 
@@ -60,6 +63,30 @@ class MeetingTable:
     def end_date(self) -> datetime.date:
         dates = self.__get_dates(-1)
         return max(dates)
+
+    def days(self) -> list[str]:
+        if not self:
+            raise EmptyMeetingError()
+
+        weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        days = []
+
+        for meeting in self._rows:
+            days_str = meeting[1]
+
+            meeting_days = days_str.split(' - ')
+            if len(meeting_days) > 1:
+                start, stop = (weekdays.index(day) for day in meeting_days)
+                meeting_days = weekdays[start : stop + 1]
+
+            else:
+                meeting_days = days_str.split(', ')
+
+            for day in meeting_days:
+                if day in weekdays and day not in days:
+                    days.append(day)
+
+        return days
 
 
 class Offering:
