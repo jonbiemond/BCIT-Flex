@@ -88,6 +88,28 @@ class MeetingTable:
 
         return days
 
+    def __get_time(self, idx: int) -> datetime.time | None:
+        if idx not in [0, -1]:
+            raise ValueError("Index must be 0 or -1")
+
+        if not self:
+            raise EmptyMeetingError()
+
+        time_str = self._rows[0][2].split(" - ")[idx]
+
+        if time_str == "N/A":
+            return None
+
+        time = datetime.datetime.strptime(time_str, "%H:%M").time()
+
+        return time
+
+    def start_time(self) -> datetime.time:
+        return self.__get_time(0)
+
+    def end_time(self) -> datetime.time:
+        return self.__get_time(-1)
+
 
 class Offering:
     def __init__(
