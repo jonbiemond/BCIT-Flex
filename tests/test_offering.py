@@ -129,13 +129,13 @@ def test_offering_available(offering):
 
 
 def test_offering_not_on_day(offering):
-    assert offering.not_on_days(["Mon"]) is True
-    assert offering.not_on_days(["Tue", "Wed"]) is False
+    assert offering.not_on_any_days(["Mon"]) is True
+    assert offering.not_on_any_days(["Tue", "Wed"]) is False
 
 
 def test_offering_not_on_day_invalid(offering):
     with pytest.raises(ValueError):
-        offering.not_on_days(["Mon", "Tue", "Thur"])
+        offering.not_on_any_days(["Mon", "Tue", "Thur"])
 
 
 def test_offering_is_part_time(offering):

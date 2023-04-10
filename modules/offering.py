@@ -1,6 +1,8 @@
 from tabulate import tabulate
 import datetime
 
+WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
 
 class EmptyMeetingError(Exception):
     def __init__(self):
@@ -68,7 +70,6 @@ class MeetingTable:
         if not self:
             raise EmptyMeetingError()
 
-        weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         days = []
 
         for meeting in self._rows:
@@ -76,14 +77,14 @@ class MeetingTable:
 
             meeting_days = days_str.split(' - ')
             if len(meeting_days) > 1:
-                start, stop = (weekdays.index(day) for day in meeting_days)
-                meeting_days = weekdays[start : stop + 1]
+                start, stop = (WEEKDAYS.index(day) for day in meeting_days)
+                meeting_days = WEEKDAYS[start : stop + 1]
 
             else:
                 meeting_days = days_str.split(', ')
 
             for day in meeting_days:
-                if day in weekdays and day not in days:
+                if day in WEEKDAYS and day not in days:
                     days.append(day)
 
         return days
@@ -155,6 +156,11 @@ class Offering:
 
     def available(self) -> bool:
         return self._available
+
+    def not_on_any_days(self, days: list[str]) -> bool:
+        if any(day not in WEEKDAYS for day in days):
+            raise ValueError("Invalid day(s) provided.")
+        return not set(self._meeting_times.days()).intersection(set(days))
 
     def rate_my_professor_urls(self) -> str:
         return self._rate_my_professor_urls
