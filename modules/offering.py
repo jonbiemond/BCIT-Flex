@@ -110,6 +110,15 @@ class MeetingTable:
     def end_time(self) -> datetime.time:
         return self.__get_time(-1)
 
+    def location(self) -> str:
+        if not self:
+            raise EmptyMeetingError()
+
+        location_detail = self._rows[0][3]
+        campus = location_detail.split(" ")[0]
+
+        return campus
+
 
 class Offering:
     def __init__(
