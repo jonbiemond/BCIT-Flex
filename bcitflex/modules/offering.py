@@ -1,7 +1,8 @@
-from tabulate import tabulate
 import datetime
 
-WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+from tabulate import tabulate
+
+WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 
 class EmptyMeetingError(Exception):
@@ -50,8 +51,8 @@ class MeetingTable:
 
             try:
                 end_date = datetime.datetime.strptime(date_str, "%b %d").date()
-            except ValueError:
-                raise ValueError(f"Invalid date format: {date_str}")
+            except ValueError as err:
+                raise ValueError(f"Invalid date format: {date_str}") from err
 
             end_date = end_date.replace(year=year)
             dates.append(end_date)
@@ -75,13 +76,13 @@ class MeetingTable:
         for meeting in self._rows:
             days_str = meeting[1]
 
-            meeting_days = days_str.split(' - ')
+            meeting_days = days_str.split(" - ")
             if len(meeting_days) > 1:
                 start, stop = (WEEKDAYS.index(day) for day in meeting_days)
                 meeting_days = WEEKDAYS[start : stop + 1]
 
             else:
-                meeting_days = days_str.split(', ')
+                meeting_days = days_str.split(", ")
 
             for day in meeting_days:
                 if day in WEEKDAYS and day not in days:
@@ -123,13 +124,13 @@ class MeetingTable:
 
 class Offering:
     def __init__(
-            self,
-            instructor: str,
-            price: str,
-            duration: str,
-            meeting_times: MeetingTable,
-            status: str,
-            rate_my_professor_urls: str
+        self,
+        instructor: str,
+        price: str,
+        duration: str,
+        meeting_times: MeetingTable,
+        status: str,
+        rate_my_professor_urls: str,
     ):
         self._instructor = instructor
         self._price = price
@@ -168,9 +169,9 @@ class Offering:
     def to_string(self) -> str:
         info = (
             f" Instructor: {self.instructor()}\n"
-            f" Price: {self.price()}\n" 
-            f" Duration: {self.duration()}\n" 
-            f" Meeting Times:\n{self.meeting_times()}\n" 
+            f" Price: {self.price()}\n"
+            f" Duration: {self.duration()}\n"
+            f" Meeting Times:\n{self.meeting_times()}\n"
             f" Status: {self.status()}\n"
             f" Rate My Professor URLs: {self.rate_my_professor_urls()}\n"
         )

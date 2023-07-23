@@ -21,7 +21,7 @@ The information is
 
 ## Installation
 + Clone the repository
-+ Install the requirements `pip install -r requirements.txt`
++ Install the requirements `poetry install`
 
 ## Usage
 1. Run `python interface.py`
