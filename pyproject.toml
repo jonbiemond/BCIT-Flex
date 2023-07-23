@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bcitflex"
-version = "0.1.0"
+version = "0.1.1"
 description = "Browse BCIT Flex course offerings."
 authors = ["Jonathan Biemond <jbiemond@my.bcit.ca>"]
 license = "MIT"
@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-requests = "^2.28.1"
+requests = "^2.31.0"
 selectolax = "^0.3.12"
 pysimplegui = "^4.60.4"
 tabulate = "^0.8.10"
