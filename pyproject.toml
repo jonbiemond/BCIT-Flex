@@ -12,6 +12,9 @@ requests = "^2.31.0"
 selectolax = "^0.3.12"
 pysimplegui = "^4.60.4"
 tabulate = "^0.8.10"
+psycopg2 = "^2.9.6"
+sqlalchemy = "^2.0.19"
+alembic = "^1.11.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
@@ -24,7 +27,6 @@ python-semantic-release = "^8.0.4"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
 
 
 [tool.black]
@@ -54,6 +56,8 @@ fixable = [
     "I",  # isort
     "RUF", # ruff,
 ]
+
+extend-exclude = ["alembic/*"]
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]
