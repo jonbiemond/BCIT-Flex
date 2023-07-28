@@ -18,3 +18,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: alembic-check
+        name: alembic-check
+        entry: poetry run alembic check
+        language: system
+        pass_filenames: false
+        always_run: true
