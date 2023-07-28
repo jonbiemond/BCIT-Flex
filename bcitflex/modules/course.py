@@ -1,4 +1,4 @@
-from .offering import Offering
+from bcitflex.model.offering import Offering
 
 
 class Course:

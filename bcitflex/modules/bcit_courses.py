@@ -5,8 +5,9 @@ from datetime import date
 import requests
 from selectolax.parser import HTMLParser
 
+from bcitflex.model.offering import Offering
 from bcitflex.modules.course import Course
-from bcitflex.modules.offering import MeetingTable, Offering
+from bcitflex.modules.meeting_table import MeetingTable
 
 
 def next_term(url: str) -> str:
