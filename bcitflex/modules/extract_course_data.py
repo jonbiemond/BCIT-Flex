@@ -11,23 +11,14 @@ from bcitflex.modules.course import Course
 from bcitflex.modules.meeting_table import MeetingTable
 
 
-def next_term(url: str) -> str:
-    """Get the next term from the given URL."""
+def next_term(response: Response) -> str:
+    """Get the next term from a course response."""
 
-    response = requests.get(url)
+    html_parser = HTMLParser(response.text)
 
-    if response.status_code != 200:
-        raise Exception(f"Next term response status code: {response.status_code}")
-
-    else:
-        html_parser = HTMLParser(response.text)
-
-        for term in range(30, 0, -10):
-            if (
-                html_parser.css_first(f'div[id="{date.today().year}{term}"]')
-                is not None
-            ):
-                return f"{date.today().year}{term}"
+    for term in range(30, 0, -10):
+        if html_parser.css_first(f'div[id="{date.today().year}{term}"]') is not None:
+            return f"{date.today().year}{term}"
 
 
 def read_rmp_ids(filename) -> dict[str, str]:
@@ -143,7 +134,7 @@ def parse_response(response: Response, term: str) -> Course:
 def available_courses(urls: list[str]) -> list[Course]:
     base_url = "https://www.bcit.ca"
 
-    term = next_term(f"{base_url}{urls[0]}")
+    term = next_term(collect_response(f"{base_url}{urls[0]}"))
 
     course_responses = get_course_responses([f"{base_url}{url}" for url in urls])
 
