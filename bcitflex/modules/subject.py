@@ -1,6 +1,6 @@
 import requests
 
-from bcitflex.modules.bcit_courses import available_courses
+from bcitflex.modules.extract_course_data import available_courses
 
 from .course import Course
 
