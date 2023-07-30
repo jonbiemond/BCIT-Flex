@@ -19,7 +19,10 @@ def offering() -> Offering:
 
 
 class TestOffering:
-    """Test the Offering class."""
+    """Test the Offering class.
+
+    Note: Tests in this class are interdependent.
+    """
 
     def test_init(self, offering: Offering) -> None:
         """Test the constructor."""
@@ -45,7 +48,7 @@ class TestOffering:
         session.commit()
         assert session.get(Offering, 12345) == offering
 
-    def test_update_offering(self, session) -> None:
+    def test_update_offering(self, session: Session) -> None:
         """Test updating an offering in the db."""
         offering = session.get(Offering, 12345)
         offering.instructor = "Jane Doe"
