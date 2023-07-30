@@ -35,6 +35,16 @@ class TestCourse:
         assert new_course.url == "https://www.bcit.ca"
         assert new_course.offerings == [offering]
 
+    def test_str(self, new_course: Course) -> None:
+        """Test the string representation"""
+        assert (
+            str(new_course) == "Course: COMP 1234\n"
+            "Name: Test Course\n"
+            "Prerequisites: COMP 1000\n"
+            "Credits: 3.0\n"
+            "URL: https://www.bcit.ca\n"
+        )
+
     def test_offering_count(self, new_course: Course, offering: Offering) -> None:
         """Test offering_count method."""
         full_offering = clone_model(offering, crn=54321, status="Full")
