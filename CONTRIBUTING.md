@@ -40,7 +40,7 @@ ruff .
 
 Make sure that the linter does not report any errors or warnings before submitting a pull request.
 
-### Code Format with `black`
+### 📎 Code Format with `black`
 
 We use `black` to reformat the code by running the following command:
 
@@ -54,6 +54,14 @@ We use `pytest` to test our code. You can run the tests by running the following
 
 ```bash
 pytest .
+```
+
+### ☂ Code coverage
+
+We use `pytest-cov` to measure our test coverage. After adding new tests run:
+
+```bash
+pytest --cov=bcitflex tests/
 ```
 
 Make sure that all tests pass before submitting a pull request.
