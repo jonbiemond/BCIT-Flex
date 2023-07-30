@@ -6,9 +6,17 @@ import requests
 from requests import Response
 from selectolax.parser import HTMLParser, Node
 
-from bcitflex.model import Offering
-from bcitflex.modules.course import Course
+from bcitflex.model import Course, Offering
 from bcitflex.modules.meeting_table import MeetingTable
+
+
+class CoursePage:
+    """HTML representation of a course page."""
+
+    def __init__(self, response: Response) -> None:
+        self.url: str = response.url
+        self.html: HTMLParser = HTMLParser(response.text)
+        self.term: str = next_term(response)
 
 
 def next_term(response: Response) -> str:
@@ -111,24 +119,39 @@ def parse_offering_node(node: Node) -> Offering:
     )
 
 
-def parse_response(response: Response, term: str) -> Course:
-    """Parse the response and return the course."""
+def parse_course_info(page: CoursePage) -> Course:
+    """Parse the course info and return the course."""
 
-    html_parser = HTMLParser(response.text)
-
-    code_and_name = html_parser.css_first('h1[class="h1 page-hero__title"]').text(
+    code_and_name = page.html.css_first('h1[class="h1 page-hero__title"]').text(
         strip=True
     )
     subject, code = code_and_name[-9:].split(" ")
     name = code_and_name[:-9]
-    prerequisites = html_parser.css_first('div[id="prereq"] ul li').text()
-    _credits = html_parser.css_first('div[id="credits"] p').text(False)
+    prerequisites = page.html.css_first('div[id="prereq"] ul li').text()
+    credit_hours = float(page.html.css_first('div[id="credits"] p').text(False))
 
-    offerings = []
-    for offering in html_parser.css(f'div[id="{term}"] div[class="sctn"]'):
-        offerings.append(parse_offering_node(offering))
+    return Course(
+        subject_id=subject,
+        code=code,
+        name=name,
+        prerequisites=prerequisites,
+        credits=credit_hours,
+        url=page.url,
+    )
 
-    return Course(subject, code, name, prerequisites, _credits, response.url, offerings)
+
+def parse_response(response: Response, term: str) -> Course:
+    """Parse the response and return the course."""
+
+    course_page = CoursePage(response)
+
+    course = parse_course_info(course_page)
+
+    course.offerings = []
+    for offering in course_page.html.css(f'div[id="{term}"] div[class="sctn"]'):
+        course.offerings.append(parse_offering_node(offering))
+
+    return course
 
 
 def available_courses(urls: list[str]) -> list[Course]:
