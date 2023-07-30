@@ -1,7 +1,7 @@
 import re
 
 import PySimpleGUI as sg
-from modules.course import Course
+from model import Course
 from modules.subject import Subject
 
 

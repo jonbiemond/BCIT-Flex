@@ -64,7 +64,7 @@ def session(database):
 
 # Model fixtures
 @pytest.fixture
-def new_course(session) -> Type[Course]:
+def course(session) -> Type[Course]:
     """Get a test course."""
     course = session.get(Course, 1)
     if course is None:
@@ -73,7 +73,7 @@ def new_course(session) -> Type[Course]:
 
 
 @pytest.fixture
-def new_offering(session) -> Type[Offering]:
+def offering(session) -> Type[Offering]:
     """Get a test offering."""
     offering = session.get(Offering, 12345)
     if offering is None:

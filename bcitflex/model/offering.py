@@ -47,3 +47,7 @@ class Offering(Base):
             f" Status: {self.status}\n"
         )
         return info
+
+    @property
+    def available(self):
+        return self.status not in ["Full", "In Progress"]
