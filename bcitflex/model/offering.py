@@ -1,9 +1,14 @@
 """Course Offering and Meeting declarations."""
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.types import NUMERIC
+from typing import TYPE_CHECKING
+
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import NUMERIC, Integer
 
 from . import Base
+
+if TYPE_CHECKING:
+    from . import Course
 
 
 class Offering(Base):
@@ -11,6 +16,7 @@ class Offering(Base):
     __table_args__ = {"comment": "Course offerings."}
 
     crn: Mapped[int] = mapped_column(
+        Integer,
         primary_key=True,
         doc="Course Reference Number",
         comment="Course Reference Number, unique to offering.",
@@ -25,6 +31,12 @@ class Offering(Base):
     status: Mapped[str] = mapped_column(
         String(30), doc="Status", comment="Status of course offering."
     )
+    course_id: Mapped[int] = mapped_column(ForeignKey("course.course_id"))
+
+    course: Mapped["Course"] = relationship(back_populates="offerings")
+
+    def __repr__(self):
+        return f"Offering(course={self.course.fullcode if self.course else None}, crn={self.crn}, instructor={self.instructor},  status={self.status})"
 
     def __str__(self) -> str:
         info = (

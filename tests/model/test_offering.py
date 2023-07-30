@@ -3,12 +3,12 @@ import pytest
 from sqlalchemy.exc import DataError
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Offering
+from bcitflex.model import Course, Offering
 
 
 @pytest.fixture
-def offering() -> Offering:
-    """Return a test offering."""
+def offering_no_course() -> Offering:
+    """Return a test offering without a course."""
     return Offering(
         crn=12345,
         instructor="John Doe",
@@ -18,11 +18,17 @@ def offering() -> Offering:
     )
 
 
-class TestOffering:
-    """Test the Offering class.
+@pytest.fixture
+def offering(course, offering_no_course) -> Offering:
+    """Return a test offering."""
+    offering = offering_no_course
+    offering.course_id = course.course_id
+    offering.course = course
+    return offering
 
-    Note: Tests in this class are interdependent.
-    """
+
+class TestOffering:
+    """Test properties of the Offering class."""
 
     def test_init(self, offering: Offering) -> None:
         """Test the constructor."""
@@ -42,11 +48,20 @@ class TestOffering:
             " Status: Open\n"
         )
 
+
+class TestOfferingDB:
+    """Test the Offering class with a database session.
+
+    Note: Tests in this class are interdependent.
+    """
+
     def test_add_offering(self, offering: Offering, session: Session) -> None:
         """Test adding an offering to the db."""
         session.add(offering)
         session.commit()
         assert session.get(Offering, 12345) == offering
+        assert session.get(Offering, 12345).course == offering.course
+        assert session.get(Course, 1) == offering.course
 
     def test_update_offering(self, session: Session) -> None:
         """Test updating an offering in the db."""
@@ -55,8 +70,9 @@ class TestOffering:
         session.commit()
         assert session.get(Offering, 12345).instructor == "Jane Doe"
 
-    def test_invalid_crn(self, offering: Offering, session: Session) -> None:
+    def test_invalid_crn(self, offering_no_course: Offering, session: Session) -> None:
         """Test that adding an offering with an invalid value raises an exception."""
+        offering = offering_no_course
         offering.crn = "abc"
         with pytest.raises(DataError):
             try:

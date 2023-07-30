@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from alembic import config
+from bcitflex.model import Course, Offering
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
@@ -52,3 +53,31 @@ def session(database):
     # rollback - everything above is rolled back including calls to commit()
     trans.rollback()
     connection.close()
+
+
+# Model fixtures
+@pytest.fixture
+def course() -> Course:
+    """Return a test course."""
+    return Course(
+        course_id=1,
+        subject_id="COMP",
+        code="1234",
+        name="Test Course",
+        prerequisites="COMP 1000",
+        credits=3.0,
+        url="https://www.bcit.ca",
+    )
+
+
+@pytest.fixture
+def offering() -> Offering:
+    """Return a test offering."""
+    return Offering(
+        crn=12345,
+        instructor="John Doe",
+        price=123.45,
+        duration="1 week",
+        status="Open",
+        course_id=1,
+    )
