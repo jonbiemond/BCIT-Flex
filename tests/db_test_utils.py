@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from alembic import config, script
 from alembic.runtime import migration
-from bcitflex.model import Course, Offering
+from bcitflex.model import Base, Course, Offering
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
 POSTGRES_HOST = getenv("PGHOST", "localhost")
@@ -55,6 +55,19 @@ def check_current_head(alembic_cfg: config.Config, connectable: engine.Engine) -
     with connectable.begin() as connection:
         context = migration.MigrationContext.configure(connection)
         return set(context.get_current_heads()) == set(directory.get_heads())
+
+
+def clone_model(model: Base, **kwargs) -> Base:
+    """Clone an arbitrary sqlalchemy model object without its primary key values."""
+    table = model.__table__
+    non_pk_columns = [
+        k for k in table.columns.keys() if k not in table.primary_key.columns.keys()
+    ]
+    data = {c: getattr(model, c) for c in non_pk_columns}
+    data.update(kwargs)
+
+    clone = model.__class__(**data)
+    return clone
 
 
 def populate_db(session: Session):

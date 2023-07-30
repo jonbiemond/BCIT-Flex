@@ -66,4 +66,16 @@ class Course(Base):
 
     @property
     def fullcode(self) -> str:
+        """Concat of subject_id and course_code."""
         return f"{self.subject_id} {self.code}"
+
+    def offering_count(self, available_only=False) -> int:
+        """Return count of course offerings."""
+        if available_only:
+            return sum([offering.available for offering in self.offerings])
+        return len(self.offerings)
+
+    @property
+    def is_available(self) -> bool:
+        """Return True if at least one offering is available."""
+        return self.offering_count(available_only=True) > 0

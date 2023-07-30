@@ -2,7 +2,7 @@ import requests
 
 from bcitflex.modules.extract_course_data import available_courses
 
-from .course import Course
+from ..model import Course
 
 URL = "https://www.bcit.ca/wp-json/bcit/ptscc/v1/list-active-urls"
 
