@@ -1,5 +1,7 @@
 """Tests for the offering model."""
 import pytest
+from sqlalchemy.exc import DataError
+from sqlalchemy.orm import Session
 
 from bcitflex.model import Offering
 
@@ -36,3 +38,27 @@ class TestOffering:
             " Duration: 1 week\n"
             " Status: Open\n"
         )
+
+    def test_add_offering(self, offering: Offering, session: Session) -> None:
+        """Test adding an offering to the db."""
+        session.add(offering)
+        session.commit()
+        assert session.get(Offering, 12345) == offering
+
+    def test_update_offering(self, session) -> None:
+        """Test updating an offering in the db."""
+        offering = session.get(Offering, 12345)
+        offering.instructor = "Jane Doe"
+        session.commit()
+        assert session.get(Offering, 12345).instructor == "Jane Doe"
+
+    def test_invalid_crn(self, offering: Offering, session: Session) -> None:
+        """Test that adding an offering with an invalid value raises an exception."""
+        offering.crn = "abc"
+        with pytest.raises(DataError):
+            try:
+                session.add(offering)
+                session.commit()
+            except DataError as e:
+                session.rollback()
+                raise e

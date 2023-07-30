@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 @pytest.fixture(scope="module")
 def session():
-    engine = create_engine("postgresql://localhost:5432/bcitflex")
+    engine = create_engine("postgresql://python_app@localhost:5432/bcitflex")
     connection = engine.connect()
 
     # begin a non-ORM transaction
