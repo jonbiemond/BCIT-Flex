@@ -1,3 +1,5 @@
+from typing import Type
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -13,6 +15,7 @@ from tests.db_test_utils import (
     create_db,
     db_connection,
     drop_tables,
+    populate_db,
 )
 
 DB_NAME = "_test_bcitflex"
@@ -40,6 +43,10 @@ def session(database):
     if not check_current_head(alembic_cfg, engine):
         config.command.upgrade(alembic_cfg, "head")
 
+    # populate the database with test data
+    session = Session(bind=engine)
+    populate_db(session)
+
     # begin a non-ORM transaction
     connection = engine.connect()
     trans = connection.begin()
@@ -57,27 +64,18 @@ def session(database):
 
 # Model fixtures
 @pytest.fixture
-def course() -> Course:
-    """Return a test course."""
-    return Course(
-        course_id=1,
-        subject_id="COMP",
-        code="1234",
-        name="Test Course",
-        prerequisites="COMP 1000",
-        credits=3.0,
-        url="https://www.bcit.ca",
-    )
+def new_course(session) -> Type[Course]:
+    """Get a test course."""
+    course = session.get(Course, 1)
+    if course is None:
+        raise ValueError("Course not found in database.")
+    return course
 
 
 @pytest.fixture
-def offering() -> Offering:
-    """Return a test offering."""
-    return Offering(
-        crn=12345,
-        instructor="John Doe",
-        price=123.45,
-        duration="1 week",
-        status="Open",
-        course_id=1,
-    )
+def new_offering(session) -> Type[Offering]:
+    """Get a test offering."""
+    offering = session.get(Offering, 12345)
+    if offering is None:
+        raise ValueError("Offering not found in database.")
+    return offering

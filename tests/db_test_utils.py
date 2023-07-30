@@ -6,9 +6,11 @@ from os import getenv
 
 import psycopg2
 from sqlalchemy import engine
+from sqlalchemy.orm import Session
 
 from alembic import config, script
 from alembic.runtime import migration
+from bcitflex.model import Course, Offering
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
 POSTGRES_HOST = getenv("PGHOST", "localhost")
@@ -53,3 +55,27 @@ def check_current_head(alembic_cfg: config.Config, connectable: engine.Engine) -
     with connectable.begin() as connection:
         context = migration.MigrationContext.configure(connection)
         return set(context.get_current_heads()) == set(directory.get_heads())
+
+
+def populate_db(session: Session):
+    """Populate the database with test data."""
+    course = Course(
+        course_id=1,
+        subject_id="COMP",
+        code="1234",
+        name="Test Course",
+        prerequisites="COMP 1000",
+        credits=3.0,
+        url="https://www.bcit.ca",
+    )
+    offering = Offering(
+        crn=12345,
+        instructor="John Doe",
+        price=123.45,
+        duration="1 week",
+        status="Open",
+        course_id=1,
+    )
+    session.add(course)
+    session.add(offering)
+    session.commit()
