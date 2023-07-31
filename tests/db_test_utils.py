@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from alembic import config, script
 from alembic.runtime import migration
-from bcitflex.model import Base, Course, Offering
+from bcitflex.model import Base, Course, Offering, Subject
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
 POSTGRES_HOST = getenv("PGHOST", "localhost")
@@ -72,6 +72,7 @@ def clone_model(model: Base, **kwargs) -> Base:
 
 def populate_db(session: Session):
     """Populate the database with test data."""
+    subject = Subject(subject_id="COMP", name="Computer Systems")
     course = Course(
         course_id=1,
         subject_id="COMP",
@@ -89,6 +90,7 @@ def populate_db(session: Session):
         status="Open",
         course_id=1,
     )
+    session.add(subject)
     session.add(course)
     session.add(offering)
     session.commit()

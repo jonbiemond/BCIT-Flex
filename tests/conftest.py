@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from alembic import config
-from bcitflex.model import Course, Offering
+from bcitflex.model import Course, Offering, Subject
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
@@ -63,6 +63,15 @@ def session(database):
 
 
 # Model fixtures
+@pytest.fixture
+def subject(session) -> Type[Subject]:
+    """Get a test subject."""
+    subject = session.get(Subject, "COMP")
+    if subject is None:
+        raise ValueError("Subject not found in database.")
+    return subject
+
+
 @pytest.fixture
 def course(session) -> Type[Course]:
     """Get a test course."""
