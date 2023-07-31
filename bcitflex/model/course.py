@@ -1,11 +1,12 @@
 """Course model declaration."""
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Integer, String
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import Float
 
 from . import Base
+from .subject import Subject
 
 if TYPE_CHECKING:
     from . import Offering
@@ -18,11 +19,9 @@ class Course(Base):
     course_id: Mapped[int] = mapped_column(
         Integer, primary_key=True, doc="Course ID", comment="Serial course ID."
     )
-    subject_id: Mapped[str] = mapped_column(
-        doc="Subject",
-        comment="Subject code, e.g. COMP.",
-    )
+    subject_id: Mapped[str] = mapped_column(ForeignKey("subject.subject_id"))
     code: Mapped[str] = mapped_column(
+        String(4),
         doc="Course Code",
         comment="Course code.",
     )
@@ -46,6 +45,8 @@ class Course(Base):
         doc="URL",
         comment="URL.",
     )
+
+    subject: Mapped["Subject"] = relationship(back_populates="courses")
 
     offerings: Mapped[list["Offering"]] = relationship(
         back_populates="course", cascade="all, delete-orphan"

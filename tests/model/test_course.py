@@ -60,6 +60,11 @@ class TestCourse:
 class TestCourseDB:
     """Test the Course class with a database session."""
 
+    def test_get_course(self, session: Session) -> None:
+        """Test getting a course from the db."""
+        course = session.get(Course, 1)
+        assert course.subject.subject_id == "COMP"
+
     def test_add_course(self, new_course: Course, session: Session) -> None:
         """Test adding a course to the db."""
         session.add(new_course)
