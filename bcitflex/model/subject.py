@@ -27,7 +27,7 @@ class Subject(Base):
     )
 
     courses: Mapped[list["Course"]] = relationship(
-        back_populates="subject", cascade="all, delete-orphan"
+        back_populates="subject", cascade="all, delete-orphan", passive_deletes=True
     )
 
     def __repr__(self):

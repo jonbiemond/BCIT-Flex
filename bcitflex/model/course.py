@@ -51,7 +51,10 @@ class Course(Base):
     subject: Mapped["Subject"] = relationship(back_populates="courses")
 
     offerings: Mapped[list["Offering"]] = relationship(
-        back_populates="course", cascade="all, delete-orphan"
+        back_populates="course",
+        cascade="all, delete-orphan",
+        # Let the database handle cascades for unloaded children
+        passive_deletes=True,
     )
 
     def __repr__(self):
