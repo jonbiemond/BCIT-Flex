@@ -2,7 +2,7 @@
 import pytest
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Subject
+from bcitflex.model import Course, Offering, Subject
 from tests import dbtest
 
 
@@ -49,3 +49,5 @@ class TestSubjectDB:
         session.delete(subject)
         session.commit()
         assert session.get(Subject, "COMP") is None
+        assert session.get(Course, 1) is None
+        assert session.get(Offering, 12345) is None

@@ -1,9 +1,9 @@
 """Course model declaration."""
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import Float
+from sqlalchemy.types import Float, Integer, String
 
 from . import Base
 from .subject import Subject
@@ -16,21 +16,23 @@ class Course(Base):
     __tablename__ = "course"
     __table_args__ = {"comment": "Courses."}
 
-    course_id: Mapped[int] = mapped_column(
+    course_id: Mapped[Integer] = mapped_column(
         Integer, primary_key=True, doc="Course ID", comment="Serial course ID."
     )
-    subject_id: Mapped[str] = mapped_column(ForeignKey("subject.subject_id"))
-    code: Mapped[str] = mapped_column(
+    subject_id: Mapped[String] = mapped_column(
+        ForeignKey("subject.subject_id", ondelete="CASCADE")
+    )
+    code: Mapped[String] = mapped_column(
         String(4),
         doc="Course Code",
         comment="Course code.",
     )
-    name: Mapped[str] = mapped_column(
+    name: Mapped[String] = mapped_column(
         String(100),
         doc="Course Name",
         comment="Course name.",
     )
-    prerequisites: Mapped[str] = mapped_column(
+    prerequisites: Mapped[String] = mapped_column(
         String(100),
         doc="Prerequisites",
         comment="Prerequisites as strings.",
@@ -40,7 +42,7 @@ class Course(Base):
         doc="Credits",
         comment="Credit hours.",
     )
-    url: Mapped[str] = mapped_column(
+    url: Mapped[String] = mapped_column(
         String(100),
         doc="URL",
         comment="URL.",

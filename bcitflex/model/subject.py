@@ -1,8 +1,8 @@
 """Subject model declaration."""
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import String
 
 from . import Base
 
@@ -14,13 +14,13 @@ class Subject(Base):
     __tablename__ = "subject"
     __table_args__ = {"comment": "Subjects."}
 
-    subject_id: Mapped[str] = mapped_column(
+    subject_id: Mapped[String] = mapped_column(
         String(4),
         primary_key=True,
         doc="Subject ID",
         comment="Subject code, e.g. COMP.",
     )
-    name: Mapped[str | None] = mapped_column(
+    name: Mapped[String | None] = mapped_column(
         String(100),
         doc="Subject Name",
         comment="Subject name.",

@@ -1,9 +1,9 @@
 """Course Offering and Meeting declarations."""
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import NUMERIC, Integer
+from sqlalchemy.types import NUMERIC, Integer, String
 
 from . import Base
 
@@ -15,23 +15,25 @@ class Offering(Base):
     __tablename__ = "offering"
     __table_args__ = {"comment": "Course offerings."}
 
-    crn: Mapped[int] = mapped_column(
+    crn: Mapped[Integer] = mapped_column(
         Integer,
         primary_key=True,
         doc="Course Reference Number",
         comment="Course Reference Number, unique to offering.",
     )
-    instructor: Mapped[str] = mapped_column(
+    instructor: Mapped[String] = mapped_column(
         String(30), doc="Instructor", comment="Instructor."
     )
     price: Mapped[float] = mapped_column(NUMERIC, doc="Price", comment="Price.")
-    duration: Mapped[str] = mapped_column(
+    duration: Mapped[String] = mapped_column(
         String(30), doc="Duration Weeks", comment="Duration in weeks."
     )
-    status: Mapped[str] = mapped_column(
+    status: Mapped[String] = mapped_column(
         String(30), doc="Status", comment="Status of course offering."
     )
-    course_id: Mapped[int] = mapped_column(ForeignKey("course.course_id"))
+    course_id: Mapped[Integer] = mapped_column(
+        ForeignKey("course.course_id", ondelete="CASCADE")
+    )
 
     course: Mapped["Course"] = relationship(back_populates="offerings")
 
