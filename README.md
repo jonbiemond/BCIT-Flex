@@ -5,24 +5,27 @@ Webscrape BCIT available courses, quickly view course offerings and write the in
 Please feel free to report any issues, bugs or suggestions. Pull requests are welcome.
 
 The information is
-+ Code
-+ Name
-+ Prerequisites
-+ Credits
-+ URL
-+ Offerings
-  + Instructor
-  + Price
-  + Duration
-  + Meeting Times
-  + Status
-  + Rate My Professor URLs
+
+- Code
+- Name
+- Prerequisites
+- Credits
+- URL
+- Offerings
+  - Instructor
+  - Price
+  - Duration
+  - Meeting Times
+  - Status
+  - Rate My Professor URLs
 
 ## Installation
-+ Clone the repository
-+ Install the requirements `poetry install`
+
+- Clone the repository
+- Install the requirements `poetry install`
 
 ## Usage
+
 1. Run `python interface.py`
 2. Enter and load a subject.
 
@@ -43,17 +46,20 @@ But now showing a full drop down menu titled "Course" with the text 2011 (2) sel
 5. Click "Save" to save the course offerings to a text file.
 
 ## Supports
-+ Displaying all course offerings for specific course
-+ Saving all courses to a text file for a specific subject
+
+- Displaying all course offerings for specific course
+- Saving all courses to a text file for a specific subject
 
 ## TODO
-+ Filter by prerequisites
-+ ~~Individual Course Offerings~~
-+ ~~Rate My Professors~~
-+ WebAssembly
-+ ~~GUI~~
-+ Return RMP rating
+
+- Filter by prerequisites
+- ~~Individual Course Offerings~~
+- ~~Rate My Professors~~
+- WebAssembly
+- ~~GUI~~
+- Return RMP rating
 
 ## Contributors
+
 - Sam - [0x53616D75656C](https://github.com/0x53616D75656C)
 - Jonathan - [jonbiemond](https://github.com/jonbiemond)
