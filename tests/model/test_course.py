@@ -7,7 +7,20 @@ from tests import clone_model, dbtest
 
 
 @pytest.fixture
-def new_course(offering) -> Course:
+def new_offering() -> Offering:
+    """Return a new offering object."""
+    return Offering(
+        crn=67890,
+        instructor="John Doe",
+        price=123.45,
+        duration="1 week",
+        status="Open",
+        course_id=2,
+    )
+
+
+@pytest.fixture
+def new_course(new_offering) -> Course:
     """Return a new course object."""
     return Course(
         course_id=2,
@@ -17,14 +30,14 @@ def new_course(offering) -> Course:
         prerequisites="COMP 1000",
         credits=3.0,
         url="https://www.bcit.ca",
-        offerings=[offering],
+        offerings=[new_offering],
     )
 
 
 class TestCourse:
     """Test the Course class."""
 
-    def test_init(self, new_course: Course, offering: Offering) -> None:
+    def test_init(self, new_course: Course, new_offering: Offering) -> None:
         """Test the constructor."""
         assert new_course.course_id == 2
         assert new_course.subject_id == "COMP"
@@ -33,7 +46,7 @@ class TestCourse:
         assert new_course.prerequisites == "COMP 1000"
         assert new_course.credits == 3.0
         assert new_course.url == "https://www.bcit.ca"
-        assert new_course.offerings == [offering]
+        assert new_course.offerings == [new_offering]
 
     def test_str(self, new_course: Course) -> None:
         """Test the string representation"""
@@ -45,9 +58,9 @@ class TestCourse:
             "URL: https://www.bcit.ca\n"
         )
 
-    def test_offering_count(self, new_course: Course, offering: Offering) -> None:
+    def test_offering_count(self, new_course: Course, new_offering: Offering) -> None:
         """Test offering_count method."""
-        full_offering = clone_model(offering, crn=54321, status="Full")
+        full_offering = clone_model(new_offering, crn=54321, status="Full")
         new_course.offerings.append(full_offering)
         assert new_course.offering_count() == 2
         assert new_course.offering_count(available_only=True) == 1
