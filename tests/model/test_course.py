@@ -3,7 +3,7 @@ import pytest
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering
-from tests.db_test_utils import clone_model
+from tests import clone_model, dbtest
 
 
 @pytest.fixture
@@ -57,6 +57,7 @@ class TestCourse:
         assert new_course.is_available
 
 
+@dbtest
 class TestCourseDB:
     """Test the Course class with a database session."""
 

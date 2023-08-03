@@ -4,6 +4,7 @@ from sqlalchemy.exc import DataError
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Offering
+from tests import dbtest
 
 
 @pytest.fixture
@@ -43,6 +44,7 @@ class TestOffering:
         )
 
 
+@dbtest
 class TestOfferingDB:
     """Test the Offering class with a database session."""
 
