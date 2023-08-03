@@ -91,3 +91,9 @@ class TestCourseDB:
         course.name = "New Name"
         session.commit()
         assert session.get(Course, 1).name == "New Name"
+
+    def test_delete_course_cascade(self, session: Session) -> None:
+        course = session.get(Course, 1)
+        session.delete(course)
+        session.commit()
+        assert session.get(Offering, 12345) is None
