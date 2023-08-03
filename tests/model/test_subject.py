@@ -3,6 +3,7 @@ import pytest
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Subject
+from tests import dbtest
 
 
 @pytest.fixture
@@ -20,6 +21,7 @@ class TestSubject:
         assert new_subject.name == "Mathematics"
 
 
+@dbtest
 class TestSubjectDB:
     """Test the Subject class with a database session."""
 

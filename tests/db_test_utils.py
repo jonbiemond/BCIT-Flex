@@ -5,6 +5,7 @@ Source: pgcli https://github.com/dbcli/pgcli
 from os import getenv
 
 import psycopg2
+import pytest
 from sqlalchemy import engine
 from sqlalchemy.orm import Session
 
@@ -29,6 +30,19 @@ def db_connection(dbname=None):
     )
     conn.autocommit = True
     return conn
+
+
+try:
+    conn = db_connection()
+    CAN_CONNECT_TO_DB = True
+except Exception:
+    CAN_CONNECT_TO_DB = False
+
+
+dbtest = pytest.mark.skipif(
+    not CAN_CONNECT_TO_DB,
+    reason="Need a postgres instance at localhost accessible by user 'postgres'",
+)
 
 
 def create_db(dbname):
