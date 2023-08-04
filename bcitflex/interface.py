@@ -1,3 +1,4 @@
+# TODO: setup with model
 import re
 
 import PySimpleGUI as sg
