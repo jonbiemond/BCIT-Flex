@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering, Subject
-from bcitflex.modules.extract_course_data import (
+from bcitflex.scripts.scrape_and_load import (
     CoursePage,
     bcit_to_sql,
     extract_models,
@@ -107,7 +107,7 @@ def test_get_course_urls(mocker, course_page: CoursePage, session: Session) -> N
 
     # patch scrape_course_urls to return one url
     mocker.patch(
-        "bcitflex.modules.extract_course_data.scrape_course_urls",
+        "bcitflex.scripts.scrape_and_load.scrape_course_urls",
         return_value={"COMP": [course_page.url]},
     )
 
@@ -145,13 +145,13 @@ def test_bcit_to_sql(
 
     # mock get_course_urls
     mocker.patch(
-        "bcitflex.modules.extract_course_data.get_course_urls",
+        "bcitflex.scripts.scrape_and_load.get_course_urls",
         return_value=[course_page.url],
     )
 
     # mock extract
     mocker.patch(
-        "bcitflex.modules.extract_course_data.extract_models", return_value=[new_course]
+        "bcitflex.scripts.scrape_and_load.extract_models", return_value=[new_course]
     )
 
     bcit_to_sql(DB_URL)
@@ -168,7 +168,7 @@ def test_bcit_to_sql(
 def test_bcit_to_sql_rollback(mocker, session: Session) -> None:
     # mock exception
     mocker.patch(
-        "bcitflex.modules.extract_course_data.get_course_urls",
+        "bcitflex.scripts.scrape_and_load.get_course_urls",
         side_effect=ArithmeticError,
     )
 

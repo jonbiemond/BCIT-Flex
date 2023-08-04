@@ -1,4 +1,4 @@
-"""Logic to parse course data."""
+"""Script to scrape course data and load it to the databse. """
 import re
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -246,6 +246,9 @@ def bcit_to_sql(db_url: str):
         # load
         load_models(session, courses)
 
+        # log
+        print(f"Successfully updated {len(courses)} courses.")
+
     except Exception as exc:
         trans.rollback()
         connection.close()
@@ -254,3 +257,7 @@ def bcit_to_sql(db_url: str):
     else:
         trans.commit()
         connection.close()
+
+
+if __name__ == "__main__":
+    bcit_to_sql("postgresql://python_app@localhost:5432/bcitflex")
