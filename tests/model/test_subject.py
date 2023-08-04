@@ -50,4 +50,4 @@ class TestSubjectDB:
         session.commit()
         assert session.get(Subject, "COMP") is None
         assert session.get(Course, 1) is None
-        assert session.get(Offering, 12345) is None
+        assert session.get(Offering, "12345") is None

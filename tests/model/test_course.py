@@ -10,7 +10,7 @@ from tests import clone_model, dbtest
 def new_offering() -> Offering:
     """Return a new offering object."""
     return Offering(
-        crn=67890,
+        crn="67890",
         instructor="John Doe",
         price=123.45,
         duration="1 week",
@@ -60,7 +60,7 @@ class TestCourse:
 
     def test_offering_count(self, new_course: Course, new_offering: Offering) -> None:
         """Test offering_count method."""
-        full_offering = clone_model(new_offering, crn=54321, status="Full")
+        full_offering = clone_model(new_offering, crn="54321", status="Full")
         new_course.offerings.append(full_offering)
         assert new_course.offering_count() == 2
         assert new_course.offering_count(available_only=True) == 1
@@ -96,4 +96,4 @@ class TestCourseDB:
         course = session.get(Course, 1)
         session.delete(course)
         session.commit()
-        assert session.get(Offering, 12345) is None
+        assert session.get(Offering, "12345") is None

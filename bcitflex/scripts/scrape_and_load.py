@@ -73,7 +73,8 @@ def get_page_responses(urls: list[str]) -> list[Response]:
 def parse_offering_node(node: Node, course: Course) -> Offering:
     """Parse the offering node and return the offering."""
 
-    # TODO: Add crn
+    # get crn
+    crn = node.css_first('li[class="sctn-block-list-item crn"] span').text(False)
 
     # get instructor
     instructor_node = node.css_first('div[class="sctn-instructor"] p')
@@ -84,7 +85,7 @@ def parse_offering_node(node: Node, course: Course) -> Offering:
         instructor = instructor_node.text(False)
 
     # get price
-    price = node.css_first('li[class="sctn-block-list-item cost"').text(False)
+    price = node.css_first('li[class="sctn-block-list-item cost"]').text(False)
     price = float(price.removeprefix("$"))
 
     # get duration
@@ -118,7 +119,7 @@ def parse_offering_node(node: Node, course: Course) -> Offering:
         status = status_node.text(False)
 
     return Offering(
-        crn=None,
+        crn=crn,
         instructor=instructor,
         price=price,
         duration=duration,

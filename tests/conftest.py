@@ -112,7 +112,7 @@ def course(session) -> Type[Course]:
 @pytest.fixture
 def offering(session) -> Type[Offering]:
     """Get a test offering."""
-    offering = session.get(Offering, 12345)
+    offering = session.get(Offering, "12345")
     if offering is None:
         raise ValueError("Offering not found in database.")
     return offering
