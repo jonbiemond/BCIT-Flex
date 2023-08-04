@@ -23,6 +23,7 @@ pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 pre-commit = "^3.3.3"
 python-semantic-release = "^8.0.4"
+pytest-mock = "^3.11.1"
 
 [build-system]
 requires = ["poetry-core"]
