@@ -44,7 +44,7 @@ def new_subject() -> Subject:
 def new_offering() -> Offering:
     """Return a new offering object."""
     return Offering(
-        crn=67890,
+        crn="67890",
         instructor="John Doe",
         price=123.45,
         duration="1 week",
@@ -73,6 +73,7 @@ def test_parse_offering_node(offering_node: Node, course: Course) -> None:
     """Test the parse offering node function."""
     offering = parse_offering_node(offering_node, course)
     assert offering.price > 0
+    assert offering.crn == "38186"
 
 
 def test_parse_course_info(course_page: CoursePage) -> None:

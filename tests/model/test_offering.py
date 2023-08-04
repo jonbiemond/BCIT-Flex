@@ -11,7 +11,7 @@ from tests import dbtest
 def new_offering() -> Offering:
     """Return a new offering object."""
     return Offering(
-        crn=67890,
+        crn="67890",
         instructor="John Doe",
         price=123.45,
         duration="1 week",
@@ -23,9 +23,9 @@ def new_offering() -> Offering:
 class TestOffering:
     """Test properties of the Offering class."""
 
-    def test_init(self, new_offering) -> None:
+    def test_init(self, new_offering: Offering) -> None:
         """Test the constructor."""
-        assert new_offering.crn == 67890
+        assert new_offering.crn == "67890"
         assert new_offering.instructor == "John Doe"
         assert new_offering.price == 123.45
         assert new_offering.duration == "1 week"
@@ -33,7 +33,7 @@ class TestOffering:
         assert new_offering.course_id == 1
         assert new_offering.available is True
 
-    def test_str(self, new_offering) -> None:
+    def test_str(self, new_offering: Offering) -> None:
         """Test the string representation."""
         assert (
             str(new_offering) == "CRN: 67890\n"
@@ -48,23 +48,23 @@ class TestOffering:
 class TestOfferingDB:
     """Test the Offering class with a database session."""
 
-    def test_add_offering(self, new_offering, session: Session) -> None:
+    def test_add_offering(self, new_offering: Offering, session: Session) -> None:
         """Test adding an offering to the db."""
         session.add(new_offering)
         session.commit()
-        assert session.get(Offering, 67890) == new_offering
-        assert session.get(Offering, 67890).course.course_id == 1
+        assert session.get(Offering, "67890") == new_offering
+        assert session.get(Offering, "67890").course.course_id == 1
 
     def test_update_offering(self, session: Session) -> None:
         """Test updating an offering in the db."""
-        offering = session.get(Offering, 12345)
+        offering = session.get(Offering, "12345")
         offering.instructor = "Jane Doe"
         session.commit()
-        assert session.get(Offering, 12345).instructor == "Jane Doe"
+        assert session.get(Offering, "12345").instructor == "Jane Doe"
 
-    def test_invalid_crn(self, offering, session: Session) -> None:
+    def test_invalid_crn(self, offering: Offering, session: Session) -> None:
         """Test that adding an offering with an invalid value raises an exception."""
-        offering.crn = "abc"
+        offering.crn = "abcdef"
         with pytest.raises(DataError):
             try:
                 session.add(offering)

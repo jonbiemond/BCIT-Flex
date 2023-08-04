@@ -15,8 +15,8 @@ class Offering(Base):
     __tablename__ = "offering"
     __table_args__ = {"comment": "Course offerings."}
 
-    crn: Mapped[Integer] = mapped_column(
-        Integer,
+    crn: Mapped[String] = mapped_column(
+        String(5),
         primary_key=True,
         doc="Course Reference Number",
         comment="Course Reference Number, unique to offering.",

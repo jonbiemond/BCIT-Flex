@@ -97,7 +97,7 @@ def populate_db(session: Session):
         url="https://www.bcit.ca",
     )
     offering = Offering(
-        crn=12345,
+        crn="12345",
         instructor="John Doe",
         price=123.45,
         duration="1 week",
