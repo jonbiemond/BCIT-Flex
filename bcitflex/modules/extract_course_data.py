@@ -7,10 +7,10 @@ from datetime import date
 import requests
 from requests import Response
 from selectolax.parser import HTMLParser, Node
-from sqlalchemy import delete
+from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Course, Offering
+from bcitflex.model import Base, Course, Offering, Subject
 from bcitflex.modules.meeting_table import MeetingTable
 
 BASE_URL = "https://www.bcit.ca"
@@ -150,20 +150,15 @@ def parse_course_info(page: CoursePage) -> Course:
 
 def parse_response(response: Response, term: str) -> Course:
     """Parse the response and return the course."""
+
     course_page = CoursePage(response)
     course = parse_course_info(course_page)
     course.offerings = []
+
     for offering in course_page.html.css(f'div[id="{term}"] div[class="sctn"]'):
         parse_offering_node(offering, course)
+
     return course
-
-
-def available_courses(urls: list[str]) -> list[Course]:
-    base_url = "https://www.bcit.ca"
-    term = next_term(collect_response(f"{base_url}{urls[0]}"))
-    course_responses = get_page_responses([f"{base_url}{url}" for url in urls])
-    courses = [parse_response(response, term) for response in course_responses]
-    return courses
 
 
 def prep_db(session: Session):
@@ -185,3 +180,77 @@ def scrape_course_urls(bcit_active_urls_url: str) -> dict[str, list[str]]:
             subject_urls[subject_id] += [url]
 
     return subject_urls
+
+
+def get_course_urls(session: Session) -> list[str]:
+    """Get course urls for subjects in the database."""
+
+    # get subject course urls
+    subject_urls = scrape_course_urls(BASE_URL + COURSE_LIST)
+
+    # read subjects from db
+    subjects = session.scalars(select(Subject)).all()
+
+    # loop over subjects and add to list
+    urls = []
+
+    for subject in subjects:
+        if subject.subject_id in subject_urls.keys():
+            urls.extend(subject_urls[subject.subject_id])
+
+    return urls
+
+
+def extract_models(urls: list[str]) -> list[Course]:
+    """Extract data for BCIT courses and return as list of Course objects."""
+    base_url = "https://www.bcit.ca"
+    term = next_term(collect_response(f"{base_url}{urls[0]}"))
+    course_responses = get_page_responses([f"{base_url}{url}" for url in urls])
+    courses = [parse_response(response, term) for response in course_responses]
+    return courses
+
+
+def load_models(session, models: list[Base]) -> None:
+    """Commit models to database."""
+
+    for model in models:
+        session.add(model)
+
+    session.commit()
+
+
+def bcit_to_sql(db_url: str):
+    """Parse BCIT Flex course pages and load them into a SQL database."""
+
+    # check response status
+    collect_response(BASE_URL)
+
+    # begin a non-ORM transaction
+    engine = create_engine(db_url)
+    connection = engine.connect()
+    trans = connection.begin()
+
+    # bind an individual Session to the connection with "create_savepoint"
+    session = Session(bind=connection, join_transaction_mode="create_savepoint")
+
+    try:
+        # delete existing rows in tables
+        prep_db(session)
+
+        # get urls
+        urls = get_course_urls(session)
+
+        # get courses
+        courses = extract_models(urls)
+
+        # load
+        load_models(session, courses)
+
+    except Exception as exc:
+        trans.rollback()
+        connection.close()
+        raise exc
+
+    else:
+        trans.commit()
+        connection.close()

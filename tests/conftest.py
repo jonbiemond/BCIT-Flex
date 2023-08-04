@@ -19,6 +19,7 @@ from tests.db_test_utils import (
 )
 
 DB_NAME = "_test_bcitflex"
+DB_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{DB_NAME}"
 
 
 @pytest.fixture(scope="module")
@@ -33,10 +34,9 @@ def database():
 
 
 @pytest.fixture(scope="module")
-def session(database):
+def session(database) -> Session:
     # connect to the database with sqlalchemy
-    db_url = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{DB_NAME}"
-    engine = create_engine(db_url)
+    engine = create_engine(DB_URL)
 
     # run the migrations
     alembic_cfg = config.Config("tests/alembic.ini")
@@ -44,8 +44,36 @@ def session(database):
         config.command.upgrade(alembic_cfg, "head")
 
     # populate the database with test data
-    session = Session(bind=engine)
+    # session = Session(bind=engine)
+    # populate_db(session)
+
+    # begin a non-ORM transaction
+    connection = engine.connect()
+    trans = connection.begin()
+
+    # bind an individual Session to the connection with "create_savepoint"
+    session = Session(bind=connection, join_transaction_mode="create_savepoint")
+
+    # populate db
     populate_db(session)
+
+    # start a SAVEPOINT transaction
+    yield session
+
+    # rollback - everything above is rolled back including calls to commit()
+    trans.rollback()
+    connection.close()
+
+
+@pytest.fixture(scope="function")
+def empty_session(database) -> Session:
+    # connect to the database with sqlalchemy
+    engine = create_engine(DB_URL)
+
+    # run the migrations
+    alembic_cfg = config.Config("tests/alembic.ini")
+    if not check_current_head(alembic_cfg, engine):
+        config.command.upgrade(alembic_cfg, "head")
 
     # begin a non-ORM transaction
     connection = engine.connect()
