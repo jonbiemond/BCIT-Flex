@@ -1,13 +1,20 @@
 """Logic to parse course data."""
+import re
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 
 import requests
 from requests import Response
 from selectolax.parser import HTMLParser, Node
+from sqlalchemy import delete
+from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering
 from bcitflex.modules.meeting_table import MeetingTable
+
+BASE_URL = "https://www.bcit.ca"
+COURSE_LIST = "/wp-json/bcit/ptscc/v1/list-active-urls"
 
 
 class CoursePage:
@@ -53,7 +60,7 @@ def collect_response(url: str) -> Response:
         return response
 
 
-def get_course_responses(urls: list[str]) -> list[Response]:
+def get_page_responses(urls: list[str]) -> list[Response]:
     """Get the responses from the given course URLs."""
 
     with ThreadPoolExecutor() as executor:
@@ -63,7 +70,7 @@ def get_course_responses(urls: list[str]) -> list[Response]:
     return responses
 
 
-def parse_offering_node(node: Node) -> Offering:
+def parse_offering_node(node: Node, course: Course) -> Offering:
     """Parse the offering node and return the offering."""
 
     # TODO: Add crn
@@ -116,6 +123,7 @@ def parse_offering_node(node: Node) -> Offering:
         price=price,
         duration=duration,
         status=status,
+        course=course,
     )
 
 
@@ -142,25 +150,38 @@ def parse_course_info(page: CoursePage) -> Course:
 
 def parse_response(response: Response, term: str) -> Course:
     """Parse the response and return the course."""
-
     course_page = CoursePage(response)
-
     course = parse_course_info(course_page)
-
     course.offerings = []
     for offering in course_page.html.css(f'div[id="{term}"] div[class="sctn"]'):
-        course.offerings.append(parse_offering_node(offering))
-
+        parse_offering_node(offering, course)
     return course
 
 
 def available_courses(urls: list[str]) -> list[Course]:
     base_url = "https://www.bcit.ca"
-
     term = next_term(collect_response(f"{base_url}{urls[0]}"))
-
-    course_responses = get_course_responses([f"{base_url}{url}" for url in urls])
-
+    course_responses = get_page_responses([f"{base_url}{url}" for url in urls])
     courses = [parse_response(response, term) for response in course_responses]
-
     return courses
+
+
+def prep_db(session: Session):
+    """Remove rows from tables in the database."""
+    session.execute(delete(Course))
+
+
+def scrape_course_urls(bcit_active_urls_url: str) -> dict[str, list[str]]:
+    """Return list of urls for each subject_id key."""
+
+    course_url_list = collect_response(bcit_active_urls_url)
+    subject_urls = defaultdict(list)
+
+    for url in course_url_list.json()["data"]:
+        pattern = re.compile(r"([a-z]{4})-\d{4}/$")
+        match = pattern.search(url)
+        if match:
+            subject_id = match.group(1).upper()
+            subject_urls[subject_id] += [url]
+
+    return subject_urls
