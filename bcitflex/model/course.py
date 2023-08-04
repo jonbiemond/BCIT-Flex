@@ -16,6 +16,8 @@ class Course(Base):
     __tablename__ = "course"
     __table_args__ = {"comment": "Courses."}
 
+    # TODO: add unique constraint to subject_id and code
+
     course_id: Mapped[Integer] = mapped_column(
         Integer, primary_key=True, doc="Course ID", comment="Serial course ID."
     )

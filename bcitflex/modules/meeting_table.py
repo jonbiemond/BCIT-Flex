@@ -10,6 +10,7 @@ class EmptyMeetingError(Exception):
         super().__init__("Offering has no meetings.")
 
 
+# TODO: convert to model
 class MeetingTable:
     def __init__(self):
         self._headers = ["Dates", "Days", "Times", "Locations"]
