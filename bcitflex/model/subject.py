@@ -1,4 +1,6 @@
 """Subject model declaration."""
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -32,3 +34,9 @@ class Subject(Base):
 
     def __repr__(self):
         return f"Subject(subject={self.subject_id})"
+
+    def get_course(self, course_code: str) -> Course:
+        """Get a course by the course code."""
+        return next(
+            (course for course in self.courses if course.code == course_code), None
+        )
