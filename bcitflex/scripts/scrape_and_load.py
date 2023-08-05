@@ -11,7 +11,6 @@ from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Base, Course, Offering, Subject
-from bcitflex.modules.meeting_table import MeetingTable
 
 BASE_URL = "https://www.bcit.ca"
 COURSE_LIST = "/wp-json/bcit/ptscc/v1/list-active-urls"
@@ -95,20 +94,11 @@ def parse_offering_node(node: Node, course: Course) -> Offering:
     # TODO: add meeting times as text field to Offering
     no_meeting_node = node.css_first('div[class="sctn-no-meets"] p')
 
-    meeting_times = MeetingTable()
+    meeting_times = []
     if no_meeting_node is None:
         for meeting_time in node.css('div[class="sctn-meets"]'):
-            for row in meeting_time.css("tr")[1:]:
-                row_elements = list(
-                    filter(
-                        None,
-                        [element.strip() for element in row.text().split("\n")],
-                    )
-                )
-                meeting_times.add_meeting(*row_elements)
-
-    else:
-        meeting_times.set_status(no_meeting_node.text(False))
+            for row in meeting_time.css("tr"):
+                meeting_times.append(row.text(separator=" ", strip=True).strip())
 
     # get status
     status_node = node.css_first('p[class="sctn-status-lbl"]')
@@ -124,6 +114,7 @@ def parse_offering_node(node: Node, course: Course) -> Offering:
         instructor=instructor,
         price=price,
         duration=duration,
+        meeting_time="\n ".join(meeting_times),
         status=status,
         course=course,
     )

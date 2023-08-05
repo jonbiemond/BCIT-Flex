@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import NUMERIC, Integer, String
+from sqlalchemy.types import NUMERIC, Float, Integer, String, Text
 
 from . import Base
 
@@ -24,9 +24,12 @@ class Offering(Base):
     instructor: Mapped[String] = mapped_column(
         String(30), doc="Instructor", comment="Instructor."
     )
-    price: Mapped[float] = mapped_column(NUMERIC, doc="Price", comment="Price.")
+    price: Mapped[Float] = mapped_column(NUMERIC, doc="Price", comment="Price.")
     duration: Mapped[String] = mapped_column(
         String(30), doc="Duration Weeks", comment="Duration in weeks."
+    )
+    meeting_time: Mapped[Text] = mapped_column(
+        Text, doc="Meeting time.", comment="Offering meeting time."
     )
     status: Mapped[String] = mapped_column(
         String(30), doc="Status", comment="Status of course offering."

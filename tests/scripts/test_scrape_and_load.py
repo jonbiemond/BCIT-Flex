@@ -19,6 +19,7 @@ from bcitflex.scripts.scrape_and_load import (
     prep_db,
     scrape_course_urls,
 )
+from tests import dbtest
 from tests.conftest import DB_URL
 
 
@@ -48,6 +49,7 @@ def new_offering() -> Offering:
         instructor="John Doe",
         price=123.45,
         duration="1 week",
+        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
         status="Open",
         course_id=2,
     )
@@ -82,6 +84,7 @@ def test_parse_course_info(course_page: CoursePage) -> None:
     assert course.credits > 0
 
 
+@dbtest
 def test_prep_db(session: Session) -> None:
     """Test if prep_db deletes data in the database."""
     prep_db(session)
@@ -103,6 +106,7 @@ def test_scrape_course_urls(monkeypatch) -> None:
     assert len(result["COMP"]) > 1
 
 
+@dbtest
 def test_get_course_urls(mocker, course_page: CoursePage, session: Session) -> None:
     """Test getting list of course urls."""
 
@@ -131,6 +135,7 @@ def test_extract(monkeypatch, course_page: CoursePage) -> None:
     assert course.subject_id == "COMP"
 
 
+@dbtest
 def test_load_models(empty_session: Session, new_course: Course) -> None:
     """Test loading models to the db."""
     # TODO: replace session with session for empty db
@@ -139,6 +144,7 @@ def test_load_models(empty_session: Session, new_course: Course) -> None:
     assert empty_session.get(Course, 2).course_id == 2
 
 
+@dbtest
 def test_bcit_to_sql(
     mocker, course_page: CoursePage, new_course: Course, empty_session: Session
 ) -> None:
@@ -166,6 +172,7 @@ def test_bcit_to_sql(
     assert offerings[0].price > 0
 
 
+@dbtest
 def test_bcit_to_sql_rollback(mocker, session: Session) -> None:
     # mock exception
     mocker.patch(

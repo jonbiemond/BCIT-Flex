@@ -39,7 +39,7 @@ class Course(Base):
         doc="Prerequisites",
         comment="Prerequisites as strings.",
     )
-    credits: Mapped[float] = mapped_column(
+    credits: Mapped[Float] = mapped_column(
         Float(2),
         doc="Credits",
         comment="Credit hours.",
