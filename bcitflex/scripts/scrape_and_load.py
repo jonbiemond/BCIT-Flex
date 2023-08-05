@@ -91,7 +91,6 @@ def parse_offering_node(node: Node, course: Course) -> Offering:
     duration = node.css_first('li[class="sctn-block-list-item duration"]').text(False)
 
     # get meeting times
-    # TODO: add meeting times as text field to Offering
     no_meeting_node = node.css_first('div[class="sctn-no-meets"] p')
 
     meeting_times = []

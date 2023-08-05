@@ -1,22 +1,16 @@
-# TODO: setup with model
+"""Console interface and GUI to get data from the db."""
 import re
 
 import PySimpleGUI as sg
-from model import Course
-from modules.subject import Subject
+from sqlalchemy.orm import Session
+
+from bcitflex.model import Course, Subject
+from bcitflex.model.db_config import session
 
 
-def valid_subject() -> str:
-    subject = input("Enter a subject: ").strip().lower()
-
-    while subject not in open("../resources/subjects.txt").read().splitlines():
-        subject = (
-            input(f'"{subject}" is not a valid subject, please try again ')
-            .strip()
-            .lower()
-        )
-
-    return subject
+def valid_subject(session: Session, subject_id: str) -> bool:
+    """Check subject exists in database."""
+    return session.get(Subject, subject_id) is not None
 
 
 def get_valid_course(subject: Subject) -> Course:
@@ -52,7 +46,6 @@ def set_theme(name: str = "Violet"):
 
 
 def simple_gui():
-    subjects = {}
     courses = []
 
     set_theme()
@@ -74,12 +67,7 @@ def simple_gui():
         ],
         [sg.Push(), sg.Text("Course"), dropdown],
         [sg.Text(size=(19, 1), key="-OUT-")],
-        [
-            sg.Button(
-                "Save", tooltip="Save all courses from loaded subject to a text file."
-            ),
-            sg.Cancel(),
-        ],
+        [sg.Cancel()],
     ]
 
     window = sg.Window("BCIT Course Finder", layout, icon=r"images\search_page.ico")
@@ -89,37 +77,26 @@ def simple_gui():
         if event in (sg.WIN_CLOSED, "Cancel"):
             break
 
-        if event in ["Load", "Save"]:
-            subject_code = values["-IN-"]
-            if subject_code:
-                if (
-                    subject_code
-                    not in open("../resources/subjects.txt").read().splitlines()
-                ):
-                    sg.popup(f'"{subject_code}" is not a valid subject.', title="Error")
+        if event == "Load":
+            subject_id = values["-IN-"].upper()
+            if subject_id:
+                if not valid_subject(session, subject_id):
+                    sg.popup(f'"{subject_id}" is not a valid subject.', title="Error")
                     continue
 
-                window["-OUT-"].update(f"Loading {subject_code.upper()} courses...")
+                window["-OUT-"].update(f"Loading {subject_id} courses...")
                 window.refresh()
 
-                if subject_code in subjects:
-                    subject = subjects[subject_code]
-                else:
-                    subject = Subject(subject_code)
-                    subjects[subject_code] = subject
+                subject = session.get(Subject, subject_id)
 
-                window["-OUT-"].update(f"{subject_code.upper()} courses loaded.")
+                window["-OUT-"].update(f"{subject_id} courses loaded.")
                 courses = [
-                    f"{subject_code.upper()} {course.code()} ({course.offering_count(True)}/{course.offering_count()})"
-                    for course in subject.courses()
+                    f"{subject_id} {course.code} ({course.offering_count(True)}/{course.offering_count()})"
+                    for course in subject.courses
                 ]
                 courses.sort()
                 window["-COMBO-"].update(values=courses)
                 window.refresh()
-
-                if event == "Save":
-                    filename = subject.to_file()
-                    sg.popup(f'Saved courses to "{filename}"', title="Success")
 
             else:
                 sg.popup("Please enter a subject.", title="Error")
@@ -127,12 +104,12 @@ def simple_gui():
         if event == "-COMBO-":
             course_code = values["-COMBO-"].split(" ")[1]
             if course_code:
-                subject_code = values["-IN-"]
-                subject = subjects[subject_code]
+                subject_id = values["-IN-"].upper()
+                subject = session.get(Subject, subject_id)
                 course = subject.get_course(course_code)
                 sg.popup_scrolled(
                     course.to_string(),
-                    title=f"{subject_code.upper()} {course.code()}",
+                    title=f"{subject_id.upper()} {course.code}",
                     font="Courier 10",
                     size=(80, 30),
                 )
@@ -141,10 +118,11 @@ def simple_gui():
 
 
 def console_input():
+    raise NotImplementedError
     subject_name = valid_subject()
     subject = Subject(subject_name)
     course = get_valid_course(subject)
-    print(course.to_string())
+    print(course)
 
 
 if __name__ == "__main__":
