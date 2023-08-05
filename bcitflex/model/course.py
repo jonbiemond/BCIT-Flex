@@ -87,3 +87,9 @@ class Course(Base):
     def is_available(self) -> bool:
         """Return True if at least one offering is available."""
         return self.offering_count(available_only=True) > 0
+
+    def to_string(self) -> str:
+        """Return string represenation of the course and it's offerings."""
+        strings = [self.__str__()]
+        strings += [offering.__str__() for offering in self.offerings]
+        return "\n\n".join(strings)
