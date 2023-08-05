@@ -70,6 +70,10 @@ class TestCourse:
         """Test is_available method."""
         assert new_course.is_available
 
+    def test_to_string(self, new_course: Course) -> None:
+        """Lazy test for to_string method."""
+        assert len(new_course.to_string()) > 50
+
 
 @dbtest
 class TestCourseDB:
