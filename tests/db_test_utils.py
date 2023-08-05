@@ -101,6 +101,7 @@ def populate_db(session: Session):
         instructor="John Doe",
         price=123.45,
         duration="1 week",
+        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
         status="Open",
         course_id=1,
     )

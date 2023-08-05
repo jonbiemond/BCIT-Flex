@@ -15,6 +15,7 @@ def new_offering() -> Offering:
         instructor="John Doe",
         price=123.45,
         duration="1 week",
+        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
         status="Open",
         course_id=1,
     )
@@ -29,6 +30,10 @@ class TestOffering:
         assert new_offering.instructor == "John Doe"
         assert new_offering.price == 123.45
         assert new_offering.duration == "1 week"
+        assert (
+            new_offering.meeting_time
+            == "Day   Time    Location\nWed    16:00 - 19:00 DTC"
+        )
         assert new_offering.status == "Open"
         assert new_offering.course_id == 1
         assert new_offering.available is True
