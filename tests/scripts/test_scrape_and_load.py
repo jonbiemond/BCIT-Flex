@@ -71,9 +71,9 @@ def new_course(new_subject: Subject, new_offering: Offering) -> Course:
     )
 
 
-def test_parse_offering_node(offering_node: Node, course: Course) -> None:
+def test_parse_offering_node(offering_node: Node, new_course: Course) -> None:
     """Test the parse offering node function."""
-    offering = parse_offering_node(offering_node, course)
+    offering = parse_offering_node(offering_node, new_course)
     assert offering.price > 0
     assert offering.crn == "38186"
 
@@ -138,7 +138,6 @@ def test_extract(monkeypatch, course_page: CoursePage) -> None:
 @dbtest
 def test_load_models(empty_session: Session, new_course: Course) -> None:
     """Test loading models to the db."""
-    # TODO: replace session with session for empty db
     assert empty_session.get(Course, 2) is None
     load_models(empty_session, [new_course])
     assert empty_session.get(Course, 2).course_id == 2
