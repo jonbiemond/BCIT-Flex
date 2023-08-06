@@ -36,39 +36,15 @@ def offering_node(course_page: CoursePage) -> Node:
 
 
 @pytest.fixture
-def new_subject() -> Subject:
-    """Return a new subject object."""
-    return Subject(subject_id="MATH", name="Mathematics")
-
-
-@pytest.fixture
-def new_offering() -> Offering:
-    """Return a new offering object."""
-    return Offering(
-        crn="67890",
-        instructor="John Doe",
-        price=123.45,
-        duration="1 week",
-        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
-        status="Open",
-        course_id=2,
-    )
-
-
-@pytest.fixture
-def new_course(new_subject: Subject, new_offering: Offering) -> Course:
+def new_course(
+    new_course: Course, new_subject: Subject, new_offering: Offering
+) -> Course:
     """Return a new course object."""
-    return Course(
-        course_id=2,
-        subject_id="MATH",
-        code="1234",
-        name="Test Course",
-        prerequisites="MATH 1000",
-        credits=3.0,
-        url="https://www.bcit.ca",
-        subject=new_subject,
-        offerings=[new_offering],
-    )
+    new_offering.course_id = 2
+    new_course.subject_id = "MATH"
+    new_course.subject = new_subject
+    new_course.offerings = [new_offering]
+    return new_course
 
 
 def test_parse_offering_node(offering_node: Node, new_course: Course) -> None:

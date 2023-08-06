@@ -1,15 +1,8 @@
 """Tests for the subject model."""
-import pytest
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering, Subject
 from tests import dbtest
-
-
-@pytest.fixture
-def new_subject() -> Subject:
-    """Return a new subject object."""
-    return Subject(subject_id="MATH", name="Mathematics")
 
 
 class TestSubject:
