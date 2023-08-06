@@ -8,7 +8,7 @@ from sqlalchemy.types import NUMERIC, Float, Integer, String, Text
 from . import Base
 
 if TYPE_CHECKING:
-    from . import Course
+    from . import Course, Meeting
 
 
 class Offering(Base):
@@ -39,6 +39,8 @@ class Offering(Base):
     )
 
     course: Mapped["Course"] = relationship(back_populates="offerings")
+
+    meetings: Mapped[list["Meeting"]] = relationship(back_populates="offering")
 
     def __repr__(self):
         return f"Offering(course={self.course.fullcode if self.course else None}, crn={self.crn}, instructor={self.instructor},  status={self.status})"
