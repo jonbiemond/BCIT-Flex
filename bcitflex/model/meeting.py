@@ -1,10 +1,10 @@
 """Offering Meeting declaration."""
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func, select
 from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.engine.default import DefaultExecutionContext
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.schema import Sequence
 from sqlalchemy.types import Date, Integer, String, Time
 
 from . import Base
@@ -12,7 +12,12 @@ from . import Base
 if TYPE_CHECKING:
     from . import Offering
 
-meeting_id_seq = Sequence("meeting_id_sq")
+
+def nssequence(context: DefaultExecutionContext):
+    crn = context.get_current_parameters()["crn"]
+    stmt = select(func.max(Meeting.meeting_id)).where(Meeting.crn == crn)
+    max_id = context.connection.scalar(stmt)
+    return max_id + 1 if max_id else 1
 
 
 class Meeting(Base):
@@ -22,17 +27,20 @@ class Meeting(Base):
     meeting_id: Mapped[Integer] = mapped_column(
         Integer,
         primary_key=True,
-        server_default=meeting_id_seq.next_value(),
+        server_default=None,
         doc="Meeting ID",
-        comment="Serial meeting ID.",
+        comment="Serial meeting ID partitioned within crn.",
+        default=nssequence,
     )
-    crn: Mapped[String] = mapped_column(ForeignKey("offering.crn", ondelete="CASCADE"))
+    crn: Mapped[String] = mapped_column(
+        ForeignKey("offering.crn", ondelete="CASCADE"), primary_key=True
+    )
     start_date: Mapped[Date] = mapped_column(
         Date, doc="Start date", comment="Start date."
     )
     end_date: Mapped[Date] = mapped_column(Date, doc="End date", comment="End date.")
     days: Mapped[ARRAY | None] = mapped_column(
-        ARRAY(String),
+        ARRAY(String(3)),
         doc="Days of the week",
         comment="Days of the week offering meets on.",
     )
@@ -52,4 +60,10 @@ class Meeting(Base):
     offering: Mapped["Offering"] = relationship(back_populates="meetings")
 
     def __repr__(self):
-        return f"Meeting(id={self.meeting_id})"
+        return f"Meeting(id={self.meeting_id}, crn={self.crn})"
+
+    def __setattr__(self, key, value):
+        """Set meeting_id if not set."""
+        if key == "offering" and self.meeting_id is None:
+            self.meeting_id = value.next_meeting_id()
+        super().__setattr__(key, value)

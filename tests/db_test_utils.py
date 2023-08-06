@@ -2,6 +2,7 @@
 
 Source: pgcli https://github.com/dbcli/pgcli
 """
+import datetime
 from os import getenv
 
 import psycopg2
@@ -11,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from alembic import config, script
 from alembic.runtime import migration
-from bcitflex.model import Base, Course, Offering, Subject
+from bcitflex.model import Base, Course, Meeting, Offering, Subject
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
 POSTGRES_HOST = getenv("PGHOST", "localhost")
@@ -101,11 +102,21 @@ def populate_db(session: Session):
         instructor="John Doe",
         price=123.45,
         duration="1 week",
-        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
         status="Open",
         course_id=1,
+    )
+    meeting = Meeting(
+        meeting_id=1,
+        crn="12345",
+        start_date=datetime.date(2023, 9, 13),
+        end_date=datetime.date(2023, 11, 29),
+        days=["Wed"],
+        start_time=datetime.time(18),
+        end_time=datetime.time(21),
+        campus="Online",
     )
     session.add(subject)
     session.add(course)
     session.add(offering)
+    session.add(meeting)
     session.commit()

@@ -148,7 +148,6 @@ def new_offering() -> Offering:
         instructor="John Doe",
         price=123.45,
         duration="1 week",
-        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
         status="Open",
         course_id=1,
     )
@@ -158,7 +157,7 @@ def new_offering() -> Offering:
 def new_meeting() -> Meeting:
     """Return a new meeting object."""
     return Meeting(
-        meeting_id=1,
+        crn="12345",
         start_date=datetime.date(2023, 9, 13),
         end_date=datetime.date(2023, 11, 29),
         days=["Wed"],
