@@ -2,9 +2,152 @@
 
 
 
-## v1.0.0 (2023-08-05)
+## v2.0.0 (2023-08-05)
+
+### Chore
+
+* chore: update poetry.lock ([`eb36983`](https://github.com/jonbiemond/BCIT-Flex/commit/eb369836952900b472e2fa244155b20ce575a623))
+
+* chore: update README.md format ([`6a9aa8d`](https://github.com/jonbiemond/BCIT-Flex/commit/6a9aa8d9e151a944ffb21d701f5249e7eb2fad1e))
+
+### Documentation
+
+* docs: add pytest-cov to CONTRIBUTING.md ([`eb77a7d`](https://github.com/jonbiemond/BCIT-Flex/commit/eb77a7d8fc21ebe0be6394f4d24570b9280f8b0b))
+
+### Feature
+
+* feat(gui): update simple_gui to work with database ([`8883bbe`](https://github.com/jonbiemond/BCIT-Flex/commit/8883bbe08471f138535f8b300f0dda95775cb50a))
+
+* feat: add populate_subject.sql
+
+Add SQL script to easily populate the subject table. ([`de27efd`](https://github.com/jonbiemond/BCIT-Flex/commit/de27efdc25e43ec18ee68683d481e3e825dfb6e9))
+
+* feat(model): add to_string to Course ([`4a1672b`](https://github.com/jonbiemond/BCIT-Flex/commit/4a1672b76999c451d90604087d217f35c5fbbaea))
+
+* feat(model): add get_course to Subject ([`6b9b8e4`](https://github.com/jonbiemond/BCIT-Flex/commit/6b9b8e4f1eef27264685a74a75ca3cc93b56a8a8))
+
+* feat(model): add meeting_time to Offering ([`c4f71ca`](https://github.com/jonbiemond/BCIT-Flex/commit/c4f71ca2ae42418988b1114e5906c491a0c88437))
+
+* feat(model): get CRN in parse_offering_node
+
+Alter offering.crn to string and drop sequence.
+Closes #2 ([`55a429e`](https://github.com/jonbiemond/BCIT-Flex/commit/55a429e74c3abc76fdb7daf271ba70067128180b))
+
+* feat: add bcit_to_sql
+
+Add a webscraping and loading script with tests.
+- Add get_course_urls()
+- Add extract_models()
+- Add load_models()
+- Add bcit_to_sql() ([`5d3b651`](https://github.com/jonbiemond/BCIT-Flex/commit/5d3b651a5442e8205f0556fbe4ba7a9d491a6991))
+
+* feat: add prep_db and scrape_course_urls
+
+- Add course_list_response.pkl to test data. ([`d8ca836`](https://github.com/jonbiemond/BCIT-Flex/commit/d8ca8369c1d560f8b372ee743cd6301fbdce290e))
+
+* feat: delete children passively
+
+Let the database handle cascades for unloaded children. ([`e8e2601`](https://github.com/jonbiemond/BCIT-Flex/commit/e8e26015c43b2b4ddc71af7b082d317aa2802c43))
+
+* feat: add on delete cascade to fk constraints
+
+Replace python types with SQLAlchemy types in models. ([`7342927`](https://github.com/jonbiemond/BCIT-Flex/commit/7342927ad58ab3f59aab47809b75e7ba2c44f80e))
+
+* feat: add Subject model ([`38a725c`](https://github.com/jonbiemond/BCIT-Flex/commit/38a725ce9971dbf8e8c40f407e8991c924242a7d))
+
+* feat: add offering_count and is_available ([`caf8e0e`](https://github.com/jonbiemond/BCIT-Flex/commit/caf8e0edf0ee2cfba700832e1468b635487d89e3))
+
+* feat: factor out course parsing logic
+
+Abstract course parsing logic into separate function.
+Add CoursePage class to couple url to HTMLParser. ([`5e1aae5`](https://github.com/jonbiemond/BCIT-Flex/commit/5e1aae5dd7933a8594aaf3e2f080241fbda7f648))
+
+* feat: add Course model
+
+Declare, add migration and tests for the Course model. ([`c974126`](https://github.com/jonbiemond/BCIT-Flex/commit/c974126869830b562839401c50fa77d0ffe07770))
+
+* feat: add Offering model
+
+- Refactor MeetingTable into a separate file, at least temporarily,
+to maker refactoring Offering easier.
+- Declare the Offering model.
+- Add tests for Offering and remove old offering tests.
+- Add migration for Offering model.
+- Update .pre-commit-config.yaml ruff hook version to match project dependency.
+- Add RUF012 to ruff ignore, because it is violated by SQLAlchemy __table_args__. ([`ae55ebd`](https://github.com/jonbiemond/BCIT-Flex/commit/ae55ebd6ebfe80672151213abfffe5a89dccc853))
+
+* feat: alembic init
+
+Initialize alembic for database migrations and
+  update dependencies. ([`0c13528`](https://github.com/jonbiemond/BCIT-Flex/commit/0c135288f01ade95ec40f07a1d29cf7968aec755))
+
+### Fix
+
+* fix(db): alter course field types
+
+Alter course.url to VARCHAR(120) to allow for longer URLs.
+Alter course.prerequisites to TEXT. ([`80bd5f8`](https://github.com/jonbiemond/BCIT-Flex/commit/80bd5f8e2445f7e52d7ef0deff652e2097345293))
+
+* fix: add new_offering fixture to test_course.py
+
+The new_course fixture, of course_id 2, was assigned
+the conftest offering fixture of course_id 1. ([`87a20a7`](https://github.com/jonbiemond/BCIT-Flex/commit/87a20a7dcdceca2187aa7c9873cb0bf052d855b4))
+
+### Refactor
+
+* refactor: drop modules.subject.py
+
+- Add TODO comments ([`36414bb`](https://github.com/jonbiemond/BCIT-Flex/commit/36414bbf0fe42c79d7f9b797318b3ad113b73e16))
+
+* refactor: extract_course_data.py to scrape_and_load.py ([`de08363`](https://github.com/jonbiemond/BCIT-Flex/commit/de08363dc7a9b6e7742e04bb3ee62bac9a10123c))
+
+* refactor: chunk out course-parsing logic into smaller units
+
+Maintaining and testing is easier if the logic is separated by object. ([`595471b`](https://github.com/jonbiemond/BCIT-Flex/commit/595471ba1b9566b007974ebac2c70331fcf5e5f5))
+
+### Test
+
+* test: add dbtest decorator ([`f2f5357`](https://github.com/jonbiemond/BCIT-Flex/commit/f2f53571e3e2c7cc5b3036c80314c80274da6448))
+
+* test: add string rep test ([`714ad56`](https://github.com/jonbiemond/BCIT-Flex/commit/714ad5622b4d80c537c85b9153518de13bde62c1))
+
+* test: pre-populate test database
+
+Populate the test database with test data during setup.
+This way, tests can be more independent and there&#39;s less redundancy. ([`356cc08`](https://github.com/jonbiemond/BCIT-Flex/commit/356cc080add407886a629b20fe164a110ed94088))
+
+* test: configure test database
+
+Tests should be self-contained.
+Run tests in a separate test database.
+Configure alembic to run setup test db with migrations. ([`26e3b17`](https://github.com/jonbiemond/BCIT-Flex/commit/26e3b17c10df6c829f858e26b0033cb5d967d9f0))
+
+* test: add offering db transaction tests ([`c72629e`](https://github.com/jonbiemond/BCIT-Flex/commit/c72629e3d165fc2328006c67947baf800b57f660))
+
+* test: add test for parse_offering_node()
+
+- Add load_test_data.py script for extracting and loading test_data.
+- Add Response test data. ([`189e5b4`](https://github.com/jonbiemond/BCIT-Flex/commit/189e5b41860bbe1aa5ebb25c110ae50a25c8d410))
+
+### Unknown
+
+* tests: clean up redundant tests ([`cc6fed4`](https://github.com/jonbiemond/BCIT-Flex/commit/cc6fed476283bc1032696f01b3a7658d3157113e))
+
+* tests: add @dbtest mark to db dependant texts
+
+Add @dbtest decorator for tests that connect to the database.
+Use non-db fixture in test_parse_offering_node. ([`1432850`](https://github.com/jonbiemond/BCIT-Flex/commit/14328500c1667264613fc53abdbcbd0a8101f0b6))
+
+* lint: add black hook to alembic.ini
+
+- Add alembic hook to .pre-commit-config.yaml ([`23ed218`](https://github.com/jonbiemond/BCIT-Flex/commit/23ed21856533c478bad7295b11e5699b688c1d08))
+
+
+## v1.0.0 (2023-08-06)
 
 ### Ci
+
+* ci: disable upload to release for semantic-release ([`796c101`](https://github.com/jonbiemond/BCIT-Flex/commit/796c101c0b955afe4d8be0f99ada7f117cbdec05))
 
 * ci: update release commit format ([`79a6d08`](https://github.com/jonbiemond/BCIT-Flex/commit/79a6d08416394280c1994acbc7646fcb0be08048))
 
@@ -23,6 +166,12 @@ Setup and config continuous integration. ([`28ede72`](https://github.com/jonbiem
 ### Refactor
 
 * refactor: separate course parsing logic into bcit_courses.py ([`b8407dc`](https://github.com/jonbiemond/BCIT-Flex/commit/b8407dc7bac65e1d6c22d97841ca9da6fe282d95))
+
+### Unknown
+
+* v1.0.0
+
+Manual release by Jonathan Biemond. ([`ea9bd12`](https://github.com/jonbiemond/BCIT-Flex/commit/ea9bd12bda2789a7aa33f2fef99616ec78828dec))
 
 
 ## v0.1.1 (2023-07-23)
