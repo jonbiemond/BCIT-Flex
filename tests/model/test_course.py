@@ -7,32 +7,11 @@ from tests import clone_model, dbtest
 
 
 @pytest.fixture
-def new_offering() -> Offering:
-    """Return a new offering object."""
-    return Offering(
-        crn="67890",
-        instructor="John Doe",
-        price=123.45,
-        duration="1 week",
-        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
-        status="Open",
-        course_id=2,
-    )
-
-
-@pytest.fixture
-def new_course(new_offering) -> Course:
+def new_course(new_offering: Offering, new_course: Course) -> Course:
     """Return a new course object."""
-    return Course(
-        course_id=2,
-        subject_id="COMP",
-        code="1234",
-        name="Test Course",
-        prerequisites="COMP 1000",
-        credits=3.0,
-        url="https://www.bcit.ca",
-        offerings=[new_offering],
-    )
+    new_offering.course_id = 2
+    new_course.offerings = [new_offering]
+    return new_course
 
 
 class TestCourse:

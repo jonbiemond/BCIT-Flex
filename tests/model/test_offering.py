@@ -7,20 +7,6 @@ from bcitflex.model import Offering
 from tests import dbtest
 
 
-@pytest.fixture
-def new_offering() -> Offering:
-    """Return a new offering object."""
-    return Offering(
-        crn="67890",
-        instructor="John Doe",
-        price=123.45,
-        duration="1 week",
-        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
-        status="Open",
-        course_id=1,
-    )
-
-
 class TestOffering:
     """Test properties of the Offering class."""
 

@@ -65,6 +65,7 @@ def session(database) -> Session:
     connection.close()
 
 
+# TODO: make session fixture dynamic and remove this one
 @pytest.fixture(scope="function")
 def empty_session(database) -> Session:
     # connect to the database with sqlalchemy
@@ -116,3 +117,37 @@ def offering(session) -> Type[Offering]:
     if offering is None:
         raise ValueError("Offering not found in database.")
     return offering
+
+
+@pytest.fixture
+def new_subject() -> Subject:
+    """Return a new subject object."""
+    return Subject(subject_id="MATH", name="Mathematics")
+
+
+@pytest.fixture
+def new_course() -> Course:
+    """Return a new course object."""
+    return Course(
+        course_id=2,
+        subject_id="COMP",
+        code="1234",
+        name="Test Course",
+        prerequisites="COMP 1000",
+        credits=3.0,
+        url="https://www.bcit.ca",
+    )
+
+
+@pytest.fixture
+def new_offering() -> Offering:
+    """Return a new offering object."""
+    return Offering(
+        crn="67890",
+        instructor="John Doe",
+        price=123.45,
+        duration="1 week",
+        meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
+        status="Open",
+        course_id=1,
+    )
