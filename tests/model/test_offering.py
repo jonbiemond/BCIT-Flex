@@ -3,7 +3,7 @@ import pytest
 from sqlalchemy.exc import DataError
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Offering
+from bcitflex.model import Meeting, Offering
 from tests import dbtest
 
 
@@ -16,10 +16,6 @@ class TestOffering:
         assert new_offering.instructor == "John Doe"
         assert new_offering.price == 123.45
         assert new_offering.duration == "1 week"
-        assert (
-            new_offering.meeting_time
-            == "Day   Time    Location\nWed    16:00 - 19:00 DTC"
-        )
         assert new_offering.status == "Open"
         assert new_offering.course_id == 1
         assert new_offering.available is True
@@ -33,6 +29,25 @@ class TestOffering:
             " Duration: 1 week\n"
             " Status: Open\n"
         )
+
+    def test_next_meeting_id(self, new_offering: Offering) -> None:
+        """Test that the next meeting id is correct."""
+        assert new_offering.next_meeting_id() == 1
+
+    def test_next_meeting_id_with_meetings(
+        self, new_offering: Offering, new_meeting: Meeting
+    ) -> None:
+        """Test that the next meeting id is correct."""
+        new_meeting.offering = new_offering
+        assert new_offering.next_meeting_id() == 2
+
+    def test_next_meeting_id_raises_error(
+        self, new_offering: Offering, new_meeting: Meeting
+    ) -> None:
+        """Test that the next meeting id raises an error."""
+        new_offering.meetings.append(new_meeting)
+        with pytest.raises(ValueError):
+            new_offering.next_meeting_id()
 
 
 @dbtest

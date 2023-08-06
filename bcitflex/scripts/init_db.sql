@@ -11,4 +11,3 @@ CREATE DATABASE bcitflex;
 CREATE ROLE python_app WITH LOGIN PASSWORD <'password'>;
 \c bcitflex
 GRANT ALL ON SCHEMA public TO python_app;
-CREATE EXTENSION hstore;

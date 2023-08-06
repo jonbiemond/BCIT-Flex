@@ -113,7 +113,6 @@ def parse_offering_node(node: Node, course: Course) -> Offering:
         instructor=instructor,
         price=price,
         duration=duration,
-        meeting_time="\n ".join(meeting_times),
         status=status,
         course=course,
     )
