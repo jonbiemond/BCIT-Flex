@@ -24,9 +24,36 @@ The information is
 - Clone the repository
 - Install the requirements `poetry install`
 
+### DB Setup
+
+PostgreSQL is used as the DBMS.
+To create and initialize the database:
+
+1. Create a database named `bcitflex` from psql:
+```bash
+\i bcitflex/scripts/init_db.sql
+```
+2. Add user credentials to [.pgpass file](https://www.postgresql.org/docs/current/libpq-pgpass.html)
+```text
+*:*:*:python_app:<password>
+```
+3. Build schema using alembic:
+```bash
+poetry run alembic upgrade head
+```
+4. Populate the database with subjects from psql:
+```bash
+\i bcitflex/scripts/populate_subject.sql
+```
+
 ## Usage
 
-1. Run `python interface.py`
+To run the webscraper and populate the database with the latest course offerings:
+```bash
+poetry run python bcitflex/scripts/scrape_and_load.py
+```
+
+1. Run `poetry run python interface.py`
 2. Enter and load a subject.
 
 ![An example of the GUI, showing a small window with an input box titled "Subject" with the text "MATH" inputted,
@@ -42,8 +69,6 @@ But now showing a full drop down menu titled "Course" with the text 2011 (2) sel
 4. Course offerings pop up in a new window.
 
 ![A popup window showing the course offerings for MATH 2011.](https://i.ibb.co/ZM0c5xh/BCIT-Course-Finder-Pop-Up.png "BCIT Course Finder")
-
-5. Click "Save" to save the course offerings to a text file.
 
 ## Supports
 
