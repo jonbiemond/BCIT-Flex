@@ -1,7 +1,6 @@
-# BCIT-Available-Courses
+[![ci](https://github.com/jonbiemond/BCIT-Flex/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jonbiemond/BCIT-Flex/actions/workflows/ci.yml)
+# BCIT Flex
 Webscrape BCIT available courses, quickly view course offerings and write the information to a text file
-
-From time to time bcit_rate_my_professors.txt will get updated to prevent stress on the website servers
 
 Please feel free to report any issues, bugs or suggestions. Pull requests are welcome.
 
