@@ -30,5 +30,3 @@ jobs:
         run: poetry run ruff .
       - name: Run tests
         run: poetry run pytest .
-      - name: Report coverage
-        run: poetry run coverage report
