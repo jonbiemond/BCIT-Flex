@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bcitflex"
-version = "0.1.1"
+version = "1.0.0"
 description = "Browse BCIT Flex course offerings."
 authors = ["Jonathan Biemond <jbiemond@my.bcit.ca>"]
 license = "MIT"
@@ -114,3 +114,4 @@ upload_to_vcs_release = false
 upload_to_pypi = false
 build_command = false
 upload_to_repository = false
+upload_to_release = false
