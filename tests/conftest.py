@@ -1,3 +1,4 @@
+import datetime
 from typing import Type
 
 import pytest
@@ -5,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from alembic import config
-from bcitflex.model import Course, Offering, Subject
+from bcitflex.model import Course, Meeting, Offering, Subject
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
@@ -150,4 +151,18 @@ def new_offering() -> Offering:
         meeting_time="Day   Time    Location\nWed    16:00 - 19:00 DTC",
         status="Open",
         course_id=1,
+    )
+
+
+@pytest.fixture
+def new_meeting() -> Meeting:
+    """Return a new meeting object."""
+    return Meeting(
+        meeting_id=1,
+        start_date=datetime.date(2023, 9, 13),
+        end_date=datetime.date(2023, 11, 29),
+        days=["Wed"],
+        start_time=datetime.time(18),
+        end_time=datetime.time(21),
+        campus="Online",
     )
