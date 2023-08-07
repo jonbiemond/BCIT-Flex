@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from alembic import config
-from bcitflex.model import Course, Meeting, Offering, Subject
+from bcitflex.model import Course, Meeting, Offering, Subject, Term
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
@@ -150,6 +150,7 @@ def new_offering() -> Offering:
         duration="1 week",
         status="Open",
         course_id=1,
+        term_id="202330",
     )
 
 
@@ -165,3 +166,9 @@ def new_meeting() -> Meeting:
         end_time=datetime.time(21),
         campus="Online",
     )
+
+
+@pytest.fixture
+def new_term() -> Term:
+    """Return a new term object."""
+    return Term(term_id="202410", year=2024, season="Winter")

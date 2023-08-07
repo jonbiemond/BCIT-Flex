@@ -34,6 +34,9 @@ MANIFEST
 # PyCharm
 .idea/
 
+# Fleet
+.fleet/
+
 # Sublime
 *.sublime-project
 *.sublime-workspace
