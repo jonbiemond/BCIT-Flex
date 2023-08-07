@@ -8,7 +8,7 @@ from sqlalchemy.types import NUMERIC, Float, Integer, String
 from . import Base
 
 if TYPE_CHECKING:
-    from . import Course, Meeting
+    from . import Course, Meeting, Term
 
 
 class Offering(Base):
@@ -34,8 +34,10 @@ class Offering(Base):
     course_id: Mapped[Integer] = mapped_column(
         ForeignKey("course.course_id", ondelete="CASCADE")
     )
+    term_id: Mapped[String] = mapped_column(ForeignKey("term.term_id"))
 
     course: Mapped["Course"] = relationship(back_populates="offerings")
+    term: Mapped["Term"] = relationship(back_populates="offerings")
 
     meetings: Mapped[list["Meeting"]] = relationship(back_populates="offering")
 

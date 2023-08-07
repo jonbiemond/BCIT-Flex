@@ -1,6 +1,7 @@
 """Script to scrape course data and load it to the databse. """
 import re
 from collections import defaultdict
+from collections.abc import Iterator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 
@@ -10,7 +11,9 @@ from selectolax.parser import HTMLParser, Node
 from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Base, Course, Offering, Subject
+from bcitflex.model import Base, Course, Offering, Subject, Term
+
+TERMS = {10: "Winter", 20: "Spring/Summer", 30: "Fall"}
 
 BASE_URL = "https://www.bcit.ca"
 COURSE_LIST = "/wp-json/bcit/ptscc/v1/list-active-urls"
@@ -21,6 +24,7 @@ class CoursePage:
 
     def __init__(self, response: Response) -> None:
         self.url: str = response.url
+        # TODO: refactor to tree
         self.html: HTMLParser = HTMLParser(response.text)
         self.term: str = next_term(response)
 
@@ -69,7 +73,7 @@ def get_page_responses(urls: list[str]) -> list[Response]:
     return responses
 
 
-def parse_offering_node(node: Node, course: Course) -> Offering:
+def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
     """Parse the offering node and return the offering."""
 
     # get crn
@@ -115,6 +119,7 @@ def parse_offering_node(node: Node, course: Course) -> Offering:
         duration=duration,
         status=status,
         course=course,
+        term=term,
     )
 
 
@@ -139,15 +144,36 @@ def parse_course_info(page: CoursePage) -> Course:
     )
 
 
-def parse_response(response: Response, term: str) -> Course:
+def parse_term_node(term_node: Node) -> Term:
+    """Parse term node and return the node."""
+    term_id = term_node.parent.id
+    year = int(term_id[:4])
+    season = TERMS[int(term_id[-2:])]
+    return Term(term_id=term_id, year=year, season=season)
+
+
+def term_nodes(course_page: CoursePage) -> Iterator[Node]:
+    """Parse CoursePage and yield term nodes."""
+    for node in course_page.html.css('div[id="offerings"] div[class="sctn"]'):
+        yield node
+
+
+def offering_nodes(term_node: Node) -> Iterator[Node]:
+    """Parse term Node and yield offering nodes."""
+    return (node for node in term_node.css('div[class="sctn"]'))
+
+
+def parse_response(response: Response) -> Course:
     """Parse the response and return the course."""
 
     course_page = CoursePage(response)
     course = parse_course_info(course_page)
     course.offerings = []
 
-    for offering in course_page.html.css(f'div[id="{term}"] div[class="sctn"]'):
-        parse_offering_node(offering, course)
+    for term_node in term_nodes(course_page):
+        term = parse_term_node(term_node)
+        for offering_node in offering_nodes(term_node):
+            parse_offering_node(offering_node, course, term)
 
     return course
 
@@ -192,22 +218,24 @@ def get_course_urls(session: Session) -> list[str]:
     return urls
 
 
-def extract_models(urls: list[str]) -> list[Course]:
+def extract_models(urls: list[str]) -> Iterator[Course]:
     """Extract data for BCIT courses and return as list of Course objects."""
     base_url = "https://www.bcit.ca"
-    term = next_term(collect_response(f"{base_url}{urls[0]}"))
     course_responses = get_page_responses([f"{base_url}{url}" for url in urls])
-    courses = [parse_response(response, term) for response in course_responses]
-    return courses
+    return (parse_response(response) for response in course_responses)
 
 
-def load_models(session, models: list[Base]) -> None:
+def load_models(session, models: Iterator[Base]) -> int:
     """Commit models to database."""
 
     for model in models:
         session.add(model)
 
+    object_ct = session.new
+
     session.commit()
+
+    return object_ct
 
 
 def bcit_to_sql(db_url: str):
@@ -235,10 +263,10 @@ def bcit_to_sql(db_url: str):
         courses = extract_models(urls)
 
         # load
-        load_models(session, courses)
+        count = load_models(session, courses)
 
         # log
-        print(f"Successfully updated {len(courses)} courses.")
+        print(f"Successfully loaded {count} objects.")
 
     except Exception as exc:
         trans.rollback()
