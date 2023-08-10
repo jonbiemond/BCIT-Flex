@@ -47,11 +47,18 @@ dbtest = pytest.mark.skipif(
 
 
 def create_db(dbname):
-    """Create a database with the given name if it does not exist."""
+    """Create an empty database with the given name if it does not exist."""
     with db_connection().cursor() as cur:
         cur.execute(f"SELECT datname FROM pg_database WHERE datname = '{dbname}';")
         if not cur.fetchone():
             cur.execute(f"CREATE DATABASE {dbname};")
+        else:
+            with db_connection(dbname).cursor() as db_cur:
+                db_cur.execute(
+                    """
+                    DROP SCHEMA public CASCADE;
+                    CREATE SCHEMA public;"""
+                )
 
 
 def drop_tables(conn):
@@ -85,6 +92,13 @@ def clone_model(model: Base, **kwargs) -> Base:
     return clone
 
 
+def setup_db(session: Session):
+    """Set up the database for testing, runs for every session."""
+    term = Term(term_id="202330", year=2023, season="Fall")
+    session.add(term)
+    session.commit()
+
+
 def populate_db(session: Session):
     """Populate the database with test data."""
     subject = Subject(subject_id="COMP", name="Computer Systems")
@@ -116,10 +130,8 @@ def populate_db(session: Session):
         end_time=datetime.time(21),
         campus="Online",
     )
-    term = Term(term_id="202330", year=2023, season="Fall")
     session.add(subject)
     session.add(course)
     session.add(offering)
     session.add(meeting)
-    session.add(term)
     session.commit()

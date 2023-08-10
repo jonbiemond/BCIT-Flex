@@ -1,4 +1,0 @@
-requests~=2.28.1
-selectolax~=0.3.12
-pysimplegui~=4.60.4
-tabulate~=0.8.10

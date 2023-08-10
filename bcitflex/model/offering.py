@@ -41,6 +41,8 @@ class Offering(Base):
 
     meetings: Mapped[list["Meeting"]] = relationship(back_populates="offering")
 
+    # TODO: Add primary meeting and properties
+
     def __repr__(self):
         return f"Offering(course={self.course.fullcode if self.course else None}, crn={self.crn}, instructor={self.instructor},  status={self.status})"
 

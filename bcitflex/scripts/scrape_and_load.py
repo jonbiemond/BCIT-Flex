@@ -1,4 +1,5 @@
-"""Script to scrape course data and load it to the databse. """
+"""Script to scrape course data and load it to the database. """
+import datetime
 import re
 from collections import defaultdict
 from collections.abc import Iterator
@@ -11,9 +12,10 @@ from selectolax.parser import HTMLParser, Node
 from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Base, Course, Offering, Subject, Term
+from bcitflex.model import Base, Course, Meeting, Offering, Subject, Term
 
 TERMS = {10: "Winter", 20: "Spring/Summer", 30: "Fall"}
+WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 BASE_URL = "https://www.bcit.ca"
 COURSE_LIST = "/wp-json/bcit/ptscc/v1/list-active-urls"
@@ -94,15 +96,6 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
     # get duration
     duration = node.css_first('li[class="sctn-block-list-item duration"]').text(False)
 
-    # get meeting times
-    no_meeting_node = node.css_first('div[class="sctn-no-meets"] p')
-
-    meeting_times = []
-    if no_meeting_node is None:
-        for meeting_time in node.css('div[class="sctn-meets"]'):
-            for row in meeting_time.css("tr"):
-                meeting_times.append(row.text(separator=" ", strip=True).strip())
-
     # get status
     status_node = node.css_first('p[class="sctn-status-lbl"]')
 
@@ -112,14 +105,99 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
     else:
         status = status_node.text(False)
 
-    return Offering(
+    # offering object
+    offering = Offering(
         crn=crn,
         instructor=instructor,
         price=price,
         duration=duration,
         status=status,
         course=course,
-        term=term,
+        term_id=term.term_id,
+    )
+
+    # parse meeting times
+    if node.css_first('div[class="sctn-no-meets"] p') is None:
+        for meeting_node in meeting_nodes(node):
+            parse_meeting_node(meeting_node, offering, term)
+
+    return offering
+
+
+def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
+    """Parse the meeting node and return the meeting."""
+
+    # columns: Dates, Days, Times, Locations
+    elements = list(
+        filter(
+            None,
+            [element.strip() for element in node.text().split("\n")],
+        )
+    )
+
+    # parse dates
+    dates = []
+    for date_str in elements[0].split(" - "):
+        try:
+            date = datetime.datetime.strptime(date_str, "%b %d").date()
+        except ValueError as err:
+            raise ValueError(f"Invalid date format: {date_str}") from err
+
+        date = date.replace(year=term.year)
+        dates.append(date)
+
+    start_date = dates[0]
+    end_date = dates[-1]
+
+    # parse days
+    days = set()
+    days_str = elements[1]
+
+    # TODO: Return None if days = "N/A"
+
+    meeting_days = days_str.split(" - ")
+    if len(meeting_days) > 1:
+        # Days: Mon - Fri
+        start, stop = (WEEKDAYS.index(day) for day in meeting_days)
+        meeting_days = WEEKDAYS[start : stop + 1]
+
+    else:
+        # Days: Mon, Wed, Fri
+        meeting_days = days_str.split(", ")
+
+    for day in meeting_days:
+        days.add(day)
+
+    # parse time
+    times = []
+    time_str = elements[2]
+
+    if time_str == "N/A":
+        times = [None, None]
+
+    else:
+        for time in time_str.split(" - "):
+            times.append(datetime.datetime.strptime(time, "%H:%M").time())
+
+    start_time = times[0]
+    end_time = times[-1]
+
+    # parse location
+    location = elements[3].split(" ")
+    campus = location.pop(0)
+
+    room = location[0] if location else None
+
+    # pass to Meeting and return
+    return Meeting(
+        start_date=start_date,
+        end_date=end_date,
+        days=days,
+        start_time=start_time,
+        end_time=end_time,
+        campus=campus,
+        room=room,
+        offering=offering,
     )
 
 
@@ -145,7 +223,7 @@ def parse_course_info(page: CoursePage) -> Course:
 
 
 def parse_term_node(term_node: Node) -> Term:
-    """Parse term node and return the node."""
+    """Parse the term node and return node."""
     term_id = term_node.parent.id
     year = int(term_id[:4])
     season = TERMS[int(term_id[-2:])]
@@ -161,6 +239,12 @@ def term_nodes(course_page: CoursePage) -> Iterator[Node]:
 def offering_nodes(term_node: Node) -> Iterator[Node]:
     """Parse term Node and yield offering nodes."""
     return (node for node in term_node.css('div[class="sctn"]'))
+
+
+def meeting_nodes(offering_node: Node) -> Iterator[Node]:
+    """Parse offering node and yield meeting nodes."""
+    for node in offering_node.css_first('div[class="sctn-meets"]').css("tr")[1:]:
+        yield node
 
 
 def parse_response(response: Response) -> Course:
@@ -179,8 +263,16 @@ def parse_response(response: Response) -> Course:
 
 
 def prep_db(session: Session):
-    """Remove rows from tables in the database."""
+    """Remove rows from tables in the database and preload term table."""
     session.execute(delete(Course))
+
+    current_year = datetime.datetime.now().year
+    for year in range(current_year, current_year + 2):
+        for season_id, season in TERMS.items():
+            term_id = f"{year}{season_id}"
+            session.merge(Term(term_id=term_id, year=year, season=season))
+
+    session.commit()
 
 
 def scrape_course_urls(bcit_active_urls_url: str) -> dict[str, list[str]]:
@@ -219,19 +311,19 @@ def get_course_urls(session: Session) -> list[str]:
 
 
 def extract_models(urls: list[str]) -> Iterator[Course]:
-    """Extract data for BCIT courses and return as list of Course objects."""
+    """Extract data for BCIT courses and return as a list of Course objects."""
     base_url = "https://www.bcit.ca"
     course_responses = get_page_responses([f"{base_url}{url}" for url in urls])
     return (parse_response(response) for response in course_responses)
 
 
-def load_models(session, models: Iterator[Base]) -> int:
+def load_models(session: Session, models: Iterator[Base]) -> int:
     """Commit models to database."""
 
     for model in models:
         session.add(model)
 
-    object_ct = session.new
+    object_ct = len(session.new)
 
     session.commit()
 
@@ -239,7 +331,7 @@ def load_models(session, models: Iterator[Base]) -> int:
 
 
 def bcit_to_sql(db_url: str):
-    """Parse BCIT Flex course pages and load them into a SQL database."""
+    """Parse BCIT Flex course pages and load them into the SQL database."""
 
     # check response status
     collect_response(BASE_URL)
