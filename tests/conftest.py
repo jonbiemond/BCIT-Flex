@@ -17,25 +17,21 @@ from tests.db_test_utils import (
     db_connection,
     drop_tables,
     populate_db,
+    setup_db,
 )
 
 DB_NAME = "_test_bcitflex"
 DB_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{DB_NAME}"
 
 
-@pytest.fixture(scope="module")
-def database():
-    """Create a database if it doesn't exist and drop any tables when done."""
+@pytest.fixture(scope="class")
+def session(request) -> Session:
+    """Create a database and return a session to that database."""
+
+    # create the database
     create_db(DB_NAME)
-    connection = db_connection(DB_NAME)
-    yield connection
+    psycopg2_connection = db_connection(DB_NAME)
 
-    drop_tables(connection)
-    connection.close()
-
-
-@pytest.fixture(scope="module")
-def session(database) -> Session:
     # connect to the database with sqlalchemy
     engine = create_engine(DB_URL)
 
@@ -44,19 +40,20 @@ def session(database) -> Session:
     if not check_current_head(alembic_cfg, engine):
         config.command.upgrade(alembic_cfg, "head")
 
-    # populate the database with test data
-    # session = Session(bind=engine)
-    # populate_db(session)
-
     # begin a non-ORM transaction
     connection = engine.connect()
     trans = connection.begin()
 
     # bind an individual Session to the connection with "create_savepoint"
     session = Session(bind=connection, join_transaction_mode="create_savepoint")
+
+    # setup db
+    setup_db(session)
 
     # populate db
-    populate_db(session)
+    marker = request.node.get_closest_marker("empty_db")
+    if marker is None:
+        populate_db(session)
 
     # start a SAVEPOINT transaction
     yield session
@@ -65,31 +62,9 @@ def session(database) -> Session:
     trans.rollback()
     connection.close()
 
-
-# TODO: make session fixture dynamic and remove this one
-@pytest.fixture(scope="function")
-def empty_session(database) -> Session:
-    # connect to the database with sqlalchemy
-    engine = create_engine(DB_URL)
-
-    # run the migrations
-    alembic_cfg = config.Config("tests/alembic.ini")
-    if not check_current_head(alembic_cfg, engine):
-        config.command.upgrade(alembic_cfg, "head")
-
-    # begin a non-ORM transaction
-    connection = engine.connect()
-    trans = connection.begin()
-
-    # bind an individual Session to the connection with "create_savepoint"
-    session = Session(bind=connection, join_transaction_mode="create_savepoint")
-
-    # start a SAVEPOINT transaction
-    yield session
-
-    # rollback - everything above is rolled back including calls to commit()
-    trans.rollback()
-    connection.close()
+    # clean the database
+    drop_tables(psycopg2_connection)
+    psycopg2_connection.close()
 
 
 # Model fixtures
