@@ -2,7 +2,38 @@
 
 
 
-## v2.0.0 (2023-08-05)
+## v2.1.0 (2023-08-10)
+
+### Documentation
+
+* docs: add DB init instructions ([`895db50`](https://github.com/jonbiemond/BCIT-Flex/commit/895db50f402b188be53e58c3bef63b9aff7ff460))
+
+### Feature
+
+* feat(scripts): add parse_meeting_node
+
+Drop tests for bcit_to_sql as they were overcomplicated and a bit redundant. ([`78b6056`](https://github.com/jonbiemond/BCIT-Flex/commit/78b6056334ed59a52cdef5678e077f4fa05794f2))
+
+* feat(model): add Term model
+
+- Declare term model and add table to the databse.
+- Define relationship to term in offering model.
+- Add term parsing functions to scrape_and_load.py.
+- Update tests as necessary. ([`76ba22b`](https://github.com/jonbiemond/BCIT-Flex/commit/76ba22b60a857fb6fdfb38f7ee3f3bb7ec0457e6))
+
+* feat(db): add meeting table
+
+Drop server side partitioned sequence if favour of
+SQLAlchemy/Python default. This solution may be less performant
+but plays nicer with SQLAlchemy. Remove alembic migration d76.
+Add next_meeting_id function to increment meeting_id before objects are persisted to the database. ([`cf07c1b`](https://github.com/jonbiemond/BCIT-Flex/commit/cf07c1ba22cb737cd4509d14e4cded3cae1222bc))
+
+* feat(db): add nssequence_nestval function ([`8aac743`](https://github.com/jonbiemond/BCIT-Flex/commit/8aac743942a65d92684cb076789b7acb2870cb4d))
+
+* feat(model): add Meeting model ([`d0eb4ed`](https://github.com/jonbiemond/BCIT-Flex/commit/d0eb4eda786df484f9a6917bca8868bfdf8a53e5))
+
+
+## v2.0.0 (2023-08-06)
 
 ### Chore
 
