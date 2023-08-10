@@ -1,4 +1,5 @@
 """Course Offering and Meeting declarations."""
+from itertools import chain
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey
@@ -41,7 +42,10 @@ class Offering(Base):
 
     meetings: Mapped[list["Meeting"]] = relationship(back_populates="offering")
 
-    # TODO: Add primary meeting and properties
+    primary_meeting: Mapped["Meeting"] = relationship(
+        primaryjoin="and_(Offering.crn==Meeting.crn, Meeting.meeting_id == 1)",
+        viewonly=True,
+    )
 
     def __repr__(self):
         return f"Offering(course={self.course.fullcode if self.course else None}, crn={self.crn}, instructor={self.instructor},  status={self.status})"
@@ -59,6 +63,54 @@ class Offering(Base):
     @property
     def available(self):
         return self.status not in ["Full", "In Progress"]
+
+    @property
+    def start_date(self):
+        """Earliest start date of meetings."""
+        if not self.meetings:
+            return None
+
+        return min(meeting.start_date for meeting in self.meetings)
+
+    @property
+    def end_date(self):
+        """Latest end date of meetings."""
+        if not self.meetings:
+            return None
+
+        return max(meeting.end_date for meeting in self.meetings)
+
+    @property
+    def days(self):
+        """Return list of days in all meetings."""
+        if not self.meetings:
+            return None
+
+        return list(chain(*[meeting.days for meeting in self.meetings]))
+
+    @property
+    def start_time(self):
+        """Start time of primary meeting."""
+        if not self.primary_meeting:
+            return None
+
+        return self.primary_meeting.start_time
+
+    @property
+    def end_time(self):
+        """End time of primary meeting."""
+        if not self.primary_meeting:
+            return None
+
+        return self.primary_meeting.end_time
+
+    @property
+    def campus(self):
+        """Campus of primary meeting"""
+        if not self.primary_meeting:
+            return None
+
+        return self.primary_meeting.campus
 
     def next_meeting_id(self) -> int:
         """Get the next meeting_id for the crn."""
