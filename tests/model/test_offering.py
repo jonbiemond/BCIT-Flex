@@ -22,16 +22,6 @@ class TestOffering:
         assert new_offering.course_id == 1
         assert new_offering.available is True
 
-    def test_str(self, new_offering: Offering) -> None:
-        """Test the string representation."""
-        assert (
-            str(new_offering) == "CRN: 67890\n"
-            " Instructor: John Doe\n"
-            " Price: 123.45\n"
-            " Duration: 1 week\n"
-            " Status: Open\n"
-        )
-
     def test_next_meeting_id(self, new_offering: Offering) -> None:
         """Test that the next meeting id is correct."""
         assert new_offering.next_meeting_id() == 1

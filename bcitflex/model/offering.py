@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import NUMERIC, Float, Integer, String
 
 from . import Base
+from .meeting import tabulate_meetings
 
 if TYPE_CHECKING:
     from . import Course, Meeting, Term
@@ -50,16 +51,6 @@ class Offering(Base):
     def __repr__(self):
         return f"Offering(course={self.course.fullcode if self.course else None}, crn={self.crn}, instructor={self.instructor},  status={self.status})"
 
-    def __str__(self) -> str:
-        info = (
-            f"CRN: {self.crn}\n"
-            f" Instructor: {self.instructor}\n"
-            f" Price: {self.price}\n"
-            f" Duration: {self.duration}\n"
-            f" Status: {self.status}\n"
-        )
-        return info
-
     @property
     def available(self):
         return self.status not in ["Full", "In Progress"]
@@ -90,7 +81,7 @@ class Offering(Base):
 
     @property
     def start_time(self):
-        """Start time of primary meeting."""
+        """Start time of the primary meeting."""
         if not self.primary_meeting:
             return None
 
@@ -98,7 +89,7 @@ class Offering(Base):
 
     @property
     def end_time(self):
-        """End time of primary meeting."""
+        """End time of the primary meeting."""
         if not self.primary_meeting:
             return None
 
@@ -106,7 +97,7 @@ class Offering(Base):
 
     @property
     def campus(self):
-        """Campus of primary meeting"""
+        """Campus of the primary meeting."""
         if not self.primary_meeting:
             return None
 
@@ -120,3 +111,15 @@ class Offering(Base):
                 "An existing meeting does not have a meeting_id. Try to flush the session first or assign the Offering to the meeting instead."
             )
         return max_id + 1
+
+    def to_string(self):
+        """Return string representation of offering and it's meetings."""
+        string = (
+            f"CRN: {self.crn}\n"
+            f"Instructor: {self.instructor}\n"
+            f"Price: {self.price}\n"
+            f"Duration: {self.duration}\n"
+            f"Status: {self.status}\n"
+        )
+        string += tabulate_meetings(self.meetings)
+        return string
