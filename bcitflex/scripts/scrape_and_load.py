@@ -150,23 +150,27 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
     end_date = dates[-1]
 
     # parse days
-    days = set()
-    days_str = elements[1]
+    def parse_days(days_str: str) -> set[str] | None:
+        if days_str == "N/A":
+            return None
 
-    # TODO: Return None if days = "N/A"
+        days = set()
+        meeting_days = days_str.split(" - ")
+        if len(meeting_days) > 1:
+            # Days: Mon - Fri
+            start, stop = (WEEKDAYS.index(day) for day in meeting_days)
+            meeting_days = WEEKDAYS[start : stop + 1]
 
-    meeting_days = days_str.split(" - ")
-    if len(meeting_days) > 1:
-        # Days: Mon - Fri
-        start, stop = (WEEKDAYS.index(day) for day in meeting_days)
-        meeting_days = WEEKDAYS[start : stop + 1]
+        else:
+            # Days: Mon, Wed, Fri
+            meeting_days = days_str.split(", ")
 
-    else:
-        # Days: Mon, Wed, Fri
-        meeting_days = days_str.split(", ")
+        for day in meeting_days:
+            days.add(day)
 
-    for day in meeting_days:
-        days.add(day)
+        return days
+
+    days = parse_days(elements[1])
 
     # parse time
     times = []
@@ -183,9 +187,9 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
     end_time = times[-1]
 
     # parse location
-    location = elements[3].split(" ")
+    location = elements[3].split(" ", maxsplit=2)
     campus = location.pop(0)
-
+    building = location.pop(0) if location else None
     room = location[0] if location else None
 
     # pass to Meeting and return
@@ -196,6 +200,7 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
         start_time=start_time,
         end_time=end_time,
         campus=campus,
+        building=building,
         room=room,
         offering=offering,
     )

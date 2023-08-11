@@ -53,6 +53,9 @@ class Meeting(Base):
     campus: Mapped[String | None] = mapped_column(
         String(30), doc="Meeting campus", comment="Meeting campus."
     )
+    building: Mapped[String | None] = mapped_column(
+        String(10), doc="Meeting building", comment="Meeting building."
+    )
     room: Mapped[String | None] = mapped_column(
         String(10), doc="Meeting room", comment="Meeting room."
     )

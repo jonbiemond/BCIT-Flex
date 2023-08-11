@@ -25,12 +25,19 @@ DB_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POS
 
 
 @pytest.fixture(scope="class")
-def session(request) -> Session:
-    """Create a database and return a session to that database."""
-
-    # create the database
+def database():
+    """Create a database if it doesn't exist and drop any tables when done."""
     create_db(DB_NAME)
-    psycopg2_connection = db_connection(DB_NAME)
+    connection = db_connection(DB_NAME)
+    yield connection
+
+    drop_tables(connection)
+    connection.close()
+
+
+@pytest.fixture(scope="function")
+def session(request, database) -> Session:
+    """Create a database and return a session to that database."""
 
     # connect to the database with sqlalchemy
     engine = create_engine(DB_URL)
@@ -61,10 +68,6 @@ def session(request) -> Session:
     # rollback - everything above is rolled back including calls to commit()
     trans.rollback()
     connection.close()
-
-    # clean the database
-    drop_tables(psycopg2_connection)
-    psycopg2_connection.close()
 
 
 # Model fixtures
