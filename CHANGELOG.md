@@ -2,6 +2,23 @@
 
 
 
+## v2.2.0 (2023-08-11)
+
+### Feature
+
+* feat(model): add to_string method to Offering
+
+Use tabulate to beautify meetings as string. ([`e0703bb`](https://github.com/jonbiemond/BCIT-Flex/commit/e0703bb23a107e568a189475e50e8dd4c5fa0ff8))
+
+* feat(model): expose Meeting attributes in Offering ([`020b848`](https://github.com/jonbiemond/BCIT-Flex/commit/020b848df272f080afe7e080edfb114d1aaefaf2))
+
+### Fix
+
+* fix(model): add building to Meeting
+
+Fix parse meeting_node to include building and room. ([`198fd4d`](https://github.com/jonbiemond/BCIT-Flex/commit/198fd4db0c62c110481c6848ba04acbf7fc3f9a9))
+
+
 ## v2.1.0 (2023-08-10)
 
 ### Documentation
