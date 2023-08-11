@@ -1,11 +1,12 @@
 """Offering Meeting declaration."""
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, func, select
+from sqlalchemy import ForeignKey, func, inspect, select
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.engine.default import DefaultExecutionContext
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import Date, Integer, String, Time
+from tabulate import tabulate
 
 from . import Base
 
@@ -70,3 +71,10 @@ class Meeting(Base):
         if key == "offering" and self.meeting_id is None:
             self.meeting_id = value.next_meeting_id()
         super().__setattr__(key, value)
+
+
+def tabulate_meetings(meetings: list[Meeting]) -> str:
+    """Return tabulated string of Meeting info."""
+    headers = ["meeting_id"] + inspect(Meeting).columns.keys()[2:]
+    rows = [[getattr(meeting, column) for column in headers] for meeting in meetings]
+    return tabulate(rows, headers=headers, tablefmt="grid")
