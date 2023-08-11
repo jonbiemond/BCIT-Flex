@@ -19,6 +19,7 @@ class TestMeeting:
         assert new_meeting.start_time == datetime.time(18)
         assert new_meeting.end_time == datetime.time(21)
         assert new_meeting.campus == "Online"
+        assert new_meeting.building is None
         assert new_meeting.room is None
 
     def test_set_meeting_id(self, new_meeting: Meeting, new_offering: Offering) -> None:
