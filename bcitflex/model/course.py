@@ -1,7 +1,7 @@
 """Course model declaration."""
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Sequence
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import Float, Integer, String, Text
 
@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from . import Offering
 
 
+course_id_seq = Sequence("course_course_id_seq")
+
+
 class Course(Base):
     __tablename__ = "course"
     __table_args__ = {"comment": "Courses."}
@@ -19,7 +22,11 @@ class Course(Base):
     # TODO: add unique constraint to subject_id and code
 
     course_id: Mapped[Integer] = mapped_column(
-        Integer, primary_key=True, doc="Course ID", comment="Serial course ID."
+        Integer,
+        primary_key=True,
+        doc="Course ID",
+        comment="Serial course ID.",
+        server_default=course_id_seq.next_value(),
     )
     subject_id: Mapped[String] = mapped_column(
         ForeignKey("subject.subject_id", ondelete="CASCADE")
