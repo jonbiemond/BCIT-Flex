@@ -2,6 +2,19 @@
 
 
 
+## v2.3.0 (2023-08-31)
+
+### Chore
+
+* chore(model): make course id seq explicit ([`364be1a`](https://github.com/jonbiemond/BCIT-Flex/commit/364be1a4f2a2c4eab6d063f7dcce836bac6055c8))
+
+### Feature
+
+* feat(model): add clone method
+
+Add method to clone an object and its relationships. ([`f8c863f`](https://github.com/jonbiemond/BCIT-Flex/commit/f8c863f6a957f5b48e18f9bf46dca3facf4e4ed7))
+
+
 ## v2.2.0 (2023-08-11)
 
 ### Feature
