@@ -20,24 +20,25 @@ def db_to_attr(cls_mapper: Mapper, db_name: str) -> str:
     raise ValueError(f"Unknown database name: {db_name}")
 
 
-def get_pks(obj, new_pk_vals: int | str | tuple | dict | None) -> dict:
+def updated_pks(obj: _T, new_pk_vals: dict) -> dict:
     """Return a dict of primary keys updated with new_pk_vals."""
 
     cls_mapper = inspect(obj.__class__)
 
-    pk_columns = [db_to_attr(cls_mapper, c.key) for c in cls_mapper.primary_key]
-    if not isinstance(new_pk_vals, dict):
-        # coerce pk_id to tuple
-        if isinstance(new_pk_vals, (int, str)) or new_pk_vals is None:
-            new_pk_vals = (new_pk_vals,)
-        # get the primary key column names
-        new_pk_vals = dict(zip(pk_columns, new_pk_vals))
+    pk_columns = {db_to_attr(cls_mapper, c.key): c for c in cls_mapper.primary_key}
+    pk_vals = {key: getattr(obj, key) for key in pk_columns.keys()}
 
     # update only keys that are in the primary key
-    pk_ids = {c: getattr(obj, c) for c in pk_columns}
-    pk_ids.update((k, new_pk_vals[k]) for k in new_pk_vals.keys() & pk_ids.keys())
+    for k in new_pk_vals.keys():
+        # fall back to existing value if new value is None and there is no default
+        default_val = (
+            None
+            if pk_columns[k].default or pk_columns[k].server_default
+            else pk_vals[k]
+        )
+        pk_vals[k] = new_pk_vals[k] or default_val
 
-    return pk_ids
+    return pk_vals
 
 
 class Base(DeclarativeBase):
@@ -68,24 +69,30 @@ class Base(DeclarativeBase):
         pk_attrs = [db_to_attr(cls_mapper, c.key) for c in cls_mapper.primary_key]
 
         # check if the object is loaded
-        if not obj_mapper.persistent:
-            raise ValueError("Object must be loaded before cloning.")
+        if not obj_mapper.persistent and include_relationships:
+            raise ValueError(
+                "Object must be loaded or exclude relationships before cloning."
+            )
+
+        # coerce pk_id to dict
+        if not isinstance(pk_id, dict):
+            # extract new pk vals from kwargs if not passed
+            if pk_id is None:
+                pk_id = {k: kwargs.pop(k) for k in pk_attrs if k in kwargs}
+            # coerce pk_id to tuple
+            elif isinstance(pk_id, (int, str)):
+                pk_id = (pk_id,)
+                # get the primary key column names
+                pk_id = dict(zip(pk_attrs, pk_id))
+
+        # TODO: validate pk_id
+
+        # set missing pk values to None
+        pk_id = {k: pk_id.get(k) for k in pk_attrs}
 
         # combine pk_id and kwargs
-        updated = get_pks(self, pk_id)
+        updated = updated_pks(self, pk_id)
         updated.update(kwargs)
-
-        # raise error if any PKs without defaults are not updated
-        required_pks = {
-            c.key
-            for c in cls_mapper.primary_key
-            if c.server_default or c.default is None
-        }
-        passed_pks = {k for k, v in updated.items() if v is not None}
-        if required_pks - passed_pks:
-            raise ValueError(
-                f"Missing required primary key columns: {required_pks - passed_pks}"
-            )
 
         # get model columns and values
         data = {
@@ -101,7 +108,7 @@ class Base(DeclarativeBase):
                     continue
 
                 elif type(attr).__name__ == "Relationship":
-                    # skip write_only and read_only relationships
+                    # skip write_only and viewonly relationships
                     if attr.lazy == "write_only" or attr.viewonly:
                         continue
 
