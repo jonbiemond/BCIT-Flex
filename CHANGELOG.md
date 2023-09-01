@@ -2,6 +2,15 @@
 
 
 
+## v2.3.1 (2023-09-01)
+
+### Fix
+
+* fix(model): leave primary key validation to the database
+
+Do not validate that new object&#39;s PKs will not result in an integrity error. ([`2db074e`](https://github.com/jonbiemond/BCIT-Flex/commit/2db074e63c819ac603488b527f430ec35ebee104))
+
+
 ## v2.3.0 (2023-08-31)
 
 ### Chore
