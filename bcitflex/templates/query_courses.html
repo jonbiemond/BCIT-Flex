@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Query</title>
+</head>
+<body>
+    <h1>Course Query</h1>
+
+    <form action="/courses/query" method="POST">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" placeholder="Enter subject">
+
+        <label for="code">Code:</label>
+        <input type="text" id="code" name="code" placeholder="Enter code">
+
+        <label for="available">Available:</label>
+        <input type="checkbox" id="available" name="available" value="true">
+
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>
