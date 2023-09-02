@@ -56,7 +56,7 @@ class Base(DeclarativeBase):
         Update the primary key and any other attributes passed as kwargs.
         Leave pk_id as None and SQLAlchemy will default to default if defined.
         If pk_id is a tuple, it must match the number of primary key columns.
-        include_relationships will clone FK relationships recursively if True.
+        include_relationships will clone FK relationships recursively if True and object is attached to a session.
 
         :param pk_id: primary key value, tuple or dict of primary key values corresponding to the primary key columns
         :param include_relationships: clone FK relationship attributes recursively if True
@@ -68,11 +68,9 @@ class Base(DeclarativeBase):
 
         pk_attrs = [db_to_attr(cls_mapper, c.key) for c in cls_mapper.primary_key]
 
-        # check if the object is loaded
-        if not obj_mapper.persistent and include_relationships:
-            raise ValueError(
-                "Object must be loaded or exclude relationships before cloning."
-            )
+        # omit relationships if object is not attached to a session
+        if not obj_mapper.persistent:
+            include_relationships = False
 
         # coerce pk_id to dict
         if not isinstance(pk_id, dict):

@@ -3,7 +3,7 @@ import pytest
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering
-from tests import clone_model, dbtest
+from tests import dbtest
 
 
 @pytest.fixture
@@ -40,7 +40,9 @@ class TestCourse:
 
     def test_offering_count(self, new_course: Course, new_offering: Offering) -> None:
         """Test offering_count method."""
-        full_offering = clone_model(new_offering, crn="54321", status="Full")
+        full_offering = new_offering.clone(
+            crn="54321", status="Full", include_relationships=False
+        )
         new_course.offerings.append(full_offering)
         assert new_course.offering_count() == 2
         assert new_course.offering_count(available_only=True) == 1
