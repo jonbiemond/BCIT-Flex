@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, Sequence
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import Float, Integer, String, Text
+from sqlalchemy.types import REAL, Integer, String, Text
 
 from . import Base
 from .subject import Subject
@@ -46,8 +46,8 @@ class Course(Base):
         doc="Prerequisites",
         comment="Prerequisites as strings.",
     )
-    credits: Mapped[Float] = mapped_column(
-        Float(2),
+    credits: Mapped[REAL] = mapped_column(
+        REAL(2),
         doc="Credits",
         comment="Credit hours.",
     )
