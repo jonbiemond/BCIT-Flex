@@ -1,4 +1,5 @@
 import datetime
+import uuid
 from typing import Type
 
 import pytest
@@ -6,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from alembic import config
-from bcitflex.model import Course, Meeting, Offering, Subject, Term
+from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
@@ -35,7 +36,7 @@ def database():
     connection.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="class")
 def session(request, database) -> Session:
     """Create a database and return a session to that database."""
 
@@ -108,7 +109,6 @@ def new_subject() -> Subject:
 def new_course() -> Course:
     """Return a new course object."""
     return Course(
-        course_id=2,
         subject_id="COMP",
         code="1234",
         name="Test Course",
@@ -150,3 +150,10 @@ def new_meeting() -> Meeting:
 def new_term() -> Term:
     """Return a new term object."""
     return Term(term_id="202410", year=2024, season="Winter")
+
+
+@pytest.fixture
+def new_user() -> User:
+    """Return a new user object."""
+    # return user with a unique username
+    return User(username=str(uuid.uuid4())[:8], password="test")

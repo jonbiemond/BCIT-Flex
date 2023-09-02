@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from alembic import config, script
 from alembic.runtime import migration
-from bcitflex.model import Course, Meeting, Offering, Subject, Term
+from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
 POSTGRES_HOST = getenv("PGHOST", "localhost")
@@ -90,7 +90,6 @@ def populate_db(session: Session):
     """Populate the database with test data."""
     subject = Subject(subject_id="COMP", name="Computer Systems")
     course = Course(
-        course_id=1,
         subject_id="COMP",
         code="1234",
         name="Test Course",
@@ -108,7 +107,6 @@ def populate_db(session: Session):
         term_id="202330",
     )
     meeting = Meeting(
-        meeting_id=1,
         crn="12345",
         start_date=datetime.date(2023, 9, 13),
         end_date=datetime.date(2023, 11, 29),
@@ -117,8 +115,13 @@ def populate_db(session: Session):
         end_time=datetime.time(21),
         campus="Online",
     )
+    user = User(
+        username="test-user",
+        password="test-password",
+    )
     session.add(subject)
     session.add(course)
     session.add(offering)
     session.add(meeting)
+    session.add(user)
     session.commit()
