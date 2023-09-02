@@ -6,7 +6,9 @@ from collections.abc import Iterator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 
+import click
 import requests
+from flask import current_app
 from requests import Response
 from selectolax.parser import HTMLParser, Node
 from sqlalchemy import create_engine, delete, select
@@ -373,6 +375,14 @@ def bcit_to_sql(db_url: str):
     else:
         trans.commit()
         connection.close()
+
+
+# Flask CLI command
+@click.command("load-db")
+def load_db_command():
+    """Get data and replace what's in the databse."""
+    db_url = current_app.config["DATABASE"]
+    bcit_to_sql(db_url)
 
 
 if __name__ == "__main__":
