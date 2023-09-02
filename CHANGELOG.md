@@ -2,6 +2,21 @@
 
 
 
+## v2.3.2 (2023-09-02)
+
+### Fix
+
+* fix(model): change Course.credits to type REAL
+
+Type FLOAT(2) is automatically converted to REAL by postgres.
+Consequently, the model and database fall out of sync, and `alembic check` will fail.
+Explicitly declare credits as datatype REAL to avoid pre-commit failing. ([`7c993ef`](https://github.com/jonbiemond/BCIT-Flex/commit/7c993efd4fe3452c7cf363648e8522d6142fcd7e))
+
+### Refactor
+
+* refactor: drop legacy modules ([`9030b10`](https://github.com/jonbiemond/BCIT-Flex/commit/9030b10f8004379c1ee6206b382bb7430e3cd6f1))
+
+
 ## v2.3.1 (2023-09-01)
 
 ### Fix
