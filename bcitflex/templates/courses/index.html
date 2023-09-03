@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Courses{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form action="/courses" method="POST">
+    <div class="display: table">
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" placeholder="Enter subject">
+
+    <label for="code">Code:</label>
+    <input type="text" id="code" name="code" placeholder="Enter code">
+
+    <label for="available">Available:</label>
+    <input type="checkbox" id="available" name="available" value="true">
+
+    <input type="submit" value="Search">
+    </div>
+  </form>
+
+  <table>
+     <thead>
+        <tr>
+           <th>Subject</th>
+           <th>Code</th>
+           <th>Name</th>
+           <th>URL</th>
+        </tr>
+     </thead>
+
+     <tbody>
+        {% for course in courses %}
+           <tr>
+              <td>{{ course.subject_id }}</td>
+              <td>{{ course.code }}</td>
+              <td>{{ course.name }}</td>
+              <td><a href="{{url_for('course.show', course_id = course.course_id)}}">View Course</a></td>
+           </tr>
+        {% endfor %}
+     </tbody>
+  </table>
+{% endblock %}

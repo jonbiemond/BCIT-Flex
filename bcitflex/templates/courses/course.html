@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ course.subject_id }} {{ course.code }} - {{ course.name }}</title>
-</head>
-<body>
-    <h2>{{ course.subject_id }} {{ course.code }} - {{ course.name }}</h2>
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{ course.subject_id }} {{ course.code }} - {{ course.name }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
     <p><strong>Prerequisites:</strong> {{ course.prerequisites }}</p>
     <p><strong>Credits:</strong> {{ course.credits }}</p>
     <p><strong>Available:</strong> {{ course.is_available }}</p>
@@ -38,5 +37,4 @@
             </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+{% endblock %}
