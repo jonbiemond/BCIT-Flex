@@ -3,7 +3,7 @@ import pytest
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Course, Meeting, Offering
+from bcitflex.model import Course, Meeting, Offering, User
 from bcitflex.model.base import db_to_attr, updated_pks
 from tests import dbtest
 
@@ -53,6 +53,26 @@ class TestHelpers:
         """Test the update_pks function when there are default values."""
         obj = Course(subject_id="COMP", code="1001", name="Test Course")
         assert updated_pks(obj, pk_val) == expected
+
+
+@dbtest
+class TestGet:
+    """Test the get functions."""
+
+    def test_get_by_unique(self, session: Session):
+        """Test the get_by_unique method."""
+        product_type = User.get_by_unique(session, "test-user")
+        assert product_type.username == "test-user"
+
+    def test_get_by_unique_none(self, session: Session):
+        """Test the get_by_unique method returns None when no results are found."""
+        product_type = User.get_by_unique(session, "not_a_username")
+        assert product_type is None
+
+    def test_get_by_unique_no_unique_error(self, session: Session):
+        """Test the get_by_unique method when no unique constraint is defined."""
+        with pytest.raises(ValueError):
+            Offering.get_by_unique(session, "unique")
 
 
 @dbtest

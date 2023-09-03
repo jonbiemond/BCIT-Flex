@@ -3,8 +3,8 @@ from __future__ import annotations
 
 from typing import TypeVar
 
-from sqlalchemy import inspect
-from sqlalchemy.orm import DeclarativeBase, Mapper
+from sqlalchemy import inspect, select
+from sqlalchemy.orm import DeclarativeBase, Mapper, Session
 
 _T = TypeVar("_T", bound="Base")
 
@@ -43,6 +43,44 @@ def updated_pks(obj: _T, new_pk_vals: dict) -> dict:
 
 class Base(DeclarativeBase):
     """Base class for SQLAlchemy model definitions."""
+
+    @classmethod
+    def get_by_unique(
+        cls: "_T", session: Session, unique_id: int | str | tuple
+    ) -> _T | None:
+        """
+        Return an object using the unique constraint instead of the primary key.
+
+        Model must have a unique constraint defined,
+        and the number of unique id values must match the number of unique columns.
+        Return exactly one scalar result or None.
+        Raise an exception in the case of multiple results,
+        because the unique constraint may not be enforced in the database.
+
+        :param session: SQLAlchemy session
+        :param unique_id: unique id value or tuple of unique id values corresponding to the unique columns
+
+        :return: scalar result or None
+
+        :raises ValueError: if the model has no unique fields
+        """
+
+        # coerce unique_id to tuple
+        if isinstance(unique_id, (int, str)):
+            unique_id = (unique_id,)
+
+        # get the unique column names
+        mapper = inspect(cls)
+        unique_columns = [
+            c.key for c in mapper.column_attrs if mapper.columns[c.key].unique
+        ]
+        if not unique_columns:
+            raise ValueError(f"{cls.__name__} model has no unique fields.")
+
+        # get the object matching the unique id
+        filters = dict(zip(unique_columns, unique_id))
+        stmt = select(cls).filter_by(**filters)
+        return session.execute(stmt).scalar_one_or_none()
 
     def clone(
         self,
