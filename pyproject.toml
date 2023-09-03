@@ -16,6 +16,7 @@ psycopg2 = "^2.9.6"
 sqlalchemy = "^2.0.19"
 alembic = "^1.11.1"
 flask = "^2.3.3"
+flask-sqlalchemy = "^3.0.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
