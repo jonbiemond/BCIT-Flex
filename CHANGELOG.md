@@ -2,6 +2,74 @@
 
 
 
+## v3.0.0 (2023-09-03)
+
+### Chore
+
+* chore: switch db url config variables ([`7cbf342`](https://github.com/jonbiemond/BCIT-Flex/commit/7cbf3420e84cf118c558dd6ffb36798f3598e03c))
+
+### Ci
+
+* ci: apply missing dbtest marker to necessary tests ([`c974827`](https://github.com/jonbiemond/BCIT-Flex/commit/c9748277f2f3285f9cc9850cf341975acc916d6a))
+
+### Documentation
+
+* docs: add the run instruction ([`7c581ab`](https://github.com/jonbiemond/BCIT-Flex/commit/7c581abc81f7ead0f230576664d4d935c3183bf1))
+
+### Feature
+
+* feat(app): add index and course page to app factory ([`3333f80`](https://github.com/jonbiemond/BCIT-Flex/commit/3333f80d896881e1ee57544c9cd660b7eb2d5aaa))
+
+* feat(app): add stylesheet ([`b9f9403`](https://github.com/jonbiemond/BCIT-Flex/commit/b9f94034eda1919dc03aea0fb7f9ecfc08d08b93))
+
+* feat(app): add html templates for register and login ([`ba3ca49`](https://github.com/jonbiemond/BCIT-Flex/commit/ba3ca49b52331c6b9cf840c56e0c527a53e99b07))
+
+* feat(app): add auth Blueprint ([`ccd9b6a`](https://github.com/jonbiemond/BCIT-Flex/commit/ccd9b6af5b3f4c297c5e6e9498cef67b922636ba))
+
+* feat(model): add get_by_unique method
+
+Add method with similar signature to session.get(),
+but that returns an object by its unique constraint fields. ([`d96c04c`](https://github.com/jonbiemond/BCIT-Flex/commit/d96c04ce4f83cdece0c7be47bbdce92a952e19b8))
+
+* feat(app): connect app to db
+
+Extend Flask-SQLAlchemy to use SQLAlchemy Base class as Model. ([`81f65e9`](https://github.com/jonbiemond/BCIT-Flex/commit/81f65e91b79c1297a1b20964f6d127be8a5b0576))
+
+* feat(model): add User model
+
+- Declare User model
+- Add migration for user table
+- Add tests ([`ab917ab`](https://github.com/jonbiemond/BCIT-Flex/commit/ab917ab0b95e39388806f705d0cb1ef835643599))
+
+* feat(app): configure app database connection
+
+- Add cli command to run bcit_to_sql. ([`9f88652`](https://github.com/jonbiemond/BCIT-Flex/commit/9f88652deeccc5bda9a27035b12e0eb2a282b137))
+
+* feat(app): add flask application factory ([`b6f0eff`](https://github.com/jonbiemond/BCIT-Flex/commit/b6f0eff21465d4643b344268543a93bf1477c9d5))
+
+* feat(app): add courses, course and query page ([`c8009cd`](https://github.com/jonbiemond/BCIT-Flex/commit/c8009cddeda357f2ad26c1bda98c85de99f1f358))
+
+* feat(app): add filter_courses function ([`bc81dee`](https://github.com/jonbiemond/BCIT-Flex/commit/bc81dee22e063c14f4905594c7c8059145f0dc04))
+
+### Fix
+
+* fix(model): make User object subscriptable
+
+Extend MappedAsDataclass with __getitem__ and mixin to the User model. ([`506e9a2`](https://github.com/jonbiemond/BCIT-Flex/commit/506e9a237e395d3ee14200115933f24e1161c043))
+
+### Refactor
+
+* refactor: drop interface.py ([`6a277ca`](https://github.com/jonbiemond/BCIT-Flex/commit/6a277caebd79e88041f0bdddafd8724ab7a0ee9c))
+
+* refactor: drop test util clone function
+
+Replace usages of the test utility clone function with the clone method on Base. ([`354fdaa`](https://github.com/jonbiemond/BCIT-Flex/commit/354fdaadc74484ac9f60deadc49c119444f9156e))
+
+### Test
+
+* test(app): add app tests ([`bf736f4`](https://github.com/jonbiemond/BCIT-Flex/commit/bf736f4e15da6f92dc5947ffd9a2b478685db043))
+
+
 ## v2.3.2 (2023-09-02)
 
 ### Fix
