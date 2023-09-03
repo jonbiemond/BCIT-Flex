@@ -10,7 +10,6 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
-        # DATABASE=app.config["DATABASE"],
     )
 
     if test_config is None:
@@ -31,10 +30,12 @@ def create_app(test_config=None):
     def hello():
         return "Hello, World!"
 
+    # DB config
     from . import db
 
     db.init_app(app)
 
+    # Auth blueprint
     from . import auth
 
     app.register_blueprint(auth.bp)

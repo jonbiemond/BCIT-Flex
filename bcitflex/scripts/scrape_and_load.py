@@ -380,8 +380,8 @@ def bcit_to_sql(db_url: str):
 # Flask CLI command
 @click.command("load-db")
 def load_db_command():
-    """Get data and replace what's in the databse."""
-    db_url = current_app.config["DATABASE"]
+    """Get data and replace what's in the database."""
+    db_url = current_app.config["SQLALCHEMY_DATABASE_URI"]
     bcit_to_sql(db_url)
 
 

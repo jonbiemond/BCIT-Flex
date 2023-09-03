@@ -47,7 +47,7 @@ poetry run alembic upgrade head
 ```
 5. Save database connection string to `<PROJECT DIR>/instance/config.py`:
 ```python
-DATABASE = "postgresql://python_app@localhost:5432/bcitflex"
+SQLALCHEMY_DATABASE_URI = "postgresql://python_app@localhost:5432/bcitflex"
 ```
 
 ## Usage
