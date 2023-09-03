@@ -16,6 +16,7 @@ def test_register(client, app):
         assert User.get_by_unique(DBSession(), "a") is not None
 
 
+@dbtest
 @pytest.mark.parametrize(
     ("username", "password", "message"),
     (
