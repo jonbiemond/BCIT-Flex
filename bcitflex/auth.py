@@ -11,6 +11,7 @@ from flask import (
     session,
     url_for,
 )
+from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from bcitflex.db import DBSession
@@ -39,7 +40,7 @@ def register():
                 )
                 with db.begin():
                     db.add(new_user)
-            except db.IntegrityError:
+            except IntegrityError:
                 error = f"User {username} is already registered."
             else:
                 return redirect(url_for("auth.login"))

@@ -9,6 +9,7 @@ import psycopg2
 import pytest
 from sqlalchemy import engine
 from sqlalchemy.orm import Session
+from werkzeug.security import generate_password_hash
 
 from alembic import config, script
 from alembic.runtime import migration
@@ -117,7 +118,7 @@ def populate_db(session: Session):
     )
     user = User(
         username="test-user",
-        password="test-password",
+        password=generate_password_hash("test-password"),
     )
     session.add(subject)
     session.add(course)

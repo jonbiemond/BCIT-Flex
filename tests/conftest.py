@@ -7,6 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from alembic import config
+from bcitflex import create_app
+from bcitflex.db import DBSession
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
 from tests.db_test_utils import (
     POSTGRES_HOST,
@@ -25,6 +27,7 @@ DB_NAME = "_test_bcitflex"
 DB_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{DB_NAME}"
 
 
+# Database fixtures
 @pytest.fixture(scope="class")
 def database():
     """Create a database if it doesn't exist and drop any tables when done."""
@@ -157,3 +160,59 @@ def new_user() -> User:
     """Return a new user object."""
     # return user with a unique username
     return User(username=str(uuid.uuid4())[:8], password="test")
+
+
+# App fixtures
+@pytest.fixture
+def app(request, database):
+    """Create and configure a new app instance for each test."""
+
+    # connect to the database with sqlalchemy
+    engine = create_engine(DB_URL)
+
+    # run the migrations
+    alembic_cfg = config.Config("tests/alembic.ini")
+    if not check_current_head(alembic_cfg, engine):
+        config.command.upgrade(alembic_cfg, "head")
+
+    # create app
+    app = create_app({"TESTING": True, "SQLALCHEMY_DATABASE_URI": DB_URL})
+
+    with app.app_context():
+        # setup db
+        setup_db(DBSession())
+
+        # populate db
+        marker = request.node.get_closest_marker("empty_db")
+        if marker is None:
+            populate_db(DBSession())
+
+    yield app
+
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+
+@pytest.fixture
+def runner(app):
+    return app.test_cli_runner()
+
+
+class AuthActions(object):
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, username="test-user", password="test-password"):
+        return self._client.post(
+            "/auth/login", data={"username": username, "password": password}
+        )
+
+    def logout(self):
+        return self._client.get("/auth/logout")
+
+
+@pytest.fixture
+def auth(client):
+    return AuthActions(client)
