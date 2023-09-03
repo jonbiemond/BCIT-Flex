@@ -47,7 +47,7 @@ poetry run alembic upgrade head
 ```
 5. Save database connection string to `<PROJECT DIR>/instance/config.py`:
 ```python
-SQLALCHEMY_DATABASE_URI = "postgresql://python_app@localhost:5432/bcitflex"
+SQLALCHEMY_DATABASE_URI = 'postgresql://python_app@localhost:5432/bcitflex'
 ```
 
 ## Usage
@@ -55,6 +55,11 @@ SQLALCHEMY_DATABASE_URI = "postgresql://python_app@localhost:5432/bcitflex"
 To run the webscraper and populate the database with the latest course offerings:
 ```bash
 poetry run flask --app bcitflex load-db
+```
+
+To run the webserver:
+```bash
+poetry run flask --app bcitflex run
 ```
 
 ## Supports
@@ -67,7 +72,7 @@ poetry run flask --app bcitflex load-db
 - Filter by prerequisites
 - ~~Individual Course Offerings~~
 - ~~Rate My Professors~~
-- WebAssembly
+- ~~Web app~~
 - ~~GUI~~
 - Return RMP rating
 
