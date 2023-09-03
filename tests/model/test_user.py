@@ -18,7 +18,11 @@ class TestUser:
 
     def test_repr(self, new_user: User):
         """Test the repr method."""
-        assert repr(new_user).startswith("<User(id=None,")
+        assert repr(new_user).startswith("User(id=None,")
+
+    def test_user_is_subscriptable(self, new_user: User):
+        """Test the subscript operator."""
+        assert new_user["password"] == "test"
 
 
 @dbtest

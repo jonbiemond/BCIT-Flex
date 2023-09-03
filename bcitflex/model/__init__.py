@@ -1,4 +1,4 @@
-from .base import Base
+from .base import Base, MappedAsDataclass
 from .course import Course
 from .meeting import Meeting
 from .offering import Offering

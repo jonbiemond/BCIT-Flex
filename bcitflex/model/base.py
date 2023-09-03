@@ -5,6 +5,7 @@ from typing import TypeVar
 
 from sqlalchemy import inspect, select
 from sqlalchemy.orm import DeclarativeBase, Mapper, Session
+from sqlalchemy.orm import MappedAsDataclass as MappedAsDataclassBase
 
 _T = TypeVar("_T", bound="Base")
 
@@ -203,3 +204,10 @@ class Base(DeclarativeBase):
         # create a new object
         cls = type(self)
         return cls(**data)
+
+
+class MappedAsDataclass(MappedAsDataclassBase):
+    """MappedAsDataclass with getitem."""
+
+    def __getitem__(self, field):
+        return getattr(self, field)
