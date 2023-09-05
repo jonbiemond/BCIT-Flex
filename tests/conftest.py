@@ -4,6 +4,8 @@ from typing import Type
 
 import pytest
 from alembic import config
+from flask import Flask
+from flask.testing import FlaskCliRunner
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -164,7 +166,7 @@ def new_user() -> User:
 
 # App fixtures
 @pytest.fixture
-def app(request, database):
+def app(request, database) -> Flask:
     """Create and configure a new app instance for each test."""
 
     # connect to the database with sqlalchemy
@@ -191,13 +193,24 @@ def app(request, database):
 
 
 @pytest.fixture
-def client(app):
+def mock_app() -> Flask:
+    """A mock app for testing disconnected from the database."""
+    return create_app({"TESTING": True})
+
+
+@pytest.fixture
+def client(app: Flask):
     return app.test_client()
 
 
 @pytest.fixture
-def runner(app):
+def runner(app: Flask) -> FlaskCliRunner:
     return app.test_cli_runner()
+
+
+@pytest.fixture
+def mock_runner(mock_app: Flask) -> FlaskCliRunner:
+    return mock_app.test_cli_runner()
 
 
 class AuthActions(object):
