@@ -24,30 +24,24 @@ The information is
 - Clone the repository
 - Install the requirements `poetry install`
 
+Note: Additionally a PostgreSQL instance is required for the database.
+
 ### DB Setup
 
 PostgreSQL is used as the DBMS.
 To create and initialize the database:
 
-1. Create a database named `bcitflex` from psql:
+1. Create a database using the cli command. Pass `--help` for more information.
 ```bash
-\i bcitflex/scripts/init_db.sql
+flask --app bcitflex create-db
 ```
-2. Add user credentials to [.pgpass file](https://www.postgresql.org/docs/current/libpq-pgpass.html)
-```text
-*:*:*:python_app:<password>
-```
-3. Build schema using alembic:
+2. Build schema using alembic:
 ```bash
 poetry run alembic upgrade head
 ```
-4. Populate the database with subjects from psql:
+3. Populate the database with subjects from psql:
 ```bash
 \i bcitflex/scripts/populate_subject.sql
-```
-5. Save database connection string to `<PROJECT DIR>/instance/config.py`:
-```python
-SQLALCHEMY_DATABASE_URI = 'postgresql://python_app@localhost:5432/bcitflex'
 ```
 
 ## Usage
