@@ -3,10 +3,10 @@ import uuid
 from typing import Type
 
 import pytest
+from alembic import config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from alembic import config
 from bcitflex import create_app
 from bcitflex.db import DBSession
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
