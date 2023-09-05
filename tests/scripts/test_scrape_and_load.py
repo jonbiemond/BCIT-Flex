@@ -71,36 +71,36 @@ def new_course(
 
 
 class TestGetNodes:
-    def test_term_nodes(self, course_page: CoursePage) -> None:
+    def test_term_nodes(self, course_page: CoursePage):
         """Test the term nodes function returns a valid term node."""
         term_node = next(term_nodes(course_page))
         assert term_node.parent.id == "202330"
 
-    def test_offering_nodes(self, term_node: Node) -> None:
+    def test_offering_nodes(self, term_node: Node):
         """Test the offering nodes function returns a valid offering_node."""
         node = next(offering_nodes(term_node))
         crn = node.css_first('li[class="sctn-block-list-item crn"] span').text(False)
         assert crn == "38186"
 
-    def test_meeting_nodes(self, offering_node: Node) -> None:
+    def test_meeting_nodes(self, offering_node: Node):
         """Test the meeting nodes function returns a valid meeting node."""
         node = next(meeting_nodes(offering_node))
         assert len(node.text()) > 0
 
 
 class TestParseNodes:
-    def test_parse_term_node(self, term_node: Node) -> None:
+    def test_parse_term_node(self, term_node: Node):
         term = parse_term_node(term_node)
         assert term.term_id == "202330"
 
-    def test_parse_course_info(self, course_page: CoursePage) -> None:
+    def test_parse_course_info(self, course_page: CoursePage):
         """Test the parse course function."""
         course = parse_course_info(course_page)
         assert course.credits > 0
 
     def test_parse_offering_node(
         self, offering_node: Node, new_course: Course, new_term: Term
-    ) -> None:
+    ):
         """Test the parse offering node function."""
         offering = parse_offering_node(offering_node, new_course, new_term)
         assert offering.price > 0
@@ -108,7 +108,7 @@ class TestParseNodes:
 
     def test_parse_meeting_node(
         self, meeting_node: Node, new_offering: Offering, new_term: Term
-    ) -> None:
+    ):
         """Test the parse meeting node function."""
         meeting = parse_meeting_node(meeting_node, new_offering, new_term)
         assert meeting.start_date == datetime.date(2024, 9, 13)
@@ -121,7 +121,7 @@ class TestParseNodes:
 
 
 class TestExtractModels:
-    def test_scrape_course_urls(self, monkeypatch) -> None:
+    def test_scrape_course_urls(self, monkeypatch):
         """Test urls are scraped from mock response."""
 
         # mock request.get() to return response from test
@@ -135,9 +135,7 @@ class TestExtractModels:
         assert len(result["COMP"]) > 1
 
     @dbtest
-    def test_get_course_urls(
-        self, mocker, course_page: CoursePage, session: Session
-    ) -> None:
+    def test_get_course_urls(self, mocker, course_page: CoursePage, session: Session):
         """Test getting list of course urls."""
 
         # patch scrape_course_urls to return one url
@@ -150,7 +148,7 @@ class TestExtractModels:
         assert len(urls) == 1
         assert urls[0] == course_page.url
 
-    def test_extract(self, monkeypatch, course_page: CoursePage) -> None:
+    def test_extract(self, monkeypatch, course_page: CoursePage):
         """Test extracting courses."""
 
         # mock request.get() to return response from test
@@ -168,7 +166,7 @@ class TestExtractModels:
 class TestLoadData:
     pytestmark = pytest.mark.empty_db
 
-    def test_prep_db(self, session: Session) -> None:
+    def test_prep_db(self, session: Session):
         """Test if prep_db deletes data in the database."""
         populate_db(session)
 
@@ -183,7 +181,7 @@ class TestLoadData:
         terms = session.scalars(select(Term)).all()
         assert len(terms) == 6
 
-    def test_load_models(self, session: Session, new_course: Course) -> None:
+    def test_load_models(self, session: Session, new_course: Course):
         """Test loading models to the db."""
         courses = (course for course in [new_course])
         assert session.get(Course, 1) is None

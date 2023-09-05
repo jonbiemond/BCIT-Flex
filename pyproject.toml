@@ -62,7 +62,7 @@ fixable = [
     "RUF", # ruff,
 ]
 
-extend-exclude = ["alembic/*"]
+extend-exclude = ["bcitflex/alembic/*"]
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]

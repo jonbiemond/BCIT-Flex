@@ -7,12 +7,12 @@ from os import getenv
 
 import psycopg2
 import pytest
+from alembic import config, script
+from alembic.runtime import migration
 from sqlalchemy import engine
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
 
-from alembic import config, script
-from alembic.runtime import migration
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
