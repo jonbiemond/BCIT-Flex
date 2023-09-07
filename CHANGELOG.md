@@ -2,6 +2,13 @@
 
 
 
+## v3.0.1 (2023-09-07)
+
+### Fix
+
+* fix(db): increase course.url allowed length ([`8406190`](https://github.com/jonbiemond/BCIT-Flex/commit/8406190d318273af0da85357ef86b792408f11c3))
+
+
 ## v3.0.0 (2023-09-03)
 
 ### Chore
