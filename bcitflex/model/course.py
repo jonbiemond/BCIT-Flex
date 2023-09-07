@@ -52,7 +52,7 @@ class Course(Base):
         comment="Credit hours.",
     )
     url: Mapped[String] = mapped_column(
-        String(120),
+        String(2083),
         doc="URL",
         comment="BCIT Course URL.",
     )
