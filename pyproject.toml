@@ -72,6 +72,9 @@ markers = [
     "empty_db: mark test to run with an empty database",
 ]
 
+[tool.coverage.run]
+omit = ["bcitflex/alembic/*"]
+
 [tool.semantic_release]
 version_variables = ["pyproject.toml:version"]
 assets = []
