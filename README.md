@@ -21,10 +21,15 @@ The information is
 
 ## Installation
 
-- Clone the repository
-- Install the requirements `poetry install`
+`pip install bcitflex`
 
-Note: Additionally a PostgreSQL instance is required for the database.
+### Prerequisites
+* A [PostgreSQL instance](https://www.postgresql.org/download/) is required for the database.
+* Dependency `psycopg2` requires `libpq-dev` to be installed for Ubuntu/Debian systems.
+```bash
+sudo apt install libpq-dev python3-dev
+```
+For more details see the [pycopg2 documentation](https://www.psycopg.org/docs/install.html#install-from-source) and [StackOverflow](https://stackoverflow.com/questions/5420789/how-to-install-psycopg2-with-pip-on-python).
 
 ### DB Setup
 
@@ -37,7 +42,7 @@ flask --app bcitflex create-db
 ```
 2. Build schema using alembic:
 ```bash
-poetry run alembic upgrade head
+flask --app bcitflex upgrade-db
 ```
 3. Populate the database with subjects from psql:
 ```bash
@@ -51,7 +56,7 @@ To run the webscraper and populate the database with the latest course offerings
 poetry run flask --app bcitflex load-db
 ```
 
-To run the webserver:
+To run the dev webserver:
 ```bash
 poetry run flask --app bcitflex run
 ```
