@@ -7,9 +7,6 @@ from os import getenv
 
 import psycopg2
 import pytest
-from alembic import config, script
-from alembic.runtime import migration
-from sqlalchemy import engine
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
 
@@ -70,14 +67,6 @@ def drop_tables(conn):
             DROP SCHEMA public CASCADE;
             CREATE SCHEMA public;"""
         )
-
-
-def check_current_head(alembic_cfg: config.Config, connectable: engine.Engine) -> bool:
-    """Check if the database is up-to-date with the latest migrations."""
-    directory = script.ScriptDirectory.from_config(alembic_cfg)
-    with connectable.begin() as connection:
-        context = migration.MigrationContext.configure(connection)
-        return set(context.get_current_heads()) == set(directory.get_heads())
 
 
 def setup_db(session: Session):

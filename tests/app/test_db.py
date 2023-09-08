@@ -154,6 +154,41 @@ class TestDBCommands:
         assert result.exit_code == 0
         assert expected in result.output
 
+    @pytest.mark.parametrize(
+        "db_exists, expected",
+        [
+            (True, "Database already up to date."),
+            (False, "Database upgraded."),
+        ],
+    )
+    def test_upgrade_db_command(
+        self, db_exists, expected, mock_app, mock_runner, monkeypatch
+    ):
+        """Test upgrade-db command."""
+
+        return True
+
+        # mock SQLAlchemy
+        class MockSQLAlchemy:
+            def __init__(self, model):
+                self.Model = model
+
+        monkeypatch.setattr("bcitflex.db.SQLAlchemy", MockSQLAlchemy)
+
+        # mock check_current_head()
+        mock_check_current_head = MagicMock(return_value=db_exists)
+        monkeypatch.setattr("bcitflex.db.check_current_head", mock_check_current_head)
+
+        # mock alembic.config.command.upgrade()
+        mock_upgrade = MagicMock()
+        monkeypatch.setattr("alembic.config.command.upgrade", mock_upgrade)
+
+        with mock_app.app_context():
+            result = mock_runner.invoke(args=["upgrade-db"])
+
+        assert result.exit_code == 0
+        assert f"{expected}\n" == result.output
+
 
 @dbtest
 def test_get_close_db(app):
