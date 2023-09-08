@@ -2,6 +2,27 @@
 
 
 
+## v3.1.0 (2023-09-08)
+
+### Feature
+
+* feat(app): add cli command to upgrade database ([`defda96`](https://github.com/jonbiemond/BCIT-Flex/commit/defda96d4fa665f4227bb4579d528c69c209c285))
+
+* feat(app): add cli command to create database ([`ec24183`](https://github.com/jonbiemond/BCIT-Flex/commit/ec24183d4875c26d86a6a29d56712e63f296b4bc))
+
+* feat: refactor migrations into package
+
+Move migration files inside of package, so they can be run by the user to set up a database. ([`8f6015f`](https://github.com/jonbiemond/BCIT-Flex/commit/8f6015f9009b34b38c73b21211642b22a540b6ae))
+
+### Fix
+
+* fix(app): add metadata to app db context ([`bf64aad`](https://github.com/jonbiemond/BCIT-Flex/commit/bf64aadfa7eae8b0198c0a8bd2824bfeb9b8b100))
+
+### Test
+
+* test: omit alembic files from coverage report ([`15df256`](https://github.com/jonbiemond/BCIT-Flex/commit/15df2563bb3059c78121bbfa36c02eec8a7aae24))
+
+
 ## v3.0.1 (2023-09-07)
 
 ### Fix
