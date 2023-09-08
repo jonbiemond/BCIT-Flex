@@ -69,11 +69,12 @@ def create_db(dbname, db_connection, drop=False) -> bool:
 
 
 def config_db_url(
-    db_name,
-    db_user,
-    db_password,
-    db_host="localhost",
-    db_port=5432,
+    db_name: str,
+    db_user: str,
+    db_password: str | None = None,
+    db_host: str = "localhost",
+    db_port: int = 5432,
+    overwrite: bool = False,
 ) -> str | None:
     """Save database url to instance config.py."""
 
@@ -82,14 +83,30 @@ def config_db_url(
 
     # check if SQLALCHEMY_DATABASE_URI exists
     if config.exists():
-        with open(config, "r") as f:
+        with open(config, "r+") as f:
             lines = f.readlines()
-            for line in lines:
+            to_omit = None
+            for idx, line in enumerate(lines):
                 if "SQLALCHEMY_DATABASE_URI" in line:
-                    return
+                    if not overwrite:
+                        return
+                    else:
+                        to_omit = idx
+                        break
+            if to_omit is not None:
+                lines.pop(to_omit)
+                f.seek(0)
+                f.truncate()
+                f.writelines(lines)
+
+    # set password string
+    if db_password is None:
+        db_password = ""
+    else:
+        db_password = f":{db_password}"
 
     # write SQLALCHEMY_DATABASE_URI to config.py
-    db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+    db_url = f"postgresql://{db_user}{db_password}@{db_host}:{db_port}/{db_name}"
     with open(config, "a") as f:
         f.write(f'SQLALCHEMY_DATABASE_URI = "{db_url}"\n')
 
@@ -105,9 +122,10 @@ def check_current_head(alembic_cfg: config.Config, connectable: engine.Engine) -
 
 
 @click.command("create-db")
-@click.option("--drop", is_flag=True, help="Clear existing schema.")
+@click.option("--drop", "-D", is_flag=True, help="Clear existing schema.")
+@click.option("--overwrite", "-o", is_flag=True, help="Overwrite existing config.")
 @click.option(
-    "--name", "-n", default="bcitflex", show_default=True, help="Database name."
+    "--dbname", "-d", default="bcitflex", show_default=True, help="Database name."
 )
 @click.option(
     "--host", "-h", default="localhost", show_default=True, help="Database host."
@@ -121,8 +139,11 @@ def check_current_head(alembic_cfg: config.Config, connectable: engine.Engine) -
     show_default=True,
     help="Superuser creds.",
 )
-@click.option("--role", "-r", nargs=2, help="App role creds.   [default: python_app]")
-def create_db_command(drop, name, host, port, superuser, role):
+@click.option("--role-name", "-r", default="python_app", help="App role name.")
+@click.option("--role-password", "-rp", help="App role password.   [default: random]")
+def create_db_command(
+    drop, overwrite, dbname, host, port, superuser, role_name, role_password
+):
     """Create database."""
 
     # generate password for role
@@ -131,7 +152,6 @@ def create_db_command(drop, name, host, port, superuser, role):
 
     # get roles
     superuser = superuser
-    role = role or ("python_app", password)
 
     # get connection factory
     db_connection = db_connection_factory(
@@ -142,28 +162,47 @@ def create_db_command(drop, name, host, port, superuser, role):
     )
 
     # create db
-    created = create_db(name, db_connection, drop=drop)
+    created = create_db(dbname, db_connection, drop=drop)
     if not created:
-        click.echo(f"Database {name} already exists.")
-        return
-    click.echo(f"Database {name} created.")
+        click.echo(f"Database {dbname} already exists.")
+    else:
+        click.echo(f"Database {dbname} created.")
 
     # create role
-    with db_connection(name).cursor() as cur:
-        # TODO: handle role already exists elegantly
-        cur.execute(f"CREATE ROLE {role[0]} WITH LOGIN PASSWORD '{role[1]}';")
-        cur.execute(f"GRANT ALL PRIVILEGES ON DATABASE {name} TO '{role}';")
-    click.echo(f"Role {role[0]}  created.")
-    click.echo(f"Please store password in a safe place: {role[1]}")
+    with db_connection(dbname).cursor() as cur:
+        cur.execute(
+            f"SELECT rolname FROM pg_catalog.pg_roles WHERE rolname = '{role_name}';"
+        )
+        if cur.fetchone():
+            click.echo(f"Role {role_name} already exists.")
+            if role_password is None:
+                click.echo(
+                    "WARNING: Role password unknown please set in config.py or in .pgpass."
+                )
+        else:
+            role_password = role_password or password
+            cur.execute(
+                f"CREATE ROLE {role_name} WITH LOGIN PASSWORD '{role_password}';"
+            )
+            cur.execute(f'GRANT ALL PRIVILEGES ON DATABASE {dbname} TO "{role_name}";')
+            click.echo(f"Role {role_name} created.")
+            click.echo(f"Please store password in a safe place: {role_password}")
 
     # save db url to instance config.py
-    db_url = config_db_url(name, *role, db_host=host, db_port=port)
+    db_url = config_db_url(
+        dbname,
+        role_name,
+        role_password,
+        db_host=host,
+        db_port=port,
+        overwrite=overwrite,
+    )
     instance_path = current_app.instance_path
     if db_url is not None:
         click.echo(f"Database url saved to {instance_path}/config.py")
         click.echo(f"URL: {db_url}")
     else:
-        click.echo(f"Database url already set in {instance_path}/config.py")
+        click.echo(f"Database url already set in {instance_path}\\config.py")
 
 
 @click.command("upgrade-db")
@@ -186,6 +225,7 @@ def init_app(app: Flask):
         app.cli.add_command(load_db_command)
         app.cli.add_command(upgrade_db_command)
     elif app.config.get("TESTING") is not True:
+        # TODO: logging might be neater here
         warnings.warn(
             "SQLALCHEMY_DATABASE_URI not set. App will not connect to db.", stacklevel=1
         )

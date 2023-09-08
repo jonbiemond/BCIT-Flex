@@ -127,12 +127,13 @@ class TestDBCommands:
         [
             (True, "test_url", "Database test_db created."),
             (False, "test_url", "Database test_db already exists."),
-            (True, None, "Database url already set in instance/config.py"),
+            (True, None, "Database url already set in instance\\config.py"),
         ],
     )
     def test_create_db_command(
         self, mock_app, mock_runner, monkeypatch, db_created, db_url, expected
     ):
+        # TODO: test more cases
         # mock psycopg2.connect so postgres is not required
         mock_connect = MagicMock()
         monkeypatch.setattr("psycopg2.connect", mock_connect)
@@ -149,7 +150,7 @@ class TestDBCommands:
         mock_app.instance_path = "instance"
 
         with mock_app.app_context():
-            result = mock_runner.invoke(args=["create-db", "--name=test_db"])
+            result = mock_runner.invoke(args=["create-db", "--dbname=test_db"])
 
         assert result.exit_code == 0
         assert expected in result.output
