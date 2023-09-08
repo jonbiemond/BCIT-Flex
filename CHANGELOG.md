@@ -2,6 +2,27 @@
 
 
 
+## v3.1.2 (2023-09-08)
+
+### Ci
+
+* ci: fix build command ([`d70b52d`](https://github.com/jonbiemond/BCIT-Flex/commit/d70b52d07276b9c8dabc7ad7f780c77a97b52abe))
+
+* ci: publish to pypi ([`594ca59`](https://github.com/jonbiemond/BCIT-Flex/commit/594ca5945989b322ea321b0e30c0be73fe2d4c35))
+
+### Documentation
+
+* docs: update installation steps ([`b5e46ab`](https://github.com/jonbiemond/BCIT-Flex/commit/b5e46abf551d1521e5649ca8aee4ebc5f8761ba7))
+
+### Fix
+
+* fix(app): handle role exists ([`ff81fc6`](https://github.com/jonbiemond/BCIT-Flex/commit/ff81fc68ed6754be2c74bba8686684bca150c5a4))
+
+* fix(app): don&#39;t connect to db if uri not set
+
+fmu ([`a1afd2d`](https://github.com/jonbiemond/BCIT-Flex/commit/a1afd2d143b23eb9fc6558ebc41510a5b6937401))
+
+
 ## v3.1.1 (2023-09-08)
 
 ### Fix
