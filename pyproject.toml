@@ -83,6 +83,7 @@ commit_parser = "angular"
 logging_use_named_masks = false
 major_on_zero = true
 tag_format = "v{version}"
+build_command = "poetry build"
 
 [tool.semantic_release.branches.main]
 match = "(main)"
@@ -128,7 +129,5 @@ env = "GH_TOKEN"
 [tool.semantic_release.publish]
 dist_glob_patterns = ["dist/*"]
 upload_to_vcs_release = false
-upload_to_pypi = false
-build_command = false
 upload_to_repository = false
 upload_to_release = false
