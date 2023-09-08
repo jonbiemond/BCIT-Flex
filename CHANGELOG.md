@@ -2,6 +2,13 @@
 
 
 
+## v3.1.1 (2023-09-08)
+
+### Fix
+
+* fix(app): resolve alembic script path ([`10fea34`](https://github.com/jonbiemond/BCIT-Flex/commit/10fea34a2ab0fec4e7b95d8eed0f0244ed21862f))
+
+
 ## v3.1.0 (2023-09-08)
 
 ### Feature
