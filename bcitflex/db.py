@@ -1,4 +1,5 @@
 """App db config"""
+import os
 import secrets
 import string
 from pathlib import Path
@@ -167,8 +168,8 @@ def create_db_command(drop, name, host, port, superuser, role):
 @click.command("upgrade-db")
 def upgrade_db_command():
     """Run database migrations."""
-
-    alembic_cfg = config.Config("././alembic.ini")
+    alembic_cfg_path = os.path.join(os.path.dirname(__file__), "alembic/alembic.ini")
+    alembic_cfg = config.Config(alembic_cfg_path)
     if not check_current_head(alembic_cfg, db.engine):
         config.command.upgrade(alembic_cfg, "head")
         click.echo("Database upgraded.")
