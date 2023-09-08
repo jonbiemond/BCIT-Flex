@@ -215,5 +215,5 @@ def test_init_app(monkeypatch):
     create_app({"TESTING": True})
     mock_init_app.assert_not_called()
 
-    with pytest.raises(RuntimeError):
+    with pytest.warns(UserWarning):
         create_app({"SQLALCHEMY_DATABASE_URI": None})

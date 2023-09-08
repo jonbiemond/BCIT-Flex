@@ -2,6 +2,7 @@
 import os
 import secrets
 import string
+import warnings
 from pathlib import Path
 
 import click
@@ -182,9 +183,11 @@ def init_app(app: Flask):
 
     if app.config.get("SQLALCHEMY_DATABASE_URI") is not None:
         db.init_app(app)
+        app.cli.add_command(load_db_command)
+        app.cli.add_command(upgrade_db_command)
     elif app.config.get("TESTING") is not True:
-        raise RuntimeError("SQLALCHEMY_DATABASE_URI not set in config.py")
+        warnings.warn(
+            "SQLALCHEMY_DATABASE_URI not set. App will not connect to db.", stacklevel=1
+        )
 
     app.cli.add_command(create_db_command)
-    app.cli.add_command(load_db_command)
-    app.cli.add_command(upgrade_db_command)
