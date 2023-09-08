@@ -10,14 +10,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from bcitflex import create_app
-from bcitflex.db import DBSession
+from bcitflex.db import DBSession, check_current_head
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
     POSTGRES_PORT,
     POSTGRES_USER,
-    check_current_head,
     create_db,
     db_connection,
     drop_tables,

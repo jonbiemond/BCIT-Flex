@@ -5,7 +5,10 @@ from pathlib import Path
 
 import click
 import psycopg2
+from alembic import config, script
+from alembic.runtime import migration
 from flask import Flask, current_app
+from sqlalchemy import engine
 
 from .ext.database import SQLAlchemy
 from .model.base import Base
@@ -91,6 +94,14 @@ def config_db_url(
     return db_url
 
 
+def check_current_head(alembic_cfg: config.Config, connectable: engine.Engine) -> bool:
+    """Check if the database is up-to-date with the latest migrations."""
+    directory = script.ScriptDirectory.from_config(alembic_cfg)
+    with connectable.begin() as connection:
+        context = migration.MigrationContext.configure(connection)
+        return set(context.get_current_heads()) == set(directory.get_heads())
+
+
 @click.command("create-db")
 @click.option("--drop", is_flag=True, help="Clear existing schema.")
 @click.option(
@@ -153,6 +164,18 @@ def create_db_command(drop, name, host, port, superuser, role):
         click.echo(f"Database url already set in {instance_path}/config.py")
 
 
+@click.command("upgrade-db")
+def upgrade_db_command():
+    """Run database migrations."""
+
+    alembic_cfg = config.Config("././alembic.ini")
+    if not check_current_head(alembic_cfg, db.engine):
+        config.command.upgrade(alembic_cfg, "head")
+        click.echo("Database upgraded.")
+    else:
+        click.echo("Database already up to date.")
+
+
 def init_app(app: Flask):
     """Initialize app with database connection."""
 
@@ -163,3 +186,4 @@ def init_app(app: Flask):
 
     app.cli.add_command(create_db_command)
     app.cli.add_command(load_db_command)
+    app.cli.add_command(upgrade_db_command)
