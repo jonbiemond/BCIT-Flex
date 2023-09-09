@@ -54,12 +54,12 @@ By default, subjects COMP, MATH, COMM AND BLAW are loaded. To load all subjects 
 
 To run the webscraper and populate the database with the latest course offerings:
 ```bash
-poetry run flask --app bcitflex load-db
+flask --app bcitflex load-db
 ```
 
 To run the dev webserver:
 ```bash
-poetry run flask --app bcitflex run
+flask --app bcitflex run
 ```
 
 ## Supports
