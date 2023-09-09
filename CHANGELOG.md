@@ -2,6 +2,13 @@
 
 
 
+## v3.1.4 (2023-09-09)
+
+### Fix
+
+* fix(app): add grant schema to create cmd ([`a32e96b`](https://github.com/jonbiemond/BCIT-Flex/commit/a32e96bb2c50cf43dee964dbdbc99441b5193489))
+
+
 ## v3.1.3 (2023-09-09)
 
 ### Fix
