@@ -173,6 +173,7 @@ def create_db_command(
         cur.execute(
             f"SELECT rolname FROM pg_catalog.pg_roles WHERE rolname = '{role_name}';"
         )
+
         if cur.fetchone():
             click.echo(f"Role {role_name} already exists.")
             if role_password is None:
@@ -184,9 +185,11 @@ def create_db_command(
             cur.execute(
                 f"CREATE ROLE {role_name} WITH LOGIN PASSWORD '{role_password}';"
             )
-            cur.execute(f'GRANT ALL PRIVILEGES ON DATABASE {dbname} TO "{role_name}";')
             click.echo(f"Role {role_name} created.")
             click.echo(f"Please store password in a safe place: {role_password}")
+
+        cur.execute(f'GRANT ALL PRIVILEGES ON DATABASE {dbname} TO "{role_name}";')
+        cur.execute(f'GRANT ALL ON SCHEMA public TO "{role_name}";')
 
     # save db url to instance config.py
     db_url = config_db_url(
