@@ -2,6 +2,16 @@
 
 
 
+## v3.1.3 (2023-09-09)
+
+### Fix
+
+* fix(app): pass db connection to upgrade command
+
+Since an url is not set in alembic config in a deployment environment,
+any alembic commands require a connection to be passed to the config. ([`40ad30c`](https://github.com/jonbiemond/BCIT-Flex/commit/40ad30c052f163f83159750b58e4af86cb57ed7c))
+
+
 ## v3.1.2 (2023-09-08)
 
 ### Ci
