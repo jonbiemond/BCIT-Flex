@@ -211,7 +211,9 @@ def upgrade_db_command():
     alembic_cfg_path = os.path.join(os.path.dirname(__file__), "alembic/alembic.ini")
     alembic_cfg = config.Config(alembic_cfg_path)
     if not check_current_head(alembic_cfg, db.engine):
-        config.command.upgrade(alembic_cfg, "head")
+        with db.engine.begin() as connection:
+            alembic_cfg.attributes["connection"] = connection
+            config.command.upgrade(alembic_cfg, "head")
         click.echo("Database upgraded.")
     else:
         click.echo("Database already up to date.")
