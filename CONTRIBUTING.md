@@ -3,11 +3,12 @@
 To make a contribution, follow the following steps:
 
 1. Fork and clone this repository.
-2. Make changes in a new branch.
-3. If you modified the code (new feature or bug-fix), please add tests for it.
-4. Check the linting. [see below](https://github.com/jonbiemond/BCIT-Available-Courses/blob/main/CONTRIBUTING.md#-linting)
-5. Ensure that all tests pass. [see below](https://github.com/jonbiemond/BCIT-Available-Courses/blob/main/CONTRIBUTING.md#-testing)
-6. Submit a pull request.
+2. To install, follow installation steps in the [README.md](https://github.com/jonbiemond/BCIT-Flex#installation), but use `poetry install` instead of `pip`.
+3. Make changes in a new branch including the issue number. e.g. `git checkout -b 42-new-feature`.
+4. If you modified the code (new feature or bug-fix), please add tests for it.
+5. Check the linting. [see below](https://github.com/jonbiemond/BCIT-Available-Courses/blob/main/CONTRIBUTING.md#-linting)
+6. Ensure that all tests pass. [see below](https://github.com/jonbiemond/BCIT-Available-Courses/blob/main/CONTRIBUTING.md#-testing)
+7. Submit a pull request.
 
 For more details about pull requests, please read [GitHub's guides](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
@@ -24,7 +25,7 @@ poetry install
 
 ### 📌 Pre-commit
 
-To ensure our standards, make sure to install pre-commit before star to contribute.
+To ensure our standards, make sure to install pre-commit before start to contribute.
 
 ```bash
 pre-commit install
