@@ -1,23 +1,11 @@
 [![ci](https://github.com/jonbiemond/BCIT-Flex/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jonbiemond/BCIT-Flex/actions/workflows/ci.yml)
 # BCIT Flex
-Webscrape BCIT available courses, quickly view course offerings and write the information to a text file
+[www.bcitflex.tech](http://www.bcitflex.tech)
+
+A website for easily viewing BCIT course offerings.
+Features a course filter to aid in course selection.
 
 Please feel free to report any issues, bugs or suggestions. Pull requests are welcome.
-
-The information is
-
-- Code
-- Name
-- Prerequisites
-- Credits
-- URL
-- Offerings
-  - Instructor
-  - Price
-  - Duration
-  - Meeting Times
-  - Status
-  - Rate My Professor URLs
 
 ## Installation
 
@@ -62,12 +50,7 @@ To run the dev webserver:
 flask --app bcitflex run
 ```
 
-## Supports
-
-- Displaying all course offerings for specific course
-- Saving all courses to a text file for a specific subject
-
-## TODO
+## Roadmap
 
 - Filter by prerequisites
 - ~~Individual Course Offerings~~
@@ -75,6 +58,11 @@ flask --app bcitflex run
 - ~~Web app~~
 - ~~GUI~~
 - Return RMP rating
+- Indication of data freshness
+- Program information
+- User relevant course view
+- User course wishlist
+- User course schedule planner
 
 ## Contributors
 
