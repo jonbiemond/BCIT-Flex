@@ -78,7 +78,7 @@ def setup_db(session: Session):
 
 def populate_db(session: Session):
     """Populate the database with test data."""
-    subject = Subject(subject_id="COMP", name="Computer Systems")
+    subject = Subject(subject_id="COMP", name="Computer Systems", is_active=True)
     course = Course(
         subject_id="COMP",
         code="1234",

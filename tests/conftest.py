@@ -106,7 +106,7 @@ def offering(session) -> Type[Offering]:
 @pytest.fixture
 def new_subject() -> Subject:
     """Return a new subject object."""
-    return Subject(subject_id="MATH", name="Mathematics")
+    return Subject(subject_id="MATH", name="Mathematics", is_active=True)
 
 
 @pytest.fixture

@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import String
+from sqlalchemy.types import Boolean, String
 
 from . import Base
 
@@ -26,6 +26,11 @@ class Subject(Base):
         String(100),
         doc="Subject Name",
         comment="Subject name.",
+    )
+    is_active: Mapped[Boolean | None] = mapped_column(
+        Boolean,
+        doc="Included in web scraping",
+        comment="Whether the subject is included in web scraping.",
     )
 
     courses: Mapped[list["Course"]] = relationship(
