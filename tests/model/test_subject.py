@@ -12,6 +12,7 @@ class TestSubject:
         """Test the constructor."""
         assert new_subject.subject_id == "MATH"
         assert new_subject.name == "Mathematics"
+        assert new_subject.is_active is True
 
 
 @dbtest
@@ -37,7 +38,7 @@ class TestSubjectDB:
         assert session.get(Subject, "COMP").name == "Comp Sci"
 
     def test_get_course(self, subject: Subject) -> None:
-        """Test retrieiving a course from a subject by code."""
+        """Test retrieving a course from a subject by code."""
         course = subject.get_course("1234")
         assert course.course_id == 1
         assert subject.get_course("abcd") is None
