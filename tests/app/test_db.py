@@ -26,8 +26,7 @@ class TestDBHelpers:
             def __init__(self):
                 self.autocommit = True
 
-        def mock_connect(*args, **kwargs):
-            return MockConnection()
+        mock_connect = MagicMock(return_value=MockConnection())
 
         # patch psycopg2.connect()
         monkeypatch.setattr(psycopg2, "connect", mock_connect)
@@ -77,8 +76,7 @@ class TestDBHelpers:
             def cursor(self):
                 return MockCursor()
 
-        def mock_connect(*args, **kwargs):
-            return MockConnection()
+        mock_connect = MagicMock(return_value=MockConnection())
 
         # patch psycopg2.connect()
         monkeypatch.setattr(psycopg2, "connect", mock_connect)

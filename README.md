@@ -48,6 +48,7 @@ flask --app bcitflex upgrade-db
 ```bash
 flask --app bcitflex load-subjects
 ```
+By default, subjects COMP, MATH, COMM AND BLAW are loaded. To load all subjects pass the `--all-subjects` flag.
 
 ## Usage
 
