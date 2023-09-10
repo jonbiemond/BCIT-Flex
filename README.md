@@ -44,9 +44,9 @@ flask --app bcitflex create-db
 ```bash
 flask --app bcitflex upgrade-db
 ```
-3. Populate the database with subjects from psql:
+3. Populate the subject table with the list of subjects to scrape courses for:
 ```bash
-\i bcitflex/scripts/populate_subject.sql
+flask --app bcitflex load-subjects
 ```
 
 ## Usage

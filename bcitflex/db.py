@@ -10,7 +10,7 @@ import psycopg2
 from alembic import config, script
 from alembic.runtime import migration
 from flask import Flask, current_app
-from sqlalchemy import engine
+from sqlalchemy import engine, text
 
 from .ext.database import SQLAlchemy
 from .model.base import Base
@@ -150,9 +150,6 @@ def create_db_command(
     alphabet = string.ascii_letters + string.digits
     password = "".join(secrets.choice(alphabet) for i in range(12))
 
-    # get roles
-    superuser = superuser
-
     # get connection factory
     db_connection = db_connection_factory(
         pguser=superuser[0],
@@ -222,6 +219,21 @@ def upgrade_db_command():
         click.echo("Database already up to date.")
 
 
+@click.command("load-subjects")
+def load_subjects_command():
+    """Populate subject table."""
+
+    # read populate_subject.sql
+    directory = os.path.dirname(__file__)
+    script_path = os.path.join(directory, "scripts/populate_subject.sql")
+    with open(script_path, "r") as f:
+        stmt = f.read()
+
+    with DBSession() as session:
+        session.execute(text(stmt))
+        session.commit()
+
+
 def init_app(app: Flask):
     """Initialize app with database connection."""
 
@@ -229,6 +241,7 @@ def init_app(app: Flask):
         db.init_app(app)
         app.cli.add_command(load_db_command)
         app.cli.add_command(upgrade_db_command)
+        app.cli.add_command(load_subjects_command)
     elif app.config.get("TESTING") is not True:
         # TODO: logging might be neater here
         warnings.warn(
