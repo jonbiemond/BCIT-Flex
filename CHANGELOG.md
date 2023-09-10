@@ -2,6 +2,21 @@
 
 
 
+## v3.2.0 (2023-09-10)
+
+### Feature
+
+* feat(scripts): add all-subjects flag to load-db cmd
+
+Add option to load all subjects into the database to load-db command. ([`b9e8840`](https://github.com/jonbiemond/BCIT-Flex/commit/b9e8840ff8fb04bdfda8e343f97b7989a9f19b58))
+
+* feat(model): and is_active field to Subject
+
+Add a field to indicate whether a subject should be web-scraped. ([`eff0a6c`](https://github.com/jonbiemond/BCIT-Flex/commit/eff0a6c5dad06f35483cad6d975bf076732fbb4f))
+
+* feat(app): add load-subjects command ([`25d1a56`](https://github.com/jonbiemond/BCIT-Flex/commit/25d1a56c4df51f21dd7d174203366d3a55d6d1e4))
+
+
 ## v3.1.4 (2023-09-09)
 
 ### Fix
