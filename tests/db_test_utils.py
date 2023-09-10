@@ -78,7 +78,11 @@ def setup_db(session: Session):
 
 def populate_db(session: Session):
     """Populate the database with test data."""
-    subject = Subject(subject_id="COMP", name="Computer Systems", is_active=True)
+    comp = Subject(subject_id="COMP", name="Computer Systems", is_active=True)
+    blaw = Subject(subject_id="BLAW", name="Business Law", is_active=False)
+    ahvc = Subject(
+        subject_id="AHVC", name="Asian History and Visual Culture", is_active=None
+    )
     course = Course(
         subject_id="COMP",
         code="1234",
@@ -109,7 +113,9 @@ def populate_db(session: Session):
         username="test-user",
         password=generate_password_hash("test-password"),
     )
-    session.add(subject)
+    session.add(comp)
+    session.add(blaw)
+    session.add(ahvc)
     session.add(course)
     session.add(offering)
     session.add(meeting)

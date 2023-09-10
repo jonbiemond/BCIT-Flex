@@ -11,7 +11,7 @@ import requests
 from flask import current_app
 from requests import Response
 from selectolax.parser import HTMLParser, Node
-from sqlalchemy import create_engine, delete, select
+from sqlalchemy import create_engine, delete, or_, select
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Base, Course, Meeting, Offering, Subject, Term
@@ -28,8 +28,7 @@ class CoursePage:
 
     def __init__(self, response: Response) -> None:
         self.url: str = response.url
-        # TODO: refactor to tree
-        self.html: HTMLParser = HTMLParser(response.text)
+        self.tree: HTMLParser = HTMLParser(response.text)
         self.term: str = next_term(response)
 
 
@@ -211,13 +210,13 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
 def parse_course_info(page: CoursePage) -> Course:
     """Parse the course info and return the course."""
 
-    code_and_name = page.html.css_first('h1[class="h1 page-hero__title"]').text(
+    code_and_name = page.tree.css_first('h1[class="h1 page-hero__title"]').text(
         strip=True
     )
     subject, code = code_and_name[-9:].split(" ")
     name = code_and_name[:-9]
-    prerequisites = page.html.css_first('div[id="prereq"] ul li').text()
-    credit_hours = float(page.html.css_first('div[id="credits"] p').text(False))
+    prerequisites = page.tree.css_first('div[id="prereq"] ul li').text()
+    credit_hours = float(page.tree.css_first('div[id="credits"] p').text(False))
 
     return Course(
         subject_id=subject,
@@ -239,7 +238,7 @@ def parse_term_node(term_node: Node) -> Term:
 
 def term_nodes(course_page: CoursePage) -> Iterator[Node]:
     """Parse CoursePage and yield term nodes."""
-    for node in course_page.html.css('div[id="offerings"] div[class="sctn"]'):
+    for node in course_page.tree.css('div[id="offerings"] div[class="sctn"]'):
         yield node
 
 
@@ -298,14 +297,19 @@ def scrape_course_urls(bcit_active_urls_url: str) -> dict[str, list[str]]:
     return subject_urls
 
 
-def get_course_urls(session: Session) -> list[str]:
+def get_course_urls(session: Session, all_subjects: bool = False) -> list[str]:
     """Get course urls for subjects in the database."""
 
     # get subject course urls
     subject_urls = scrape_course_urls(BASE_URL + COURSE_LIST)
 
     # read subjects from db
-    subjects = session.scalars(select(Subject)).all()
+    stmt = select(Subject)
+    clauses = [Subject.is_active]
+    if all_subjects:
+        clauses.append(Subject.is_active == None)
+
+    subjects = session.scalars(stmt.where(or_(*clauses))).all()
 
     # loop over subjects and add to list
     urls = []
@@ -337,8 +341,11 @@ def load_models(session: Session, models: Iterator[Base]) -> int:
     return object_ct
 
 
-def bcit_to_sql(db_url: str):
+def bcit_to_sql(db_url: str, all_subjects: bool = False):
     """Parse BCIT Flex course pages and load them into the SQL database."""
+    # [2023-09-10 Jonathan B.]
+    #   It probably makes sense to refactor this function into load_db_command
+    #   and lose the `if __name__ == "__main__"` block.
 
     # check response status
     collect_response(BASE_URL)
@@ -356,7 +363,7 @@ def bcit_to_sql(db_url: str):
         prep_db(session)
 
         # get urls
-        urls = get_course_urls(session)
+        urls = get_course_urls(session, all_subjects)
 
         # get courses
         courses = extract_models(urls)
@@ -379,10 +386,11 @@ def bcit_to_sql(db_url: str):
 
 # Flask CLI command
 @click.command("load-db")
-def load_db_command():
+@click.option("--all-subjects", "-a", is_flag=True, help="Load all subjects.")
+def load_db_command(all_subjects: bool = False):
     """Get data and replace what's in the database."""
     db_url = current_app.config["SQLALCHEMY_DATABASE_URI"]
-    bcit_to_sql(db_url)
+    bcit_to_sql(db_url, all_subjects)
 
 
 if __name__ == "__main__":

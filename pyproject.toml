@@ -51,6 +51,7 @@ ignore = [
     "E501", # black handles line length
     "RUF012", # __table_args__ in SQLAlchemy models
     "B905", # zip without an explicit strict
+    "E711", # ignore `== None` because it's valid in SQL statements
 ]
 
 fixable = [

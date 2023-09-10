@@ -1,6 +1,7 @@
 """Test extracting course data from the BCIT website."""
 import datetime
 from pickle import load
+from unittest.mock import MagicMock
 
 import pytest
 import requests
@@ -125,8 +126,9 @@ class TestExtractModels:
         """Test urls are scraped from mock response."""
 
         # mock request.get() to return response from test
-        def mock_request(*args, **kwargs):
-            return load(open("tests/test_data/course_list_response.pkl", "rb"))
+        mock_request = MagicMock(
+            return_value=load(open("tests/test_data/course_list_response.pkl", "rb"))
+        )
 
         monkeypatch.setattr(requests, "get", mock_request)
 
@@ -135,26 +137,38 @@ class TestExtractModels:
         assert len(result["COMP"]) > 1
 
     @dbtest
-    def test_get_course_urls(self, mocker, course_page: CoursePage, session: Session):
+    @pytest.mark.parametrize(
+        "all_subjects, expected",
+        [
+            (True, ["comp_url", "ahvc_url"]),
+            (False, ["comp_url"]),
+        ],
+    )
+    def test_get_course_urls(
+        self, mocker, course_page: CoursePage, session: Session, all_subjects, expected
+    ):
         """Test getting list of course urls."""
 
         # patch scrape_course_urls to return one url
         mocker.patch(
             "bcitflex.scripts.scrape_and_load.scrape_course_urls",
-            return_value={"COMP": [course_page.url]},
+            return_value={
+                "COMP": ["comp_url"],
+                "BLAW": ["blaw_url"],
+                "AHVC": ["ahvc_url"],
+            },
         )
 
-        urls = get_course_urls(session)
-        assert len(urls) == 1
-        assert urls[0] == course_page.url
+        urls = get_course_urls(session, all_subjects)
+        assert urls == expected
 
     def test_extract(self, monkeypatch, course_page: CoursePage):
         """Test extracting courses."""
 
         # mock request.get() to return response from test
-        def mock_request(*args, **kwargs):
-            return load(open("tests/test_data/course_response.pkl", "rb"))
-
+        mock_request = MagicMock(
+            return_value=load(open("tests/test_data/course_response.pkl", "rb"))
+        )
         monkeypatch.setattr(requests, "get", mock_request)
 
         course = next(extract_models([course_page.url]))
