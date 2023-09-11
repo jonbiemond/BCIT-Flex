@@ -2,6 +2,26 @@
 
 
 
+## v3.2.1 (2023-09-11)
+
+### Documentation
+
+* docs: detail installation steps ([`664017c`](https://github.com/jonbiemond/BCIT-Flex/commit/664017c20424e729726fd584dfd51f30bdebca29))
+
+* docs: extend roadmap ([`ac09299`](https://github.com/jonbiemond/BCIT-Flex/commit/ac09299788a87b8c187c28dcc4a521ca766112a9))
+
+* docs: remove poetry reference ([`ce0f7c3`](https://github.com/jonbiemond/BCIT-Flex/commit/ce0f7c3ed69c432d9826c5a3212150e529e9811d))
+
+### Fix
+
+* fix(db): specify encoding in create db stmt
+
+Web scraped data may contain any variety of characters.
+To be safe, set UTF-8 as the encoding so all known encodings are supported.
+
+Fixes #38 ([`413b3b8`](https://github.com/jonbiemond/BCIT-Flex/commit/413b3b8f57e9987472ed07610b2a275181477bd1))
+
+
 ## v3.2.0 (2023-09-10)
 
 ### Feature
