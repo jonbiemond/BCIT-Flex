@@ -55,7 +55,7 @@ def create_db(dbname, db_connection, drop=False) -> bool:
     with db_connection().cursor() as cur:
         cur.execute(f"SELECT datname FROM pg_database WHERE datname = '{dbname}';")
         if not cur.fetchone():
-            cur.execute(f"CREATE DATABASE {dbname};")
+            cur.execute(f"CREATE DATABASE {dbname} ENCODING = 'UTF8';")
             new_db = True
         elif drop:
             with db_connection(dbname).cursor() as db_cur:
