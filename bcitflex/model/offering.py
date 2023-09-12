@@ -7,13 +7,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import NUMERIC, Float, Integer, String
 
 from . import Base
+from .base import TimestampsMixin
 from .meeting import tabulate_meetings
 
 if TYPE_CHECKING:
     from . import Course, Meeting, Term
 
 
-class Offering(Base):
+class Offering(TimestampsMixin, Base):
     __tablename__ = "offering"
     __table_args__ = {"comment": "Course offerings."}
 
