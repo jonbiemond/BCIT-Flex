@@ -5,11 +5,12 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import Integer, String, Text
 
 from . import Base, MappedAsDataclass
+from .base import TimestampsMixin
 
 user_id_seq = Sequence("user_id_seq")
 
 
-class User(MappedAsDataclass, Base):
+class User(MappedAsDataclass, TimestampsMixin, Base):
     __tablename__ = "user"
     __table_args__ = {"comment": "Users."}
 

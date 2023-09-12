@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import TypeVar
 
-from sqlalchemy import inspect, select
+from sqlalchemy import TIMESTAMP, Column, func, inspect, select
 from sqlalchemy.orm import DeclarativeBase, Mapper, Session
 from sqlalchemy.orm import MappedAsDataclass as MappedAsDataclassBase
 
@@ -211,3 +211,30 @@ class MappedAsDataclass(MappedAsDataclassBase):
 
     def __getitem__(self, field):
         return getattr(self, field)
+
+
+class TimestampsMixin:
+    """Define timestamp columns."""
+
+    __abstract__ = True
+
+    __created_at_name__ = "created_at"
+    __updated_at_name__ = "updated_at"
+    __datetime_func__ = func.now()
+
+    created_at = Column(
+        __created_at_name__,
+        TIMESTAMP(timezone=True),
+        default=__datetime_func__,
+        server_default=__datetime_func__,
+        nullable=False,
+    )
+
+    updated_at = Column(
+        __updated_at_name__,
+        TIMESTAMP(timezone=True),
+        default=__datetime_func__,
+        onupdate=__datetime_func__,
+        server_default=__datetime_func__,
+        nullable=False,
+    )

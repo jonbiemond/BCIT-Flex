@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import REAL, Integer, String, Text
 
 from . import Base
+from .base import TimestampsMixin
 from .subject import Subject
 
 if TYPE_CHECKING:
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
 course_id_seq = Sequence("course_course_id_seq")
 
 
-class Course(Base):
+class Course(TimestampsMixin, Base):
     __tablename__ = "course"
     __table_args__ = {"comment": "Courses."}
 
