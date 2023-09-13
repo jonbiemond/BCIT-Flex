@@ -2,6 +2,15 @@
 
 
 
+## v3.3.0 (2023-09-13)
+
+### Feature
+
+* feat(app): display last updated on course page ([`508e081`](https://github.com/jonbiemond/BCIT-Flex/commit/508e0818d5dfb1379f38ea863fffb53ac2e65dfe))
+
+* feat(model): add timestamps to Course, Offering and User ([`ea0267f`](https://github.com/jonbiemond/BCIT-Flex/commit/ea0267f5a73d3a583a7fdc21662f104d1cb720e9))
+
+
 ## v3.2.1 (2023-09-11)
 
 ### Documentation
