@@ -3,12 +3,12 @@ import uuid
 from typing import Type
 
 import pytest
-from alembic import config
 from flask import Flask
 from flask.testing import FlaskCliRunner
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
+from alembic import config
 from bcitflex import create_app
 from bcitflex.db import DBSession, check_current_head
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
@@ -114,7 +114,7 @@ def new_course() -> Course:
     """Return a new course object."""
     return Course(
         subject_id="COMP",
-        code="1234",
+        code="5678",
         name="Test Course",
         prerequisites="COMP 1000",
         credits=3.0,

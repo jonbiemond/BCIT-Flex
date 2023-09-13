@@ -2,6 +2,7 @@
 import datetime
 
 import pytest
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering
@@ -23,7 +24,7 @@ class TestCourse:
         """Test the constructor."""
         assert new_course.course_id is None
         assert new_course.subject_id == "COMP"
-        assert new_course.code == "1234"
+        assert new_course.code == "5678"
         assert new_course.name == "Test Course"
         assert new_course.prerequisites == "COMP 1000"
         assert new_course.credits == 3.0
@@ -33,7 +34,7 @@ class TestCourse:
     def test_str(self, new_course: Course):
         """Test the string representation"""
         assert (
-            str(new_course) == "Course: COMP 1234\n"
+            str(new_course) == "Course: COMP 5678\n"
             "Name: Test Course\n"
             "Prerequisites: COMP 1000\n"
             "Credits: 3.0\n"
@@ -91,6 +92,16 @@ class TestCourseDB:
         course.name = "New Name"
         session.commit()
         assert session.get(Course, 1).name == "New Name"
+
+    def test_unique_constraint(self, session: Session):
+        """Test unique constraint on subject_id and code."""
+        new_course = session.get(Course, 1).clone(
+            course_id=None, include_relationships=False
+        )
+        session.add(new_course)
+        with pytest.raises(IntegrityError):
+            session.commit()
+        session.rollback()
 
     def test_delete_course_cascade(self, session: Session):
         course = session.get(Course, 1)

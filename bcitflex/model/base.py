@@ -3,11 +3,20 @@ from __future__ import annotations
 
 from typing import TypeVar
 
-from sqlalchemy import TIMESTAMP, Column, func, inspect, select
+from sqlalchemy import TIMESTAMP, Column, MetaData, func, inspect, select
 from sqlalchemy.orm import DeclarativeBase, Mapper, Session
 from sqlalchemy.orm import MappedAsDataclass as MappedAsDataclassBase
 
 _T = TypeVar("_T", bound="Base")
+
+# Constraint naming conventions
+convention = {
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s",
+}
 
 
 def db_to_attr(cls_mapper: Mapper, db_name: str) -> str:
@@ -44,6 +53,8 @@ def updated_pks(obj: _T, new_pk_vals: dict) -> dict:
 
 class Base(DeclarativeBase):
     """Base class for SQLAlchemy model definitions."""
+
+    metadata = MetaData(naming_convention=convention)
 
     @classmethod
     def get_by_unique(
