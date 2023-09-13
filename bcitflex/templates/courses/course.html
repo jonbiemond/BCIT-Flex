@@ -5,6 +5,19 @@
 {% endblock %}
 
 {% block content %}
+
+    <script>
+    function utcTimestampToLocalizedString(timestamp){
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleString();
+        return "Last updated: " + formattedDate;
+    }
+
+    window.onload = function() {
+        document.getElementById("last_updated").innerHTML = utcTimestampToLocalizedString("{{ course.last_updated }}");
+    }
+    </script>
+
     <p><strong>Prerequisites:</strong> {{ course.prerequisites }}</p>
     <p><strong>Credits:</strong> {{ course.credits }}</p>
     <p><strong>Available:</strong> {{ course.is_available }}</p>
@@ -37,4 +50,7 @@
             </tr>
         {% endfor %}
     </table>
+{% block updated_at %}
+    <p id="last_updated" style="text-align: right; font-size: smaller; font-style: italic;"></p>
+{% endblock %}
 {% endblock %}
