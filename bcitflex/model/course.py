@@ -101,3 +101,8 @@ class Course(TimestampsMixin, Base):
         strings = [self.__str__()]
         strings += [offering.to_string() for offering in self.offerings]
         return "\n\n".join(strings)
+
+    @property
+    def last_updated(self) -> str:
+        """Return a formatted string of the last_updated timestamp."""
+        return self.updated_at.isoformat()

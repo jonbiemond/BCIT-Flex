@@ -1,4 +1,6 @@
 """Tests for the course model."""
+import datetime
+
 import pytest
 from sqlalchemy.orm import Session
 
@@ -54,6 +56,18 @@ class TestCourse:
     def test_to_string(self, new_course: Course):
         """Lazy test for to_string method."""
         assert len(new_course.to_string()) > 50
+
+    def test_last_updated(self, new_course: Course):
+        """Test last_updated property."""
+        new_course.updated_at = datetime.datetime(
+            2011, 6, 29, 16, 52, 48, tzinfo=datetime.timezone.utc
+        )
+        updated_at = new_course.updated_at
+        assert (
+            updated_at.tzinfo is not None
+            and updated_at.tzinfo.utcoffset(updated_at) is not None
+        )
+        assert new_course.last_updated == "2011-06-29T16:52:48+00:00"
 
 
 @dbtest
