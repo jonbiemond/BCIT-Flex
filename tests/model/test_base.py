@@ -1,12 +1,13 @@
 """Tests for the model Base class"""
 import datetime
+from typing import Type
 
 import pytest
-from sqlalchemy import inspect
+from sqlalchemy import UniqueConstraint, inspect
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Meeting, Offering, User
-from bcitflex.model.base import db_to_attr, updated_pks
+from bcitflex.model.base import Base, db_to_attr, updated_pks
 from tests import dbtest
 
 
@@ -55,6 +56,33 @@ class TestHelpers:
         """Test the update_pks function when there are default values."""
         obj = Course(subject_id="COMP", code="1001", name="Test Course")
         assert updated_pks(obj, pk_val) == expected
+
+
+class TestPrivate:
+    """Test private methods of the Base class."""
+
+    @pytest.mark.parametrize(
+        "model, constraint, expected",
+        [
+            (User, None, UniqueConstraint),
+            (Course, None, UniqueConstraint),
+            (Offering, None, type(None)),
+        ],
+    )
+    def test__unique_constraint(self, model: Type[Base], constraint: str, expected):
+        """Test the _unique_constraint method."""
+        assert isinstance(model._unique_constraint(constraint), expected)
+
+    @pytest.mark.parametrize(
+        "model, constraint",
+        [
+            (User, "uq_user_email"),
+        ],
+    )
+    def test__unique_constraint_error(self, model: Type[Base], constraint: str):
+        """Test the _unique_constraint method raises an error when no constraint is found."""
+        with pytest.raises(ValueError):
+            model._unique_constraint(constraint)
 
 
 @dbtest
