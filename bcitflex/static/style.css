@@ -6,8 +6,8 @@ hr { border: none; border-top: 1px solid lightgray; }
 nav { background: #125738; color: #E7E8EB; display: flex; align-items: center; padding: 0 0.5rem;}
 @media (prefers-color-scheme: dark) {
   html {
-      background-color: #3d3d3d;
-      color: #E7E8EB;
+    background-color: #3d3d3d;
+    color: #E7E8EB;
   }
   body {
     background-color: #1B1B1B;
@@ -17,6 +17,10 @@ nav { background: #125738; color: #E7E8EB; display: flex; align-items: center; p
   a { color: #8ac99e; }
   .content > header h1 { color: #8ac99e; }
   .content input, .content textarea { background: #2a2a2a; color: #E7E8EB; }
+}
+@media (prefers-color-scheme: light) {
+  nav h1 { color: #E7E8EB; }
+  nav a { color: #8ac99e; }
 }
 nav h1 { flex: auto; margin: 0; }
 nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
