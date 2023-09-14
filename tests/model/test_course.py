@@ -2,6 +2,7 @@
 import datetime
 
 import pytest
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -102,6 +103,25 @@ class TestCourseDB:
         with pytest.raises(IntegrityError):
             session.commit()
         session.rollback()
+
+    def test_set_id(self, session: Session):
+        """Test set_id method."""
+        new_course = session.get(Course, 1).clone(
+            pk_id=None, include_relationships=False
+        )
+        new_course.set_id(session)
+        assert new_course.course_id == 1
+
+    def test_merge(self, session: Session):
+        """Test merge doesn't create a new object when code and subject_id already exist."""
+        course_ct = len(session.scalars(select(Course)).all())
+        new_course = session.get(Course, 1).clone(
+            pk_id=None, include_relationships=False
+        )
+        new_course.set_id(session)
+        session.merge(new_course)
+        session.commit()
+        assert len(session.scalars(select(Course)).all()) == course_ct
 
     def test_delete_course_cascade(self, session: Session):
         course = session.get(Course, 1)
