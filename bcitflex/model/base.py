@@ -3,7 +3,15 @@ from __future__ import annotations
 
 from typing import TypeVar
 
-from sqlalchemy import TIMESTAMP, Column, MetaData, func, inspect, select
+from sqlalchemy import (
+    TIMESTAMP,
+    Column,
+    MetaData,
+    UniqueConstraint,
+    func,
+    inspect,
+    select,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapper, Session
 from sqlalchemy.orm import MappedAsDataclass as MappedAsDataclassBase
 
@@ -57,8 +65,50 @@ class Base(DeclarativeBase):
     metadata = MetaData(naming_convention=convention)
 
     @classmethod
+    def _unique_constraint(
+        cls: "_T",
+        constraint_name: str | None = None,
+    ) -> UniqueConstraint | None:
+        """Return the unique constraint of a model."""
+        mapper = inspect(cls)
+
+        uq_constraints = [
+            constraint
+            for constraint in mapper.persist_selectable.constraints
+            if isinstance(constraint, UniqueConstraint)
+        ]
+
+        if not uq_constraints:
+            return None
+
+        if constraint_name is not None:
+            uq_constraint = next(
+                (
+                    constraint
+                    for constraint in uq_constraints
+                    if constraint.name == constraint_name
+                ),
+                None,
+            )
+            if uq_constraint is None:
+                raise ValueError(
+                    f"{cls.__name__} model has no unique constraint named {constraint_name}."
+                )
+        else:
+            if len(uq_constraints) > 1:
+                raise ValueError(
+                    f"{cls.__name__} model has multiple unique constraints. Must specify constraint_name."
+                )
+            uq_constraint = uq_constraints[0]
+
+        return uq_constraint
+
+    @classmethod
     def get_by_unique(
-        cls: "_T", session: Session, unique_id: int | str | tuple
+        cls: "_T",
+        session: Session,
+        unique_id: int | str | tuple,
+        constraint_name: str | None = None,
     ) -> _T | None:
         """
         Return an object using the unique constraint instead of the primary key.
@@ -71,6 +121,7 @@ class Base(DeclarativeBase):
 
         :param session: SQLAlchemy session
         :param unique_id: unique id value or tuple of unique id values corresponding to the unique columns
+        :param constraint_name: unique constraint name, optional
 
         :return: scalar result or None
 
@@ -82,12 +133,11 @@ class Base(DeclarativeBase):
             unique_id = (unique_id,)
 
         # get the unique column names
-        mapper = inspect(cls)
-        unique_columns = [
-            c.key for c in mapper.column_attrs if mapper.columns[c.key].unique
-        ]
-        if not unique_columns:
-            raise ValueError(f"{cls.__name__} model has no unique fields.")
+        uq_constraint = cls._unique_constraint(constraint_name)
+        if uq_constraint is None:
+            raise ValueError(f"{cls.__name__} model has no unique constraints.")
+
+        unique_columns = [c.key for c in uq_constraint.columns]
 
         # get the object matching the unique id
         filters = dict(zip(unique_columns, unique_id))

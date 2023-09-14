@@ -7,11 +7,10 @@ from pathlib import Path
 
 import click
 import psycopg2
-from flask import Flask, current_app
-from sqlalchemy import engine, text
-
 from alembic import config, script
 from alembic.runtime import migration
+from flask import Flask, current_app
+from sqlalchemy import engine, text
 
 from .ext.database import SQLAlchemy
 from .model.base import Base
