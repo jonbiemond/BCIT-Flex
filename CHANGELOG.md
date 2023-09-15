@@ -2,6 +2,31 @@
 
 
 
+## v3.4.0 (2023-09-15)
+
+### Chore
+
+* chore: add LICENSE.md ([`f83ef4a`](https://github.com/jonbiemond/BCIT-Flex/commit/f83ef4a2ae4969badb6b8f2ac2ce521ad58309c9))
+
+### Feature
+
+* feat(scripts): merge in scraped courses ([`9b07abd`](https://github.com/jonbiemond/BCIT-Flex/commit/9b07abdca166be47d70b7643847f5cad2fff0341))
+
+* feat(model): declare cascade behaviour
+
+- Add server side on-delete-cascade to offering.term FK constraint. ([`85e75c3`](https://github.com/jonbiemond/BCIT-Flex/commit/85e75c3aa32dc2171758915dc916e6948f3df002))
+
+* feat(model): add set_id to course ([`99fffae`](https://github.com/jonbiemond/BCIT-Flex/commit/99fffae2eb148c5f974c13926d76c81f7682f0a5))
+
+* feat(model): handle composite constraints in get_by_unique ([`5525c44`](https://github.com/jonbiemond/BCIT-Flex/commit/5525c449c14c54b953ebb06dbccc60155bdd96fe))
+
+* feat(db): add unique constraint to course ([`377a7d8`](https://github.com/jonbiemond/BCIT-Flex/commit/377a7d8202d5d27b139cbb03f5737e77565d063b))
+
+### Test
+
+* test: fix script location in tests/alembic.ini ([`8ca9d1c`](https://github.com/jonbiemond/BCIT-Flex/commit/8ca9d1ce924ea4a54934ee32f8a8288742b91e67))
+
+
 ## v3.3.0 (2023-09-13)
 
 ### Feature
