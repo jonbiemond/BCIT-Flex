@@ -2,6 +2,13 @@
 
 
 
+## v3.4.1 (2023-09-15)
+
+### Fix
+
+* fix: specify text color of nav bar in light mode ([`684dd08`](https://github.com/jonbiemond/BCIT-Flex/commit/684dd080bc60eb55a6ee53adab64ff743c3d1153))
+
+
 ## v3.4.0 (2023-09-15)
 
 ### Chore
