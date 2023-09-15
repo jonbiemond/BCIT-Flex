@@ -11,10 +11,10 @@ import requests
 from flask import current_app
 from requests import Response
 from selectolax.parser import HTMLParser, Node
-from sqlalchemy import create_engine, delete, or_, select
+from sqlalchemy import create_engine, or_, select
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Base, Course, Meeting, Offering, Subject, Term
+from bcitflex.model import Course, Meeting, Offering, Subject, Term
 
 TERMS = {10: "Winter", 20: "Spring/Summer", 30: "Fall"}
 WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -270,7 +270,6 @@ def parse_response(response: Response) -> Course:
 
 def prep_db(session: Session):
     """Remove rows from tables in the database and preload term table."""
-    session.execute(delete(Course))
 
     current_year = datetime.datetime.now().year
     for year in range(current_year, current_year + 2):
@@ -328,11 +327,12 @@ def extract_models(urls: list[str]) -> Iterator[Course]:
     return (parse_response(response) for response in course_responses)
 
 
-def load_models(session: Session, models: Iterator[Base]) -> int:
-    """Commit models to database."""
+def load_courses(session: Session, courses: Iterator[Course]) -> int:
+    """Merge courses into database."""
 
-    for model in models:
-        session.add(model)
+    for course in courses:
+        course.set_id(session)
+        session.merge(course)
 
     object_ct = len(session.new)
 
@@ -369,7 +369,7 @@ def bcit_to_sql(db_url: str, all_subjects: bool = False):
         courses = extract_models(urls)
 
         # load
-        count = load_models(session, courses)
+        count = load_courses(session, courses)
 
         # log
         print(f"Successfully loaded {count} objects.")
