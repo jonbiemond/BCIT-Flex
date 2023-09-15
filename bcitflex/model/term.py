@@ -28,7 +28,9 @@ class Term(Base):
         String(20), doc="Term season", comment="Term season."
     )
 
-    offerings: Mapped["Offering"] = relationship(back_populates="term")
+    offerings: Mapped["Offering"] = relationship(
+        back_populates="term", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"Term({self.term_id})"
