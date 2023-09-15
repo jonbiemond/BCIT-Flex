@@ -14,7 +14,7 @@ from bcitflex.scripts.scrape_and_load import (
     CoursePage,
     extract_models,
     get_course_urls,
-    load_models,
+    load_courses,
     meeting_nodes,
     offering_nodes,
     parse_course_info,
@@ -60,13 +60,12 @@ def meeting_node(offering_node: Node) -> Node:
 
 
 @pytest.fixture
-def new_course(
+def existing_course(
     new_course: Course, new_subject: Subject, new_offering: Offering, new_term: Term
 ) -> Course:
-    """Return a new course object."""
-    new_offering.course_id = 2
-    new_course.subject_id = "MATH"
-    new_course.subject = new_subject
+    """Return a course object that matches an existing row in the course table."""
+    new_course.code = "1234"
+    new_course.subject_id = "COMP"
     new_course.offerings = [new_offering]
     return new_course
 
@@ -100,10 +99,10 @@ class TestParseNodes:
         assert course.credits > 0
 
     def test_parse_offering_node(
-        self, offering_node: Node, new_course: Course, new_term: Term
+        self, offering_node: Node, existing_course: Course, new_term: Term
     ):
         """Test the parse offering node function."""
-        offering = parse_offering_node(offering_node, new_course, new_term)
+        offering = parse_offering_node(offering_node, existing_course, new_term)
         assert offering.price > 0
         assert offering.crn == "38186"
 
@@ -181,7 +180,7 @@ class TestLoadData:
     pytestmark = pytest.mark.empty_db
 
     def test_prep_db(self, session: Session):
-        """Test if prep_db deletes data in the database."""
+        """Test if prep_db does not delete data in the database."""
         populate_db(session)
 
         offerings = session.scalars(select(Offering)).all()
@@ -190,14 +189,14 @@ class TestLoadData:
         prep_db(session)
 
         offerings = session.scalars(select(Offering)).all()
-        assert len(offerings) == 0
+        assert len(offerings) == 1
 
         terms = session.scalars(select(Term)).all()
         assert len(terms) == 6
 
-    def test_load_models(self, session: Session, new_course: Course):
+    def test_load_models(self, session: Session, existing_course: Course):
         """Test loading models to the db."""
-        courses = (course for course in [new_course])
-        assert session.get(Course, 1) is None
-        load_models(session, courses)
-        assert session.get(Course, 2).course_id == 2
+        courses = (course for course in [existing_course])
+        assert session.get(Course, 1) is not None
+        load_courses(session, courses)
+        assert session.get(Course, 2) is None
