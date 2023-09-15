@@ -37,12 +37,16 @@ class Offering(TimestampsMixin, Base):
     course_id: Mapped[Integer] = mapped_column(
         ForeignKey("course.course_id", ondelete="CASCADE")
     )
-    term_id: Mapped[String] = mapped_column(ForeignKey("term.term_id"))
+    term_id: Mapped[String] = mapped_column(
+        ForeignKey("term.term_id", ondelete="CASCADE")
+    )
 
     course: Mapped["Course"] = relationship(back_populates="offerings")
     term: Mapped["Term"] = relationship(back_populates="offerings")
 
-    meetings: Mapped[list["Meeting"]] = relationship(back_populates="offering")
+    meetings: Mapped[list["Meeting"]] = relationship(
+        back_populates="offering", cascade="all, delete, delete-orphan"
+    )
 
     primary_meeting: Mapped["Meeting"] = relationship(
         primaryjoin="and_(Offering.crn==Meeting.crn, Meeting.meeting_id == 1)",
