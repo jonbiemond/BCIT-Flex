@@ -2,6 +2,15 @@
 
 
 
+## v3.4.2 (2023-09-16)
+
+### Fix
+
+* fix(model): mark available when status contains keyword
+
+Fixes #46 ([`76be36b`](https://github.com/jonbiemond/BCIT-Flex/commit/76be36bc36fdbfcaa748490dcf071ee2afcac848))
+
+
 ## v3.4.1 (2023-09-15)
 
 ### Fix
