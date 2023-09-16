@@ -334,7 +334,7 @@ def load_courses(session: Session, courses: Iterator[Course]) -> int:
         course.set_id(session)
         session.merge(course)
 
-    object_ct = len(session.new)
+    object_ct = len(session.dirty)
 
     session.commit()
 
