@@ -58,7 +58,7 @@ class Offering(TimestampsMixin, Base):
 
     @property
     def available(self):
-        return self.status not in ["Full", "In Progress"]
+        return not any(keyword in self.status for keyword in ["Full", "In Progress"])
 
     @property
     def start_date(self):
