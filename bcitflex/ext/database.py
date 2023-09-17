@@ -1,12 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy as SQLAlchemyBase
-from sqlalchemy import FromClause, Join, Table
 from sqlalchemy.event import listens_for
-from sqlalchemy.orm import DeclarativeBase, ORMExecuteState, Session
-from sqlalchemy.orm.util import _ORMJoin
-from sqlalchemy.sql import (
-    Executable,
-    Select,
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    ORMExecuteState,
+    Session,
+    with_loader_criteria,
 )
+
+from bcitflex.model.base import SoftDeleteMixin
 
 
 class SQLAlchemy(SQLAlchemyBase):
@@ -24,51 +25,19 @@ class SQLAlchemy(SQLAlchemyBase):
 
 
 # Soft delete hook functions
-def rewrite_statement(stmt: Executable) -> Select:
-    """Rewrite a single SQL-like Statement."""
-
-    if isinstance(stmt, Select):
-        for from_clause in stmt.get_final_froms():
-            stmt = rewrite_from_clause(stmt, from_clause)
-
-        return stmt
-
-    raise NotImplementedError(f'Unsupported statement type "{(type(stmt))}"!')
-
-
-def rewrite_from_clause(stmt: Select, from_clause: FromClause):
-    """Rewrite a single from clause."""
-
-    if isinstance(from_clause, Table):
-        deleted_field = from_clause.columns.get("deleted_at")
-        stmt = stmt.where(deleted_field.is_(None))
-
-    elif isinstance(from_clause, _ORMJoin):
-        # not expecting recursive joins
-        if any(
-            type(j) in (_ORMJoin, Join) for j in (from_clause.left, from_clause.right)
-        ):
-            raise NotImplementedError(
-                f"Recursive joins are not supported! Join: {from_clause}"
-            )
-        # rewrite the left and right sides of the join
-        stmt = rewrite_from_clause(stmt, from_clause.left)
-        stmt = rewrite_from_clause(stmt, from_clause.right)
-
-    else:
-        raise NotImplementedError(f'Unsupported froms type "{(type(from_clause))}"!')
-
-    return stmt
 
 
 @listens_for(Session, identifier="do_orm_execute")
 def soft_delete_execute(state: ORMExecuteState):
-    if not state.is_select:
-        return
+    """Activate an event hook to rewrite the queries."""
 
-    # If soft delete is disabled, don't rewrite the statement
-    if state.statement.get_execution_options().get("include_deleted"):
-        return
-
-    # Rewrite the statement
-    state.statement = rewrite_statement(state.statement)
+    if state.is_select and not state.statement.get_execution_options().get(
+        "include_deleted"
+    ):
+        state.statement = state.statement.options(
+            with_loader_criteria(
+                SoftDeleteMixin,
+                lambda cls: cls.deleted_at.is_(None),
+                include_aliases=True,
+            )
+        )
