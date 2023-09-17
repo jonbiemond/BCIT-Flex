@@ -151,3 +151,6 @@ cython_debug/
 
 # VS Code
 .vscode/
+
+# .uuid ?
+.uuid
