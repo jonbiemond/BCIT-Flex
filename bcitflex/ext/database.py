@@ -47,5 +47,9 @@ def soft_delete_execute(state: ORMExecuteState):
     if not state.is_select:
         return
 
+    # If soft delete is disabled, don't rewrite the statement
+    if state.statement.get_execution_options().get("include_deleted"):
+        return
+
     # Rewrite the statement
     state.statement = rewrite_statement(state.statement)
