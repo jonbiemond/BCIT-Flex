@@ -17,7 +17,7 @@ class SQLAlchemy(SQLAlchemyBase):
             app=app, session_options=session_options, metadata=model.metadata
         )
 
-    def _make_declarative_base(self, _):
+    def _make_declarative_base(self, *args, **kwargs):
         """Creates or extends the declarative base."""
         return self.Model
 
