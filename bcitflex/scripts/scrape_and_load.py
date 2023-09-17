@@ -306,7 +306,7 @@ def get_course_urls(session: Session, all_subjects: bool = False) -> list[str]:
     stmt = select(Subject)
     clauses = [Subject.is_active]
     if all_subjects:
-        clauses.append(Subject.is_active == None)
+        clauses.append(Subject.is_active.is_(None))
 
     subjects = session.scalars(stmt.where(or_(*clauses))).all()
 
