@@ -10,6 +10,8 @@ from . import Base
 from .base import TimestampsMixin
 from .meeting import tabulate_meetings
 
+NOT_AVAILABLE = ["Full", "In Progress", "Cancelled", "Closed", "Waitlist"]
+
 if TYPE_CHECKING:
     from . import Course, Meeting, Term
 
@@ -58,7 +60,7 @@ class Offering(TimestampsMixin, Base):
 
     @property
     def available(self):
-        return not any(keyword in self.status for keyword in ["Full", "In Progress"])
+        return not any(keyword in self.status for keyword in NOT_AVAILABLE)
 
     @property
     def start_date(self):
