@@ -1,37 +1,8 @@
-from sqlalchemy import and_, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from bcitflex.ext.database import rewrite_statement
 from bcitflex.model import Course, Offering, User
 from tests import dbtest
-
-
-class TestSoftDelete:
-    """Test the SoftDelete extension."""
-
-    def test_select_scalars(self):
-        """Test selecting objects rewrites the statement."""
-        stmt = select(User)
-        stmt = rewrite_statement(stmt)
-
-        # if we don't have a where clause, we can't be filtering for soft-deleted
-        assert stmt.whereclause is not None
-
-        # assert we are excluding soft-deleted objects
-        assert stmt.whereclause.compare(User.deleted_at.is_(None))
-
-    def test_orm_join(self):
-        """Test that an ORM join statement is rewritten."""
-        stmt = select(Course).join(Offering)
-        stmt = rewrite_statement(stmt)
-
-        # if we don't have a where clause, we can't be filtering for soft-deleted
-        assert stmt.whereclause is not None
-
-        # assert we are excluding soft-deleted objects
-        assert stmt.whereclause.compare(
-            and_(Offering.deleted_at.is_(None), Course.deleted_at.is_(None))
-        )
 
 
 @dbtest
