@@ -59,7 +59,19 @@ def updated_pks(obj: _T, new_pk_vals: dict) -> dict:
     return pk_vals
 
 
-class Base(DeclarativeBase):
+class SoftDeleteMixin:
+    """Soft delete mixin."""
+
+    __abstract__ = True
+
+    deleted_at = Column(
+        "deleted_at",
+        TIMESTAMP(timezone=True),
+        nullable=True,
+    )
+
+
+class Base(SoftDeleteMixin, DeclarativeBase):
     """Base class for SQLAlchemy model definitions."""
 
     metadata = MetaData(naming_convention=convention)
