@@ -2,6 +2,13 @@
 
 
 
+## v3.4.3 (2023-09-17)
+
+### Fix
+
+* fix(model): add cancelled to not available keywords ([`8138ab1`](https://github.com/jonbiemond/BCIT-Flex/commit/8138ab1f589444497bd8b5d0ab7c8eb865c9a4c6))
+
+
 ## v3.4.2 (2023-09-16)
 
 ### Fix
