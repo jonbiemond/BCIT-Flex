@@ -38,3 +38,16 @@ class TestSoftDeleteDB:
 
         # assert we are excluding soft-deleted objects
         assert len(session.scalars(select(User)).all()) == user_ct
+
+    def test_include_option(self, session: Session):
+        """Test that the include_deleted option includes deleted objects."""
+        # Note: this test depends on the prior test (test_hook) for efficiency
+        user_ct = len(session.scalars(select(User)).all())
+        assert (
+            len(
+                session.scalars(
+                    select(User).execution_options(include_deleted=True)
+                ).all()
+            )
+            == user_ct + 1
+        )
