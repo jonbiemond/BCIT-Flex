@@ -2,6 +2,51 @@
 
 
 
+## v3.5.0 (2023-10-18)
+
+### Chore
+
+* chore(deps): bump urllib3 from 2.0.4 to 2.0.6
+
+Bumps [urllib3](https://github.com/urllib3/urllib3) from 2.0.4 to 2.0.6.
+- [Release notes](https://github.com/urllib3/urllib3/releases)
+- [Changelog](https://github.com/urllib3/urllib3/blob/main/CHANGES.rst)
+- [Commits](https://github.com/urllib3/urllib3/compare/2.0.4...2.0.6)
+
+---
+updated-dependencies:
+- dependency-name: urllib3
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`960b92f`](https://github.com/jonbiemond/BCIT-Flex/commit/960b92fc1baa0132b081b8bcd4cc272ac5ebbd99))
+
+### Feature
+
+* feat(database): intercept delete commands and replace with a soft delete
+
+- Add SQL soft delete rule to tables.
+- Update load_courses() to reinstate deleted courses. ([`b3a284c`](https://github.com/jonbiemond/BCIT-Flex/commit/b3a284c32a10808a46f00e0858d62e59579dbe7d))
+
+* feat(model): make soft delete SQLAlchemy
+
+Use SQLAlchemy function `with_loader_criteria()` to alter select statements instead of custom rewrite function. ([`21660cb`](https://github.com/jonbiemond/BCIT-Flex/commit/21660cba1e84dfc7444435cd81643d4a45f758bd))
+
+* feat(model): add support for ORM joins to soft delete hook ([`2f6143d`](https://github.com/jonbiemond/BCIT-Flex/commit/2f6143d3c105df50cef5ca9c7203168039a101da))
+
+* feat(model): add option to override soft delete select hook ([`8116aae`](https://github.com/jonbiemond/BCIT-Flex/commit/8116aaef7913fdb7a618a6f40dfc69671495b46a))
+
+* feat(model): add soft delete fields and select hook ([`c7e5194`](https://github.com/jonbiemond/BCIT-Flex/commit/c7e5194181e45cfdf723dc6888fce65f24c770c8))
+
+### Fix
+
+* fix(model): handle interface changes in flask-sqlalchemy extension ([`dd5d6cb`](https://github.com/jonbiemond/BCIT-Flex/commit/dd5d6cbbfc90dc864a6b392900fcf566916f3b53))
+
+### Style
+
+* style: make tables easier to read ([`917036d`](https://github.com/jonbiemond/BCIT-Flex/commit/917036d94031b215b90b13e7de1077ffb947f31e))
+
+
 ## v3.4.3 (2023-09-17)
 
 ### Fix
