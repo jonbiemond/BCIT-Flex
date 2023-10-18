@@ -2,30 +2,31 @@
 
 from flask import Blueprint, render_template, request
 from sqlalchemy import select
+from werkzeug.datastructures import ImmutableMultiDict
 
-from bcitflex.app_functions import filter_courses
+from bcitflex.app_functions import ModelFilter
 from bcitflex.db import DBSession
 from bcitflex.model import Course
 
 bp = Blueprint("course", __name__)
 
 
+def filters_from_form(form: ImmutableMultiDict) -> ModelFilter:
+    """Return a list of CourseFilters from the given form."""
+    filters = ModelFilter(Course)
+    filters.add_condition("subject_id", form.get("subject"))
+    filters.add_condition("code", form.get("code"))
+    filters.add_condition("is_available", form.get("available") == "True" or None)
+    return filters
+
+
 @bp.route("/")
 @bp.route("/courses", methods=["GET", "POST"])
 def index():
+    courses = DBSession.scalars(select(Course)).all()
     if request.method == "POST":
-        subject = request.form.get("subject")
-        course_code = request.form.get("course_code")
-        available = request.form.get("available")
-
-        courses = filter_courses(
-            session=DBSession,
-            subject=subject,
-            course_code=course_code,
-            available=available,
-        )
-    else:
-        courses = DBSession.scalars(select(Course)).all()
+        print(request.form)
+        courses = filters_from_form(request.form).filter(courses)
     return render_template("courses/index.html", courses=courses)
 
 
