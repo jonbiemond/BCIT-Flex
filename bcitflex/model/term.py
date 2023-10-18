@@ -29,7 +29,7 @@ class Term(Base):
     )
 
     offerings: Mapped["Offering"] = relationship(
-        back_populates="term", cascade="all, delete-orphan"
+        back_populates="term", cascade="all, delete, delete-orphan"
     )
 
     def __repr__(self):

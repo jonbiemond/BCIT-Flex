@@ -63,9 +63,9 @@ class Course(TimestampsMixin, Base):
 
     offerings: Mapped[list["Offering"]] = relationship(
         back_populates="course",
-        cascade="all, delete-orphan",
+        cascade="all, delete, delete-orphan",
         # Let the database handle cascades for unloaded children
-        passive_deletes=True,
+        # passive_deletes=True,
     )
 
     def __repr__(self):

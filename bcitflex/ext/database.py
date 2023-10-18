@@ -25,15 +25,11 @@ class SQLAlchemy(SQLAlchemyBase):
 
 
 # Soft delete hook functions
-
-
 @listens_for(Session, identifier="do_orm_execute")
 def soft_delete_execute(state: ORMExecuteState):
     """Activate an event hook to rewrite the queries."""
 
-    if state.is_select and not state.statement.get_execution_options().get(
-        "include_deleted"
-    ):
+    if state.is_select and not state.execution_options.get("include_deleted"):
         state.statement = state.statement.options(
             with_loader_criteria(
                 SoftDeleteMixin,

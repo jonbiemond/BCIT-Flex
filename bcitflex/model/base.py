@@ -64,6 +64,8 @@ class SoftDeleteMixin:
 
     __abstract__ = True
 
+    __mapper_args__ = {"confirm_deleted_rows": False}
+
     deleted_at = Column(
         "deleted_at",
         TIMESTAMP(timezone=True),
@@ -153,7 +155,7 @@ class Base(SoftDeleteMixin, DeclarativeBase):
 
         # get the object matching the unique id
         filters = dict(zip(unique_columns, unique_id))
-        stmt = select(cls).filter_by(**filters)
+        stmt = select(cls).filter_by(**filters).execution_options(include_deleted=True)
         return session.execute(stmt).scalar_one_or_none()
 
     def clone(

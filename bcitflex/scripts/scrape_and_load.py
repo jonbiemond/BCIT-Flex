@@ -92,7 +92,7 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
 
     # get price
     price = node.css_first('li[class="sctn-block-list-item cost"]').text(False)
-    price = float(price.removeprefix("$"))
+    price = float(price.removeprefix("$") or 0)
 
     # get duration
     duration = node.css_first('li[class="sctn-block-list-item duration"]').text(False)
@@ -330,9 +330,19 @@ def extract_models(urls: list[str]) -> Iterator[Course]:
 def load_courses(session: Session, courses: Iterator[Course]) -> int:
     """Merge courses into database."""
 
-    for course in courses:
-        course.set_id(session)
-        session.merge(course)
+    with session.no_autoflush:
+        # read all existing courses into the identity map where merge can find them
+        _ = (
+            session.execute(select(Course), execution_options={"include_deleted": True})
+            .scalars()
+            .all()
+        )
+
+        # get course ids and merge
+        for course in courses:
+            course.set_id(session)
+            course.deleted_at = None
+            session.merge(course)
 
     object_ct = len(session.dirty)
 
