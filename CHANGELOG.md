@@ -2,6 +2,47 @@
 
 
 
+## v3.5.1 (2023-10-19)
+
+### Chore
+
+* chore(deps): bump urllib3 from 2.0.6 to 2.0.7
+
+Bumps [urllib3](https://github.com/urllib3/urllib3) from 2.0.6 to 2.0.7.
+- [Release notes](https://github.com/urllib3/urllib3/releases)
+- [Changelog](https://github.com/urllib3/urllib3/blob/main/CHANGES.rst)
+- [Commits](https://github.com/urllib3/urllib3/compare/2.0.6...2.0.7)
+
+---
+updated-dependencies:
+- dependency-name: urllib3
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`0920c76`](https://github.com/jonbiemond/BCIT-Flex/commit/0920c7671d2e3a1591af76be114bb19138996176))
+
+* chore(deps-dev): bump gitpython from 3.1.36 to 3.1.37
+
+Bumps [gitpython](https://github.com/gitpython-developers/GitPython) from 3.1.36 to 3.1.37.
+- [Release notes](https://github.com/gitpython-developers/GitPython/releases)
+- [Changelog](https://github.com/gitpython-developers/GitPython/blob/main/CHANGES)
+- [Commits](https://github.com/gitpython-developers/GitPython/compare/3.1.36...3.1.37)
+
+---
+updated-dependencies:
+- dependency-name: gitpython
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`00fdc6a`](https://github.com/jonbiemond/BCIT-Flex/commit/00fdc6aeb5efaba6cdc318fa9cfa6751d93900ff))
+
+### Fix
+
+* fix: price in offering info (#59)
+
+Closes #54 ([`82dd4a4`](https://github.com/jonbiemond/BCIT-Flex/commit/82dd4a45448e4b90285ea8675bda6ca648601d6f))
+
+
 ## v3.5.0 (2023-10-18)
 
 ### Chore
