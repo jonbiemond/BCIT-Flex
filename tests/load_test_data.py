@@ -1,7 +1,7 @@
 """Get course url response and dump to a pickle file for testing."""
 from pickle import dump
 
-from bcitflex.modules.extract_course_data import collect_response
+from bcitflex.scripts.scrape_and_load import collect_response
 
 if __name__ == "__main__":
     base_url = "https://www.bcit.ca"

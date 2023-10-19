@@ -80,7 +80,7 @@ class TestGetNodes:
         """Test the offering nodes function returns a valid offering_node."""
         node = next(offering_nodes(term_node))
         crn = node.css_first('li[class="sctn-block-list-item crn"] span').text(False)
-        assert crn == "38186"
+        assert crn == "38185"
 
     def test_meeting_nodes(self, offering_node: Node):
         """Test the meeting nodes function returns a valid meeting node."""
@@ -104,18 +104,18 @@ class TestParseNodes:
         """Test the parse offering node function."""
         offering = parse_offering_node(offering_node, existing_course, new_term)
         assert offering.price > 0
-        assert offering.crn == "38186"
+        assert offering.crn == "38185"
 
     def test_parse_meeting_node(
         self, meeting_node: Node, new_offering: Offering, new_term: Term
     ):
         """Test the parse meeting node function."""
         meeting = parse_meeting_node(meeting_node, new_offering, new_term)
-        assert meeting.start_date == datetime.date(2024, 9, 13)
-        assert meeting.end_date == datetime.date(2024, 11, 29)
-        assert meeting.days == {"Wed"}
-        assert meeting.start_time == datetime.time(18)
-        assert meeting.end_time == datetime.time(21)
+        assert meeting.start_date == datetime.date(2024, 9, 11)
+        assert meeting.end_date == datetime.date(2024, 12, 11)
+        assert meeting.days is None
+        assert meeting.start_time is None
+        assert meeting.end_time is None
         assert meeting.campus == "Online"
         assert meeting.room is None
 
