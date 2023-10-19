@@ -91,8 +91,14 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
         instructor = instructor_node.text(False)
 
     # get price
-    price = node.css_first('li[class="sctn-block-list-item cost"]').text(False)
-    price = float(price.removeprefix("$") or 0)
+    price_node = node.css_first("li.sctn-block-list-item.cost div")
+
+    if price_node:
+        price_text: str = price_node.text(False)
+        price = float(price_text.strip().removeprefix("$") or 0)
+
+    else:
+        price = 0
 
     # get duration
     duration = node.css_first('li[class="sctn-block-list-item duration"]').text(False)
