@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from bcitflex import create_app
 from bcitflex.db import DBSession, check_current_head
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
+from bcitflex.model.program import Program
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
@@ -118,6 +119,16 @@ def new_course() -> Course:
         name="Test Course",
         prerequisites="COMP 1000",
         credits=3.0,
+        url="https://www.bcit.ca",
+    )
+
+
+@pytest.fixture
+def new_program() -> Program:
+    """Return a new program object."""
+    return Program(
+        name="Test Program",
+        credential="Test Credential",
         url="https://www.bcit.ca",
     )
 

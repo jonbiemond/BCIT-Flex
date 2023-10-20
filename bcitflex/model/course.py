@@ -7,6 +7,7 @@ from sqlalchemy.types import REAL, Integer, String, Text
 
 from . import Base
 from .base import TimestampsMixin
+from .program import Program, program_course_association
 from .subject import Subject
 
 if TYPE_CHECKING:
@@ -61,11 +62,14 @@ class Course(TimestampsMixin, Base):
 
     subject: Mapped["Subject"] = relationship(back_populates="courses")
 
+    programs: Mapped[list["Program"]] = relationship(
+        secondary=program_course_association,
+        back_populates="courses",
+    )
+
     offerings: Mapped[list["Offering"]] = relationship(
         back_populates="course",
         cascade="all, delete, delete-orphan",
-        # Let the database handle cascades for unloaded children
-        # passive_deletes=True,
     )
 
     def __repr__(self):
