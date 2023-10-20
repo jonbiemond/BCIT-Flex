@@ -121,6 +121,7 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
         status=status,
         course=course,
         term_id=term.term_id,
+        deleted_at=None,
     )
 
     # parse meeting times
@@ -210,6 +211,7 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
         building=building,
         room=room,
         offering=offering,
+        deleted_at=None,
     )
 
 
@@ -231,6 +233,7 @@ def parse_course_info(page: CoursePage) -> Course:
         prerequisites=prerequisites,
         credits=credit_hours,
         url=page.url,
+        deleted_at=None,
     )
 
 
@@ -347,7 +350,6 @@ def load_courses(session: Session, courses: Iterator[Course]) -> int:
         # get course ids and merge
         for course in courses:
             course.set_id(session)
-            course.deleted_at = None
             session.merge(course)
 
     object_ct = len(session.dirty)
