@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
 
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
+from bcitflex.model.program import Program
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
 POSTGRES_HOST = getenv("PGHOST", "localhost")
@@ -91,6 +92,12 @@ def populate_db(session: Session):
         credits=3.0,
         url="https://www.bcit.ca",
     )
+    program = Program(
+        name="Computer Systems Technology (CST)",
+        credential="Statement of Completion",
+        url="https://www.bcit.ca",
+        courses=[course],
+    )
     offering = Offering(
         crn="12345",
         instructor="John Doe",
@@ -117,6 +124,7 @@ def populate_db(session: Session):
     session.add(blaw)
     session.add(ahvc)
     session.add(course)
+    session.add(program)
     session.add(offering)
     session.add(meeting)
     session.add(user)
