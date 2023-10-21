@@ -8,7 +8,7 @@ To make a contribution, follow the following steps:
 4. If you modified the code (new feature or bug-fix), please add tests for it.
 5. Check the linting. [see below](https://github.com/jonbiemond/BCIT-Available-Courses/blob/main/CONTRIBUTING.md#-linting)
 6. Ensure that all tests pass. [see below](https://github.com/jonbiemond/BCIT-Available-Courses/blob/main/CONTRIBUTING.md#-testing)
-7. Submit a pull request.
+7. Submit a pull request targeting the `dev` branch.
 
 For more details about pull requests, please read [GitHub's guides](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
