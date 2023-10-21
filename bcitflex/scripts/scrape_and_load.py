@@ -367,6 +367,9 @@ def bcit_to_sql(db_url: str, all_subjects: bool = False):
     collect_response(BASE_URL)
 
     # begin a non-ORM transaction
+    # [2023-10-21 Jonathan B.]
+    #   I don't believe there is actually any need to use a non-ORM transaction here.
+    #   Regular session should work just fine.
     engine = create_engine(db_url)
     connection = engine.connect()
     trans = connection.begin()
