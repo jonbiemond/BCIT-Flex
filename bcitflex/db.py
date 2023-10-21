@@ -10,11 +10,17 @@ import psycopg2
 from alembic import config, script
 from alembic.runtime import migration
 from flask import Flask, current_app
-from sqlalchemy import engine, text
+from sqlalchemy import engine, select, text
 
 from .ext.database import SQLAlchemy
+from .model import Course
 from .model.base import Base
 from .scripts import load_db_command
+from .scripts.load_programs import (
+    delete_and_load_programs,
+    extract_programs,
+    filter_programs,
+)
 
 db = SQLAlchemy(model=Base)
 DBSession = db.session
@@ -224,14 +230,34 @@ def load_subjects_command():
     """Populate subject table."""
 
     # read populate_subject.sql
-    directory = os.path.dirname(__file__)
-    script_path = os.path.join(directory, "scripts/populate_subject.sql")
+    script_path = os.path.join(current_app.root_path, "scripts", "populate_subject.sql")
     with open(script_path, "r") as f:
         stmt = f.read()
 
     with DBSession() as session:
-        session.execute(text(stmt))
+        result = session.execute(text(stmt))
         session.commit()
+
+    click.echo(f"Loaded {result.rowcount} subjects into database.")
+
+
+@click.command("load-programs")
+def load_programs_command() -> None:
+    """Load programs from JSON file into database."""
+
+    # load programs from JSON file
+    filename = os.path.join(current_app.root_path, "scripts", "programs.json")
+    programs = extract_programs(filename)
+
+    with DBSession() as session:
+        # filter programs to those with courses in the database
+        courses = session.execute(select(Course)).scalars().all()
+        programs = filter_programs(courses, programs)
+
+        # load programs into database
+        program_count = delete_and_load_programs(session, programs)
+
+    click.echo(f"Loaded {program_count} programs into database.")
 
 
 def init_app(app: Flask):
@@ -242,6 +268,7 @@ def init_app(app: Flask):
         app.cli.add_command(load_db_command)
         app.cli.add_command(upgrade_db_command)
         app.cli.add_command(load_subjects_command)
+        app.cli.add_command(load_programs_command)
     elif app.config.get("TESTING") is not True:
         # TODO: logging might be neater here
         warnings.warn(
