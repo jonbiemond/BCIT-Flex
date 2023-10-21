@@ -4,6 +4,11 @@ h1 { font-family: serif; color: #125738; margin: 1rem 0; }
 a { color: #125738; }
 hr { border: none; border-top: 1px solid lightgray; }
 nav { background: #125738; color: #E7E8EB; display: flex; align-items: center; padding: 0 0.5rem;}
+table { width: 100%; }
+table td { text-align: center; }
+table tbody td { padding: 0.5em 0; }
+table tbody tr:nth-child(even) { background-color: #d3d3d3; }
+table tbody tr:hover { background-color: #125738b8; }
 @media (prefers-color-scheme: dark) {
   html {
     background-color: #3d3d3d;
@@ -17,6 +22,7 @@ nav { background: #125738; color: #E7E8EB; display: flex; align-items: center; p
   a { color: #8ac99e; }
   .content > header h1 { color: #8ac99e; }
   .content input, .content textarea { background: #2a2a2a; color: #E7E8EB; }
+  table tbody tr:nth-child(even) { background-color: #212125; }
 }
 @media (prefers-color-scheme: light) {
   nav h1 { color: #E7E8EB; }
@@ -42,8 +48,3 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content textarea { min-height: 12em; resize: vertical; }
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
-table { width: 100%; }
-table td { text-align: center; }
-table tbody td { padding: 0.5em 0; }
-table tbody tr:nth-child(even) { background-color: #212125; }
-table tbody tr:hover { background-color: #125738b8; }
