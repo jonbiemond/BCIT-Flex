@@ -1,7 +1,7 @@
 {
     "Programs": [
         {
-            "Title": "Small Business Management",
+            "Name": "Small Business Management",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/small-business-management-statement-of-completion-part-time-0205000000/",
             "Courses": [
@@ -14,7 +14,7 @@
             ]
         },
         {
-            "Title": "Human Resources",
+            "Name": "Human Resources",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/human-resources-statement-of-completion-part-time-0225000000/",
             "Courses": [
@@ -25,7 +25,7 @@
             ]
         },
         {
-            "Title": "Leadership",
+            "Name": "Leadership",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/leadership-statement-of-completion-part-time-0290000000/",
             "Courses": [
@@ -36,7 +36,7 @@
             ]
         },
         {
-            "Title": "Houdini for Visual Effects and Dynamics",
+            "Name": "Houdini for Visual Effects and Dynamics",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/houdini-for-visual-effects-and-dynamics-statement-of-completion-part-time-0415000000/",
             "Courses": [
@@ -46,7 +46,7 @@
             ]
         },
         {
-            "Title": "Road Area Manager Certification",
+            "Name": "Road Area Manager Certification",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/road-area-manager-certification-statement-of-completion-part-time-0425000000/",
             "Courses": [
@@ -59,7 +59,7 @@
             ]
         },
         {
-            "Title": "Dental Office Receptionist",
+            "Name": "Dental Office Receptionist",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/dental-office-receptionist-statement-of-completion-part-time-0440000000/",
             "Courses": [
@@ -69,7 +69,7 @@
             ]
         },
         {
-            "Title": "Digital Photography",
+            "Name": "Digital Photography",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/digital-photography-statement-of-completion-part-time-0445000000/",
             "Courses": [
@@ -80,7 +80,7 @@
             ]
         },
         {
-            "Title": "Lean Business Improvement",
+            "Name": "Lean Business Improvement",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/lean-business-improvement-statement-of-completion-part-time-0455000000/",
             "Courses": [
@@ -90,7 +90,7 @@
             ]
         },
         {
-            "Title": "Management Skills in Communication and Negotiation",
+            "Name": "Management Skills in Communication and Negotiation",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/management-skills-in-communication-and-negotiation-statement-of-completion-part-time-0500000000/",
             "Courses": [
@@ -102,7 +102,7 @@
             ]
         },
         {
-            "Title": "Six Sigma Business Improvement",
+            "Name": "Six Sigma Business Improvement",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/six-sigma-business-improvement-statement-of-completion-part-time-0510000000/",
             "Courses": [
@@ -113,7 +113,7 @@
             ]
         },
         {
-            "Title": "Long-term Care Management",
+            "Name": "Long-term Care Management",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/long-term-care-management-statement-of-completion-part-time-0520000000/",
             "Courses": [
@@ -124,7 +124,7 @@
             ]
         },
         {
-            "Title": "House Inspection",
+            "Name": "House Inspection",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/house-inspection-statement-of-completion-part-time-0700000000/",
             "Courses": [
@@ -137,7 +137,7 @@
             ]
         },
         {
-            "Title": "Introductory Studies in Mass Timber Construction",
+            "Name": "Introductory Studies in Mass Timber Construction",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/introductory-studies-in-mass-timber-construction-microcredential-part-time-0800cm/",
             "Courses": [
@@ -146,7 +146,7 @@
             ]
         },
         {
-            "Title": "Essentials of Natural Resource and Environmental Protection (MENREP)",
+            "Name": "Essentials of Natural Resource and Environmental Protection (MENREP)",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/essentials-of-natural-resource-and-environmental-protection-menrep-microcredential-part-time-0801cm/",
             "Courses": [
@@ -160,7 +160,7 @@
             ]
         },
         {
-            "Title": "Script Supervision and Continuity for Film and TV",
+            "Name": "Script Supervision and Continuity for Film and TV",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/script-supervision-and-continuity-for-film-and-tv-microcredential-part-time-0803cm/",
             "Courses": [
@@ -172,7 +172,7 @@
             ]
         },
         {
-            "Title": "Forensic Nurse Examiner Education for RNs",
+            "Name": "Forensic Nurse Examiner Education for RNs",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/forensic-nurse-examiner-education-for-rns-microcredential-part-time-0804cm/",
             "Courses": [
@@ -181,7 +181,7 @@
             ]
         },
         {
-            "Title": "Breast Sonography",
+            "Name": "Breast Sonography",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/breast-sonography-microcredential-part-time-0805cm/",
             "Courses": [
@@ -190,7 +190,7 @@
             ]
         },
         {
-            "Title": "Musculoskeletal Sonography",
+            "Name": "Musculoskeletal Sonography",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/musculoskeletal-sonography-microcredential-part-time-0806cm/",
             "Courses": [
@@ -199,7 +199,7 @@
             ]
         },
         {
-            "Title": "Low-Code Mobile Application Development",
+            "Name": "Low-Code Mobile Application Development",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/low-code-mobile-application-development-microcredential-part-time-0810cm/",
             "Courses": [
@@ -209,7 +209,7 @@
             ]
         },
         {
-            "Title": "Essentials of Data Networks",
+            "Name": "Essentials of Data Networks",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/essentials-of-data-networks-microcredential-part-time-0811cm/",
             "Courses": [
@@ -219,7 +219,7 @@
             ]
         },
         {
-            "Title": "Cybersecurity Analysis for Network Administrators",
+            "Name": "Cybersecurity Analysis for Network Administrators",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/cybersecurity-analysis-for-network-administrators-microcredential-part-time-0812cm/",
             "Courses": [
@@ -231,7 +231,7 @@
             ]
         },
         {
-            "Title": "Advanced Forensic Nurse Examiner",
+            "Name": "Advanced Forensic Nurse Examiner",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/advanced-forensic-nurse-examiner-microcredential-part-time-0813cm/",
             "Courses": [
@@ -245,7 +245,7 @@
             ]
         },
         {
-            "Title": "Essential Field Skills for Environmental Professionals",
+            "Name": "Essential Field Skills for Environmental Professionals",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/essential-field-skills-for-environmental-professionals-microcredential-part-time-0814cm/",
             "Courses": [
@@ -257,7 +257,7 @@
             ]
         },
         {
-            "Title": "Supervising Net-Zero and Passive House Construction",
+            "Name": "Supervising Net-Zero and Passive House Construction",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/supervising-net-zero-and-passive-house-construction-microcredential-part-time-0815cm/",
             "Courses": [
@@ -269,7 +269,7 @@
             ]
         },
         {
-            "Title": "Applied Circular Economy: Zero Waste Buildings",
+            "Name": "Applied Circular Economy: Zero Waste Buildings",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/applied-circular-economy-zero-waste-buildings-microcredential-part-time-0816cm/",
             "Courses": [
@@ -279,7 +279,7 @@
             ]
         },
         {
-            "Title": "Introduction to Forest Health Quantification with RPAS",
+            "Name": "Introduction to Forest Health Quantification with RPAS",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/introduction-to-forest-health-quantification-with-rpas-microcredential-part-time-0817cm/",
             "Courses": [
@@ -290,7 +290,7 @@
             ]
         },
         {
-            "Title": "Essentials of Net-Zero and Passive House Construction",
+            "Name": "Essentials of Net-Zero and Passive House Construction",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/essentials-of-net-zero-and-passive-house-construction-microcredential-part-time-0819cm/",
             "Courses": [
@@ -302,7 +302,7 @@
             ]
         },
         {
-            "Title": "Cybersecurity Essentials for IT Professionals",
+            "Name": "Cybersecurity Essentials for IT Professionals",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/cybersecurity-essentials-for-it-professionals-microcredential-part-time-0820cm/",
             "Courses": [
@@ -312,7 +312,7 @@
             ]
         },
         {
-            "Title": "Food Safety Preventive Controls and HACCP Plans",
+            "Name": "Food Safety Preventive Controls and HACCP Plans",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/food-safety-preventive-controls-and-haccp-plans-microcredential-part-time-0822cm/",
             "Courses": [
@@ -321,7 +321,7 @@
             ]
         },
         {
-            "Title": "Food Safety Management",
+            "Name": "Food Safety Management",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/food-safety-management-microcredential-part-time-0823cm/",
             "Courses": [
@@ -329,7 +329,7 @@
             ]
         },
         {
-            "Title": "Animal Cell Culture",
+            "Name": "Animal Cell Culture",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/animal-cell-culture-microcredential-part-time-0824cm/",
             "Courses": [
@@ -338,7 +338,7 @@
             ]
         },
         {
-            "Title": "Canadian Employment Readiness (CER)",
+            "Name": "Canadian Employment Readiness (CER)",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/canadian-employment-readiness-cer-microcredential-part-time-0825cm/",
             "Courses": [
@@ -347,7 +347,7 @@
             ]
         },
         {
-            "Title": "Technical Communication Essentials",
+            "Name": "Technical Communication Essentials",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/technical-communication-essentials-microcredential-part-time-0826cm/",
             "Courses": [
@@ -359,7 +359,7 @@
             ]
         },
         {
-            "Title": "Student Mobility Preparedness",
+            "Name": "Student Mobility Preparedness",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/student-mobility-preparedness-microcredential-part-time-0828cm/",
             "Courses": [
@@ -369,7 +369,7 @@
             ]
         },
         {
-            "Title": "Building Energy Modelling and Simulation",
+            "Name": "Building Energy Modelling and Simulation",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/building-energy-modelling-and-simulation-microcredential-part-time-0829cm/",
             "Courses": [
@@ -379,7 +379,7 @@
             ]
         },
         {
-            "Title": "Whole-Building Life Cycle Assessment Professional",
+            "Name": "Whole-Building Life Cycle Assessment Professional",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/whole-building-life-cycle-assessment-professional-microcredential-part-time-0830cm/",
             "Courses": [
@@ -390,7 +390,7 @@
             ]
         },
         {
-            "Title": "Industrial Networking for Cybersecurity Professionals",
+            "Name": "Industrial Networking for Cybersecurity Professionals",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/industrial-networking-for-cybersecurity-professionals-microcredential-part-time-0831cm/",
             "Courses": [
@@ -402,7 +402,7 @@
             ]
         },
         {
-            "Title": "Cybersecurity Operations",
+            "Name": "Cybersecurity Operations",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/cybersecurity-operations-microcredential-part-time-0832cm/",
             "Courses": [
@@ -413,7 +413,7 @@
             ]
         },
         {
-            "Title": "Forensic Nurse Death Investigator",
+            "Name": "Forensic Nurse Death Investigator",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/forensic-nurse-death-investigator-microcredential-part-time-0833cm/",
             "Courses": [
@@ -422,7 +422,7 @@
             ]
         },
         {
-            "Title": "International Education Practitioner - Foundation",
+            "Name": "International Education Practitioner - Foundation",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/international-education-practitioner-foundation-microcredential-part-time-0835cm/",
             "Courses": [
@@ -434,7 +434,7 @@
             ]
         },
         {
-            "Title": "Drone Applications for Environmental Risk Assessment",
+            "Name": "Drone Applications for Environmental Risk Assessment",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/drone-applications-for-environmental-risk-assessment-microcredential-part-time-0836cm/",
             "Courses": [
@@ -445,7 +445,7 @@
             ]
         },
         {
-            "Title": "Foundational Digital Forensics Skills",
+            "Name": "Foundational Digital Forensics Skills",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/foundational-digital-forensics-skills-microcredential-part-time-0837cm/",
             "Courses": [
@@ -455,7 +455,7 @@
             ]
         },
         {
-            "Title": "Automotive Service Management Essentials",
+            "Name": "Automotive Service Management Essentials",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/automotive-service-management-essentials-microcredential-part-time-0838cm/",
             "Courses": [
@@ -464,7 +464,7 @@
             ]
         },
         {
-            "Title": "Fiber Optics - Principles, Installation and Repair",
+            "Name": "Fiber Optics - Principles, Installation and Repair",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/fiber-optics-principles-installation-and-repair-microcredential-part-time-0839cm/",
             "Courses": [
@@ -473,7 +473,7 @@
             ]
         },
         {
-            "Title": "Introduction to Full-Stack Web Development",
+            "Name": "Introduction to Full-Stack Web Development",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/introduction-to-full-stack-web-development-microcredential-part-time-0840cm/",
             "Courses": [
@@ -482,7 +482,7 @@
             ]
         },
         {
-            "Title": "Web Development Foundations (WDF)",
+            "Name": "Web Development Foundations (WDF)",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/web-development-foundations-wdf-microcredential-part-time-0841cm/",
             "Courses": [
@@ -491,7 +491,7 @@
             ]
         },
         {
-            "Title": "Data Visualization with MS Power BI",
+            "Name": "Data Visualization with MS Power BI",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/data-visualization-with-ms-power-bi-microcredential-part-time-0842cm/",
             "Courses": [
@@ -502,7 +502,7 @@
             ]
         },
         {
-            "Title": "Spanish Language and Culture Fundamentals",
+            "Name": "Spanish Language and Culture Fundamentals",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/spanish-language-and-culture-fundamentals-microcredential-part-time-0843cm/",
             "Courses": [
@@ -511,7 +511,7 @@
             ]
         },
         {
-            "Title": "Network Switching and Routing",
+            "Name": "Network Switching and Routing",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/network-switching-and-routing-microcredential-part-time-0845cm/",
             "Courses": [
@@ -520,7 +520,7 @@
             ]
         },
         {
-            "Title": "Sterile Field and the Aseptic Environment",
+            "Name": "Sterile Field and the Aseptic Environment",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/sterile-field-and-the-aseptic-environment-microcredential-part-time-0846cm/",
             "Courses": [
@@ -530,7 +530,7 @@
             ]
         },
         {
-            "Title": "Wind Turbine Essentials",
+            "Name": "Wind Turbine Essentials",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/wind-turbine-essentials-microcredential-part-time-0847cm/",
             "Courses": [
@@ -539,7 +539,7 @@
             ]
         },
         {
-            "Title": "Advanced Topics in Networking",
+            "Name": "Advanced Topics in Networking",
             "Credential": "Microcredential",
             "URL": "https://www.bcit.ca/programs/advanced-topics-in-networking-microcredential-part-time-0848cm/",
             "Courses": [
@@ -548,7 +548,7 @@
             ]
         },
         {
-            "Title": "Airport Operations",
+            "Name": "Airport Operations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/airport-operations-associate-certificate-part-time-1070acert/",
             "Courses": [
@@ -564,7 +564,7 @@
             ]
         },
         {
-            "Title": "Construction Drawings",
+            "Name": "Construction Drawings",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/construction-drawings-associate-certificate-part-time-1155acert/",
             "Courses": [
@@ -578,7 +578,7 @@
             ]
         },
         {
-            "Title": "Automated Controls Installation and Maintenance",
+            "Name": "Automated Controls Installation and Maintenance",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/automated-controls-installation-and-maintenance-advanced-certificate-part-time-1320adcert/",
             "Courses": [
@@ -593,7 +593,7 @@
             ]
         },
         {
-            "Title": "Railway Conductor and Operations",
+            "Name": "Railway Conductor and Operations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/railway-conductor-and-operations-associate-certificate-part-time-1685acert/",
             "Courses": [
@@ -603,7 +603,7 @@
             ]
         },
         {
-            "Title": "Hydronic Technician",
+            "Name": "Hydronic Technician",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/hydronic-technician-associate-certificate-part-time-1790acert/",
             "Courses": [
@@ -618,7 +618,7 @@
             ]
         },
         {
-            "Title": "Network Administrator Technician",
+            "Name": "Network Administrator Technician",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/network-administrator-technician-associate-certificate-part-time-1885acerts/",
             "Courses": [
@@ -629,7 +629,7 @@
             ]
         },
         {
-            "Title": "Chief Mate",
+            "Name": "Chief Mate",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/chief-mate-certificate-part-time-2020certts/",
             "Courses": [
@@ -646,7 +646,7 @@
             ]
         },
         {
-            "Title": "Master 150GT Domestic",
+            "Name": "Master 150GT Domestic",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/master-150gt-domestic-associate-certificate-part-time-2505acerts/",
             "Courses": [
@@ -660,7 +660,7 @@
             ]
         },
         {
-            "Title": "Master 500GT Domestic",
+            "Name": "Master 500GT Domestic",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/master-500gt-domestic-associate-certificate-part-time-2515acerts/",
             "Courses": [
@@ -675,7 +675,7 @@
             ]
         },
         {
-            "Title": "Master 3000GT Domestic",
+            "Name": "Master 3000GT Domestic",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/master-3000gt-domestic-certificate-part-time-2522certts/",
             "Courses": [
@@ -692,7 +692,7 @@
             ]
         },
         {
-            "Title": "Watchkeeping Mate Near Coastal (WKMNC)",
+            "Name": "Watchkeeping Mate Near Coastal (WKMNC)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/watchkeeping-mate-near-coastal-wkmnc-certificate-part-time-2542certts/",
             "Courses": [
@@ -712,7 +712,7 @@
             ]
         },
         {
-            "Title": "Maintenance Management Professional",
+            "Name": "Maintenance Management Professional",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/maintenance-management-professional-statement-of-completion-part-time-5020nobcit/",
             "Courses": [
@@ -727,7 +727,7 @@
             ]
         },
         {
-            "Title": "Non-Destructive Testing ",
+            "Name": "Non-Destructive Testing ",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/non-destructive-testing-statement-of-completion-part-time-5025nobcit/",
             "Courses": [
@@ -739,7 +739,7 @@
             ]
         },
         {
-            "Title": "Sustainable Energy Management",
+            "Name": "Sustainable Energy Management",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/sustainable-energy-management-advanced-certificate-part-time-5070adcert/",
             "Courses": [
@@ -755,7 +755,7 @@
             ]
         },
         {
-            "Title": "Sustainable Event Management",
+            "Name": "Sustainable Event Management",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/sustainable-event-management-certificate-part-time-5075cert/",
             "Courses": [
@@ -778,7 +778,7 @@
             ]
         },
         {
-            "Title": "Project Management",
+            "Name": "Project Management",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/project-management-associate-certificate-part-time-5085acert/",
             "Courses": [
@@ -803,7 +803,7 @@
             ]
         },
         {
-            "Title": "Building Controls & Energy Management",
+            "Name": "Building Controls & Energy Management",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/building-controls-and-energy-management-advanced-certificate-part-time-5095adcert/",
             "Courses": [
@@ -819,7 +819,7 @@
             ]
         },
         {
-            "Title": "Music Business",
+            "Name": "Music Business",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/music-business-associate-certificate-part-time-5115acert/",
             "Courses": [
@@ -840,7 +840,7 @@
             ]
         },
         {
-            "Title": "Business of Sawmilling",
+            "Name": "Business of Sawmilling",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/business-of-sawmilling-associate-certificate-part-time-5125acert/",
             "Courses": [
@@ -852,7 +852,7 @@
             ]
         },
         {
-            "Title": "Public Works Supervision",
+            "Name": "Public Works Supervision",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/public-works-supervision-associate-certificate-part-time-5130acert/",
             "Courses": [
@@ -880,7 +880,7 @@
             ]
         },
         {
-            "Title": "Business Administration",
+            "Name": "Business Administration",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/business-administration-associate-certificate-part-time-5140acert/",
             "Courses": [
@@ -892,7 +892,7 @@
             ]
         },
         {
-            "Title": "Sustainable Business",
+            "Name": "Sustainable Business",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/sustainable-business-advanced-certificate-part-time-5145adcert/",
             "Courses": [
@@ -910,7 +910,7 @@
             ]
         },
         {
-            "Title": "Building Construction Technology",
+            "Name": "Building Construction Technology",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/building-construction-technology-associate-certificate-part-time-515gacert/",
             "Courses": [
@@ -947,7 +947,7 @@
             ]
         },
         {
-            "Title": "Building Design and Architectural CAD",
+            "Name": "Building Design and Architectural CAD",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/building-design-and-architectural-cad-associate-certificate-part-time-515hacert/",
             "Courses": [
@@ -984,7 +984,7 @@
             ]
         },
         {
-            "Title": "Industrial Wood Processing",
+            "Name": "Industrial Wood Processing",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/industrial-wood-processing-associate-certificate-part-time-5160acert/",
             "Courses": [
@@ -996,7 +996,7 @@
             ]
         },
         {
-            "Title": "Digital Health",
+            "Name": "Digital Health",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/digital-health-advanced-certificate-part-time-5165adcert/",
             "Courses": [
@@ -1011,7 +1011,7 @@
             ]
         },
         {
-            "Title": "Healthcare Unit Clerk",
+            "Name": "Healthcare Unit Clerk",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/healthcare-unit-clerk-associate-certificate-part-time-5170acert/",
             "Courses": [
@@ -1029,7 +1029,7 @@
             ]
         },
         {
-            "Title": "Polytechnic Teaching",
+            "Name": "Polytechnic Teaching",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/polytechnic-teaching-associate-certificate-part-time-5175acert/",
             "Courses": [
@@ -1043,7 +1043,7 @@
             ]
         },
         {
-            "Title": "Sustainable Business Leadership",
+            "Name": "Sustainable Business Leadership",
             "Credential": "Advanced Diploma",
             "URL": "https://www.bcit.ca/programs/sustainable-business-leadership-advanced-diploma-part-time-5180padvdip/",
             "Courses": [
@@ -1062,7 +1062,7 @@
             ]
         },
         {
-            "Title": "Construction of Mass Timber Structures",
+            "Name": "Construction of Mass Timber Structures",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/construction-of-mass-timber-structures-associate-certificate-part-time-5225acert/",
             "Courses": [
@@ -1074,7 +1074,7 @@
             ]
         },
         {
-            "Title": "Building Energy Modelling and Performance Analysis",
+            "Name": "Building Energy Modelling and Performance Analysis",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/building-energy-modelling-and-performance-analysis-advanced-certificate-part-time-5235adcert/",
             "Courses": [
@@ -1089,7 +1089,7 @@
             ]
         },
         {
-            "Title": "Forensic Investigation (General Criminalistics Option)",
+            "Name": "Forensic Investigation (General Criminalistics Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/forensic-investigation-general-criminalistics-option-advanced-certificate-part-time-526bascert/",
             "Courses": [
@@ -1153,7 +1153,7 @@
             ]
         },
         {
-            "Title": "Forensic Investigation (Crime and Intelligence Analysis Option)",
+            "Name": "Forensic Investigation (Crime and Intelligence Analysis Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/forensic-investigation-crime-and-intelligence-analysis-option-advanced-certificate-part-time-528aadcert/",
             "Courses": [
@@ -1172,7 +1172,7 @@
             ]
         },
         {
-            "Title": "Forensic Investigation (Forensic Science Option)",
+            "Name": "Forensic Investigation (Forensic Science Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/forensic-investigation-forensic-science-option-advanced-certificate-part-time-528badcert/",
             "Courses": [
@@ -1199,7 +1199,7 @@
             ]
         },
         {
-            "Title": "Forensic Investigation (Digital Forensics and Cybersecurity Option)",
+            "Name": "Forensic Investigation (Digital Forensics and Cybersecurity Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/forensic-investigation-digital-forensics-and-cybersecurity-option-advanced-certificate-part-time-528cadcert/",
             "Courses": [
@@ -1221,7 +1221,7 @@
             ]
         },
         {
-            "Title": "Professional Accounting",
+            "Name": "Professional Accounting",
             "Credential": "Advanced Diploma",
             "URL": "https://www.bcit.ca/programs/professional-accounting-advanced-diploma-full-time-part-time-5290advdip/",
             "Courses": [
@@ -1241,7 +1241,7 @@
             ]
         },
         {
-            "Title": "Cardiology Technology",
+            "Name": "Cardiology Technology",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/cardiology-technology-diploma-part-time-530adiplt/",
             "Courses": [
@@ -1272,7 +1272,7 @@
             ]
         },
         {
-            "Title": "Cardiac Sciences (Cardiovascular Technology Option)",
+            "Name": "Cardiac Sciences (Cardiovascular Technology Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/cardiac-sciences-cardiovascular-technology-option-advanced-certificate-part-time-5310adcert/",
             "Courses": [
@@ -1284,7 +1284,7 @@
             ]
         },
         {
-            "Title": "Business Management - Advanced Diploma ",
+            "Name": "Business Management - Advanced Diploma ",
             "Credential": "Advanced Diploma",
             "URL": "https://www.bcit.ca/programs/business-management-advanced-diploma-advanced-diploma-full-time-part-time-5312advdip/",
             "Courses": [
@@ -1305,7 +1305,7 @@
             ]
         },
         {
-            "Title": "Cardiac Sciences (Electrophysiology Technology Option)",
+            "Name": "Cardiac Sciences (Electrophysiology Technology Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/cardiac-sciences-electrophysiology-technology-option-advanced-certificate-part-time-5320adcert/",
             "Courses": [
@@ -1317,7 +1317,7 @@
             ]
         },
         {
-            "Title": "Foundations in Occupational Health and Safety",
+            "Name": "Foundations in Occupational Health and Safety",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/foundations-in-occupational-health-and-safety-associate-certificate-part-time-5325acert/",
             "Courses": [
@@ -1331,7 +1331,7 @@
             ]
         },
         {
-            "Title": "Cardiac Sciences (Cardiac Rhythm Device Technology Option)",
+            "Name": "Cardiac Sciences (Cardiac Rhythm Device Technology Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/cardiac-sciences-cardiac-rhythm-device-technology-option-advanced-certificate-part-time-5330adcert/",
             "Courses": [
@@ -1343,7 +1343,7 @@
             ]
         },
         {
-            "Title": "Assayer Training",
+            "Name": "Assayer Training",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/assayer-training-statement-of-completion-part-time-5360nobcit/",
             "Courses": [
@@ -1355,7 +1355,7 @@
             ]
         },
         {
-            "Title": "Digital Media Foundations",
+            "Name": "Digital Media Foundations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/digital-media-foundations-associate-certificate-part-time-5365acert/",
             "Courses": [
@@ -1369,7 +1369,7 @@
             ]
         },
         {
-            "Title": "Civil Technology",
+            "Name": "Civil Technology",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/civil-technology-associate-certificate-part-time-5430acert/",
             "Courses": [
@@ -1403,7 +1403,7 @@
             ]
         },
         {
-            "Title": "Civil Technology",
+            "Name": "Civil Technology",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/civil-technology-certificate-part-time-5430cert/",
             "Courses": [
@@ -1443,7 +1443,7 @@
             ]
         },
         {
-            "Title": "Geographic Information Systems",
+            "Name": "Geographic Information Systems",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/geographic-information-systems-advanced-certificate-part-time-5440adcert/",
             "Courses": [
@@ -1457,7 +1457,7 @@
             ]
         },
         {
-            "Title": "Cisco Certified Network Associate",
+            "Name": "Cisco Certified Network Associate",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/cisco-certified-network-associate-statement-of-completion-part-time-5460nobcit/",
             "Courses": [
@@ -1467,7 +1467,7 @@
             ]
         },
         {
-            "Title": "Cisco Certified Network Professional",
+            "Name": "Cisco Certified Network Professional",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/cisco-certified-network-professional-statement-of-completion-part-time-5470nobcit/",
             "Courses": [
@@ -1476,7 +1476,7 @@
             ]
         },
         {
-            "Title": "Civil Engineering Materials Testing",
+            "Name": "Civil Engineering Materials Testing",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/civil-engineering-materials-testing-statement-of-completion-part-time-5495000000/",
             "Courses": [
@@ -1487,7 +1487,7 @@
             ]
         },
         {
-            "Title": "Computer Systems",
+            "Name": "Computer Systems",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/computer-systems-certificate-part-time-5500cert/",
             "Courses": [
@@ -1511,7 +1511,7 @@
             ]
         },
         {
-            "Title": "Computer Systems",
+            "Name": "Computer Systems",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/computer-systems-diploma-part-time-5500pdiplt/",
             "Courses": [
@@ -1568,7 +1568,7 @@
             ]
         },
         {
-            "Title": "Computer Systems Foundations",
+            "Name": "Computer Systems Foundations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/computer-systems-foundations-associate-certificate-part-time-550sacert/",
             "Courses": [
@@ -1579,7 +1579,7 @@
             ]
         },
         {
-            "Title": "Applied Data Analytics",
+            "Name": "Applied Data Analytics",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/applied-data-analytics-certificate-part-time-5512cert/",
             "Courses": [
@@ -1611,7 +1611,7 @@
             ]
         },
         {
-            "Title": "Applied Network Administration and Design",
+            "Name": "Applied Network Administration and Design",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/applied-network-administration-and-design-associate-certificate-part-time-5515acert/",
             "Courses": [
@@ -1627,7 +1627,7 @@
             ]
         },
         {
-            "Title": "Applied Computer Applications (ACA)",
+            "Name": "Applied Computer Applications (ACA)",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/applied-computer-applications-aca-associate-certificate-part-time-5525acert/",
             "Courses": [
@@ -1645,7 +1645,7 @@
             ]
         },
         {
-            "Title": "Agile Development",
+            "Name": "Agile Development",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/agile-development-associate-certificate-part-time-5530acert/",
             "Courses": [
@@ -1658,7 +1658,7 @@
             ]
         },
         {
-            "Title": "Computer Aided Design (CAD) Technology",
+            "Name": "Computer Aided Design (CAD) Technology",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/computer-aided-design-cad-technology-associate-certificate-part-time-5570acert/",
             "Courses": [
@@ -1678,7 +1678,7 @@
             ]
         },
         {
-            "Title": "Roadworks Maintenance",
+            "Name": "Roadworks Maintenance",
             "Credential": "Statement of Completion",
             "URL": "https://www.bcit.ca/programs/roadworks-maintenance-statement-of-completion-part-time-5620000000/",
             "Courses": [
@@ -1689,7 +1689,7 @@
             ]
         },
         {
-            "Title": "Financial Planning",
+            "Name": "Financial Planning",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/financial-planning-diploma-part-time-5720pdipma/",
             "Courses": [
@@ -1733,7 +1733,7 @@
             ]
         },
         {
-            "Title": "Computerized Accounting",
+            "Name": "Computerized Accounting",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/computerized-accounting-associate-certificate-part-time-5725acert/",
             "Courses": [
@@ -1750,7 +1750,7 @@
             ]
         },
         {
-            "Title": "Finance",
+            "Name": "Finance",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/finance-diploma-part-time-5730pdipma/",
             "Courses": [
@@ -1793,7 +1793,7 @@
             ]
         },
         {
-            "Title": "Accounting",
+            "Name": "Accounting",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/accounting-diploma-part-time-5740pdipma/",
             "Courses": [
@@ -1835,7 +1835,7 @@
             ]
         },
         {
-            "Title": "Occupational Health and Safety Practitioners",
+            "Name": "Occupational Health and Safety Practitioners",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/occupational-health-and-safety-practitioners-associate-certificate-part-time-5755acert/",
             "Courses": [
@@ -1858,7 +1858,7 @@
             ]
         },
         {
-            "Title": "Financial Management (Finance Option)",
+            "Name": "Financial Management (Finance Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/financial-management-finance-option-certificate-part-time-585cmcert/",
             "Courses": [
@@ -1903,7 +1903,7 @@
             ]
         },
         {
-            "Title": "Financial Management (Professional Accounting Option)",
+            "Name": "Financial Management (Professional Accounting Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/financial-management-professional-accounting-option-certificate-part-time-585fmcert/",
             "Courses": [
@@ -1947,7 +1947,7 @@
             ]
         },
         {
-            "Title": "Financial Management (Financial Planning)",
+            "Name": "Financial Management (Financial Planning)",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/financial-management-financial-planning-associate-certificate-part-time-585iacert/",
             "Courses": [
@@ -1962,7 +1962,7 @@
             ]
         },
         {
-            "Title": "User Interface (UI) and User Experience (UX) Design",
+            "Name": "User Interface (UI) and User Experience (UX) Design",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/user-interface-ui-and-user-experience-ux-design-associate-certificate-part-time-5985acert/",
             "Courses": [
@@ -1983,7 +1983,7 @@
             ]
         },
         {
-            "Title": "Payroll and Human Resources",
+            "Name": "Payroll and Human Resources",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/payroll-and-human-resources-associate-certificate-part-time-6005acert/",
             "Courses": [
@@ -1998,7 +1998,7 @@
             ]
         },
         {
-            "Title": "Architectural and Building Technology",
+            "Name": "Architectural and Building Technology",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/architectural-and-building-technology-certificate-part-time-6030cert/",
             "Courses": [
@@ -2041,7 +2041,7 @@
             ]
         },
         {
-            "Title": "Fundamentals of Water and Wastewater Operations",
+            "Name": "Fundamentals of Water and Wastewater Operations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/fundamentals-of-water-and-wastewater-operations-associate-certificate-part-time-6040acert/",
             "Courses": [
@@ -2053,7 +2053,7 @@
             ]
         },
         {
-            "Title": "Broadcast and Digital Journalism",
+            "Name": "Broadcast and Digital Journalism",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/broadcast-and-digital-journalism-associate-certificate-part-time-6115acert/",
             "Courses": [
@@ -2078,7 +2078,7 @@
             ]
         },
         {
-            "Title": "Video Production and Editing",
+            "Name": "Video Production and Editing",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/video-production-and-editing-associate-certificate-part-time-6120acert/",
             "Courses": [
@@ -2107,7 +2107,7 @@
             ]
         },
         {
-            "Title": "Radio Arts and Entertainment",
+            "Name": "Radio Arts and Entertainment",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/radio-arts-and-entertainment-associate-certificate-part-time-6125acert/",
             "Courses": [
@@ -2135,7 +2135,7 @@
             ]
         },
         {
-            "Title": "Residential Interiors",
+            "Name": "Residential Interiors",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/residential-interiors-diploma-part-time-6140dipma/",
             "Courses": [
@@ -2172,7 +2172,7 @@
             ]
         },
         {
-            "Title": "Kitchen & Bath Design",
+            "Name": "Kitchen & Bath Design",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/kitchen-and-bath-design-associate-certificate-part-time-6145acert/",
             "Courses": [
@@ -2202,7 +2202,7 @@
             ]
         },
         {
-            "Title": "Renewable Energy Electrical Systems Installation & Maintenance",
+            "Name": "Renewable Energy Electrical Systems Installation & Maintenance",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/renewable-energy-electrical-systems-installation-and-maintenance-advanced-certificate-part-time-6185adcert/",
             "Courses": [
@@ -2217,7 +2217,7 @@
             ]
         },
         {
-            "Title": "Interior Design Fundamentals",
+            "Name": "Interior Design Fundamentals",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/interior-design-fundamentals-certificate-full-time-part-time-6195cert/",
             "Courses": [
@@ -2241,7 +2241,7 @@
             ]
         },
         {
-            "Title": "Interior Design",
+            "Name": "Interior Design",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/interior-design-diploma-part-time-6220pdipma/",
             "Courses": [
@@ -2266,7 +2266,7 @@
             ]
         },
         {
-            "Title": "Global Business Studies",
+            "Name": "Global Business Studies",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/global-business-studies-associate-certificate-part-time-6225acert/",
             "Courses": [
@@ -2294,7 +2294,7 @@
             ]
         },
         {
-            "Title": "Business Management",
+            "Name": "Business Management",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/business-management-certificate-part-time-6245mcert/",
             "Courses": [
@@ -2311,7 +2311,7 @@
             ]
         },
         {
-            "Title": "Human Resource Management",
+            "Name": "Human Resource Management",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/human-resource-management-certificate-part-time-625amcert/",
             "Courses": [
@@ -2335,7 +2335,7 @@
             ]
         },
         {
-            "Title": "Lean Six Sigma Principles",
+            "Name": "Lean Six Sigma Principles",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/lean-six-sigma-principles-associate-certificate-part-time-6265acert/",
             "Courses": [
@@ -2348,7 +2348,7 @@
             ]
         },
         {
-            "Title": "Fire Executive Management",
+            "Name": "Fire Executive Management",
             "Credential": "BCIT/Industry Partnership Certificate",
             "URL": "https://www.bcit.ca/programs/fire-executive-management-bcit-industry-partnership-certificate-part-time-6270ipcert/",
             "Courses": [
@@ -2392,7 +2392,7 @@
             ]
         },
         {
-            "Title": "Marketing Management",
+            "Name": "Marketing Management",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-certificate-part-time-6300mcert/",
             "Courses": [
@@ -2431,7 +2431,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Marketing Communications",
+            "Name": "Marketing Management - Marketing Communications",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-marketing-communications-associate-certificate-part-time-630dacert/",
             "Courses": [
@@ -2450,7 +2450,7 @@
             ]
         },
         {
-            "Title": "Marketing Management (Marketing Communications Option)",
+            "Name": "Marketing Management (Marketing Communications Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-marketing-communications-option-certificate-part-time-630dmcert/",
             "Courses": [
@@ -2485,7 +2485,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Entrepreneurship",
+            "Name": "Marketing Management - Entrepreneurship",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-entrepreneurship-associate-certificate-part-time-630hacert/",
             "Courses": [
@@ -2513,7 +2513,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Sales Skills",
+            "Name": "Marketing Management - Sales Skills",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-sales-skills-associate-certificate-part-time-630macert/",
             "Courses": [
@@ -2541,7 +2541,7 @@
             ]
         },
         {
-            "Title": "Media Techniques and Marketing Communications",
+            "Name": "Media Techniques and Marketing Communications",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/media-techniques-and-marketing-communications-certificate-part-time-630pmcert/",
             "Courses": [
@@ -2575,7 +2575,7 @@
             ]
         },
         {
-            "Title": "Marketing Management (Professional Sales Option)",
+            "Name": "Marketing Management (Professional Sales Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-professional-sales-option-certificate-part-time-630vmcert/",
             "Courses": [
@@ -2615,7 +2615,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Customer Relationship Marketing",
+            "Name": "Marketing Management - Customer Relationship Marketing",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-customer-relationship-marketing-associate-certificate-part-time-630wacert/",
             "Courses": [
@@ -2639,7 +2639,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Public Relations",
+            "Name": "Marketing Management - Public Relations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-public-relations-associate-certificate-part-time-630xacert/",
             "Courses": [
@@ -2661,7 +2661,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Event Marketing",
+            "Name": "Marketing Management - Event Marketing",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-event-marketing-associate-certificate-part-time-630yacert/",
             "Courses": [
@@ -2683,7 +2683,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Retail Marketing Management",
+            "Name": "Marketing Management - Retail Marketing Management",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-retail-marketing-management-associate-certificate-part-time-630zacert/",
             "Courses": [
@@ -2712,7 +2712,7 @@
             ]
         },
         {
-            "Title": "Nonprofit Management",
+            "Name": "Nonprofit Management",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/nonprofit-management-associate-certificate-part-time-6310acert/",
             "Courses": [
@@ -2735,7 +2735,7 @@
             ]
         },
         {
-            "Title": "Food Safety",
+            "Name": "Food Safety",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/food-safety-associate-certificate-part-time-6365acert/",
             "Courses": [
@@ -2751,7 +2751,7 @@
             ]
         },
         {
-            "Title": "Digital Marketing Foundations",
+            "Name": "Digital Marketing Foundations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/digital-marketing-foundations-associate-certificate-part-time-6375acert/",
             "Courses": [
@@ -2763,7 +2763,7 @@
             ]
         },
         {
-            "Title": "Digital Marketing Strategy",
+            "Name": "Digital Marketing Strategy",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/digital-marketing-strategy-associate-certificate-part-time-6385acert/",
             "Courses": [
@@ -2779,7 +2779,7 @@
             ]
         },
         {
-            "Title": "Marketing Management - Fundraising Management",
+            "Name": "Marketing Management - Fundraising Management",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/marketing-management-fundraising-management-associate-certificate-part-time-6390acert/",
             "Courses": [
@@ -2804,7 +2804,7 @@
             ]
         },
         {
-            "Title": "Web Technologies",
+            "Name": "Web Technologies",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/web-technologies-associate-certificate-part-time-6420acert/",
             "Courses": [
@@ -2819,7 +2819,7 @@
             ]
         },
         {
-            "Title": "Web Technologies",
+            "Name": "Web Technologies",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/web-technologies-certificate-part-time-6420cert/",
             "Courses": [
@@ -2842,7 +2842,7 @@
             ]
         },
         {
-            "Title": "Technical Writing",
+            "Name": "Technical Writing",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/technical-writing-associate-certificate-part-time-6425acert/",
             "Courses": [
@@ -2865,7 +2865,7 @@
             ]
         },
         {
-            "Title": "Advanced Java Development",
+            "Name": "Advanced Java Development",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/advanced-java-development-associate-certificate-part-time-6445acert/",
             "Courses": [
@@ -2883,7 +2883,7 @@
             ]
         },
         {
-            "Title": "Media Techniques for Business",
+            "Name": "Media Techniques for Business",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/media-techniques-for-business-certificate-part-time-6450mcert/",
             "Courses": [
@@ -2923,7 +2923,7 @@
             ]
         },
         {
-            "Title": "Web and Mobile Application Development",
+            "Name": "Web and Mobile Application Development",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/web-and-mobile-application-development-associate-certificate-part-time-6465acert/",
             "Courses": [
@@ -2943,7 +2943,7 @@
             ]
         },
         {
-            "Title": "Graphic Design Foundations",
+            "Name": "Graphic Design Foundations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/graphic-design-foundations-associate-certificate-part-time-6505acert/",
             "Courses": [
@@ -2956,7 +2956,7 @@
             ]
         },
         {
-            "Title": "Construction Estimating",
+            "Name": "Construction Estimating",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/construction-estimating-certificate-part-time-6530cert/",
             "Courses": [
@@ -2984,7 +2984,7 @@
             ]
         },
         {
-            "Title": "Graphic Design",
+            "Name": "Graphic Design",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/graphic-design-certificate-full-time-part-time-6585cert/",
             "Courses": [
@@ -3007,7 +3007,7 @@
             ]
         },
         {
-            "Title": "Tourism and Hospitality",
+            "Name": "Tourism and Hospitality",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/tourism-and-hospitality-associate-certificate-part-time-6590acert/",
             "Courses": [
@@ -3028,7 +3028,7 @@
             ]
         },
         {
-            "Title": "Medical Office Assistant",
+            "Name": "Medical Office Assistant",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/medical-office-assistant-associate-certificate-part-time-6630acert/",
             "Courses": [
@@ -3047,7 +3047,7 @@
             ]
         },
         {
-            "Title": "Fire Protection Inspection and Testing",
+            "Name": "Fire Protection Inspection and Testing",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/fire-protection-inspection-and-testing-associate-certificate-part-time-675facert/",
             "Courses": [
@@ -3066,7 +3066,7 @@
             ]
         },
         {
-            "Title": "Mechanical Systems ",
+            "Name": "Mechanical Systems ",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/mechanical-systems-associate-certificate-part-time-6760acert/",
             "Courses": [
@@ -3087,7 +3087,7 @@
             ]
         },
         {
-            "Title": "Pediatric Nursing Specialty (Standard Option)",
+            "Name": "Pediatric Nursing Specialty (Standard Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/pediatric-nursing-specialty-standard-option-advanced-certificate-part-time-680bascert/",
             "Courses": [
@@ -3117,7 +3117,7 @@
             ]
         },
         {
-            "Title": "Perinatal Nursing Specialty (Standard Option)",
+            "Name": "Perinatal Nursing Specialty (Standard Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/perinatal-nursing-specialty-standard-option-advanced-certificate-part-time-680cascert/",
             "Courses": [
@@ -3138,7 +3138,7 @@
             ]
         },
         {
-            "Title": "Emergency Nursing Specialty (Standard Option)",
+            "Name": "Emergency Nursing Specialty (Standard Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/emergency-nursing-specialty-standard-option-advanced-certificate-part-time-680eascert/",
             "Courses": [
@@ -3151,7 +3151,7 @@
             ]
         },
         {
-            "Title": "Neonatal Nursing Specialty",
+            "Name": "Neonatal Nursing Specialty",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/neonatal-nursing-specialty-advanced-certificate-part-time-680fascert/",
             "Courses": [
@@ -3167,7 +3167,7 @@
             ]
         },
         {
-            "Title": "Critical Care Nursing Specialty (Combined Critical Care/Emergency Option)",
+            "Name": "Critical Care Nursing Specialty (Combined Critical Care/Emergency Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/critical-care-nursing-specialty-combined-critical-care-emergency-option-advanced-certificate-part-time-680lascert/",
             "Courses": [
@@ -3181,7 +3181,7 @@
             ]
         },
         {
-            "Title": "Nephrology Nursing Specialty",
+            "Name": "Nephrology Nursing Specialty",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/nephrology-nursing-specialty-advanced-certificate-part-time-680mascert/",
             "Courses": [
@@ -3195,7 +3195,7 @@
             ]
         },
         {
-            "Title": "Perioperative Nursing Specialty",
+            "Name": "Perioperative Nursing Specialty",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/perioperative-nursing-specialty-advanced-certificate-part-time-680pascert/",
             "Courses": [
@@ -3212,7 +3212,7 @@
             ]
         },
         {
-            "Title": "Emergency Nursing Specialty (Combined Emergency/Critical Care Option)",
+            "Name": "Emergency Nursing Specialty (Combined Emergency/Critical Care Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/emergency-nursing-specialty-combined-emergency-critical-care-option-advanced-certificate-part-time-680sascert/",
             "Courses": [
@@ -3227,7 +3227,7 @@
             ]
         },
         {
-            "Title": "Perinatal Nursing Specialty (Perinatal - Perioperative Option)",
+            "Name": "Perinatal Nursing Specialty (Perinatal - Perioperative Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/perinatal-nursing-specialty-perinatal-perioperative-option-advanced-certificate-part-time-680vascert/",
             "Courses": [
@@ -3243,7 +3243,7 @@
             ]
         },
         {
-            "Title": "High Acuity Nursing Specialty",
+            "Name": "High Acuity Nursing Specialty",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/high-acuity-nursing-specialty-advanced-certificate-part-time-680wascert/",
             "Courses": [
@@ -3258,7 +3258,7 @@
             ]
         },
         {
-            "Title": "Critical Care Nursing Specialty",
+            "Name": "Critical Care Nursing Specialty",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/critical-care-nursing-specialty-advanced-certificate-part-time-680xadcert/",
             "Courses": [
@@ -3272,7 +3272,7 @@
             ]
         },
         {
-            "Title": "Emergency Nursing Specialty (Pediatric Emergency Option)",
+            "Name": "Emergency Nursing Specialty (Pediatric Emergency Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/emergency-nursing-specialty-pediatric-emergency-option-advanced-certificate-part-time-680yadcert/",
             "Courses": [
@@ -3290,7 +3290,7 @@
             ]
         },
         {
-            "Title": "Pediatric Nursing Specialty (Critical Care Option)",
+            "Name": "Pediatric Nursing Specialty (Critical Care Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/pediatric-nursing-specialty-critical-care-option-advanced-certificate-part-time-680zadcert/",
             "Courses": [
@@ -3304,7 +3304,7 @@
             ]
         },
         {
-            "Title": "Advanced .NET Development",
+            "Name": "Advanced .NET Development",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/advanced-net-development-associate-certificate-part-time-6810acert/",
             "Courses": [
@@ -3321,7 +3321,7 @@
             ]
         },
         {
-            "Title": "Pediatric Nursing Specialty (Anesthesia Care Option)",
+            "Name": "Pediatric Nursing Specialty (Anesthesia Care Option)",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/pediatric-nursing-specialty-anesthesia-care-option-advanced-certificate-part-time-681badcert/",
             "Courses": [
@@ -3335,7 +3335,7 @@
             ]
         },
         {
-            "Title": "Cardiovascular Perfusion",
+            "Name": "Cardiovascular Perfusion",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/cardiovascular-perfusion-advanced-certificate-part-time-6820ascert/",
             "Courses": [
@@ -3358,7 +3358,7 @@
             ]
         },
         {
-            "Title": "Leadership",
+            "Name": "Leadership",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/leadership-associate-certificate-part-time-6830acert/",
             "Courses": [
@@ -3383,7 +3383,7 @@
             ]
         },
         {
-            "Title": "Pediatric Emergency Nursing Specialty",
+            "Name": "Pediatric Emergency Nursing Specialty",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/pediatric-emergency-nursing-specialty-advanced-certificate-part-time-6835adcert/",
             "Courses": [
@@ -3397,7 +3397,7 @@
             ]
         },
         {
-            "Title": "Health Leadership",
+            "Name": "Health Leadership",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/health-leadership-advanced-certificate-part-time-6860adcert/",
             "Courses": [
@@ -3412,7 +3412,7 @@
             ]
         },
         {
-            "Title": "Advanced Safety Management",
+            "Name": "Advanced Safety Management",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/advanced-safety-management-certificate-part-time-6890cert/",
             "Courses": [
@@ -3444,7 +3444,7 @@
             ]
         },
         {
-            "Title": "Operations Management (Industrial Engineering Option)",
+            "Name": "Operations Management (Industrial Engineering Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/operations-management-industrial-engineering-option-certificate-part-time-690amcert/",
             "Courses": [
@@ -3476,7 +3476,7 @@
             ]
         },
         {
-            "Title": "Operations Management (Management Engineering Option)",
+            "Name": "Operations Management (Management Engineering Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/operations-management-management-engineering-option-certificate-part-time-690bmcert/",
             "Courses": [
@@ -3508,7 +3508,7 @@
             ]
         },
         {
-            "Title": "Operations Management (Materials Management Option)",
+            "Name": "Operations Management (Materials Management Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/operations-management-materials-management-option-certificate-part-time-690dmcert/",
             "Courses": [
@@ -3546,7 +3546,7 @@
             ]
         },
         {
-            "Title": "Operations Management (Facilities Management Option)",
+            "Name": "Operations Management (Facilities Management Option)",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/operations-management-facilities-management-option-certificate-part-time-690fmcert/",
             "Courses": [
@@ -3570,7 +3570,7 @@
             ]
         },
         {
-            "Title": "Quality and Process Management",
+            "Name": "Quality and Process Management",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/quality-and-process-management-certificate-part-time-6945cert/",
             "Courses": [
@@ -3596,7 +3596,7 @@
             ]
         },
         {
-            "Title": "Applied Web Development",
+            "Name": "Applied Web Development",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/applied-web-development-associate-certificate-part-time-6957acert/",
             "Courses": [
@@ -3614,7 +3614,7 @@
             ]
         },
         {
-            "Title": "Applied Software Development (ASD)",
+            "Name": "Applied Software Development (ASD)",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/applied-software-development-asd-associate-certificate-part-time-6958acert/",
             "Courses": [
@@ -3633,7 +3633,7 @@
             ]
         },
         {
-            "Title": "Applied Computer Information Systems (ACIS)",
+            "Name": "Applied Computer Information Systems (ACIS)",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/applied-computer-information-systems-acis-associate-certificate-part-time-6992acert/",
             "Courses": [
@@ -3655,7 +3655,7 @@
             ]
         },
         {
-            "Title": "Applied Database Administration and Design",
+            "Name": "Applied Database Administration and Design",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/applied-database-administration-and-design-associate-certificate-part-time-6994acert/",
             "Courses": [
@@ -3676,7 +3676,7 @@
             ]
         },
         {
-            "Title": "Business Administration (General Option)",
+            "Name": "Business Administration (General Option)",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/business-administration-general-option-diploma-part-time-703adipma/",
             "Courses": [
@@ -3718,7 +3718,7 @@
             ]
         },
         {
-            "Title": "Business Administration (Global Studies Option)",
+            "Name": "Business Administration (Global Studies Option)",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/business-administration-global-studies-option-diploma-part-time-703bdipma/",
             "Courses": [
@@ -3748,7 +3748,7 @@
             ]
         },
         {
-            "Title": "Business Administration (Human Resources Option)",
+            "Name": "Business Administration (Human Resources Option)",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/business-administration-human-resources-option-diploma-part-time-703cdipma/",
             "Courses": [
@@ -3786,7 +3786,7 @@
             ]
         },
         {
-            "Title": "Business Administration (Management Option)",
+            "Name": "Business Administration (Management Option)",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/business-administration-management-option-diploma-part-time-703ddipma/",
             "Courses": [
@@ -3824,7 +3824,7 @@
             ]
         },
         {
-            "Title": "Business Administration (Marketing Option)",
+            "Name": "Business Administration (Marketing Option)",
             "Credential": "Diploma",
             "URL": "https://www.bcit.ca/programs/business-administration-marketing-option-diploma-part-time-703edipma/",
             "Courses": [
@@ -3860,7 +3860,7 @@
             ]
         },
         {
-            "Title": "International Trade and Transportation Logistics",
+            "Name": "International Trade and Transportation Logistics",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/international-trade-and-transportation-logistics-certificate-part-time-7460mcert/",
             "Courses": [
@@ -3896,7 +3896,7 @@
             ]
         },
         {
-            "Title": "Human Resource Management",
+            "Name": "Human Resource Management",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/human-resource-management-associate-certificate-part-time-7610acert/",
             "Courses": [
@@ -3912,7 +3912,7 @@
             ]
         },
         {
-            "Title": "Construction Operations",
+            "Name": "Construction Operations",
             "Credential": "Associate Certificate",
             "URL": "https://www.bcit.ca/programs/construction-operations-associate-certificate-part-time-7720acert/",
             "Courses": [
@@ -3931,7 +3931,7 @@
             ]
         },
         {
-            "Title": "Construction Supervision",
+            "Name": "Construction Supervision",
             "Credential": "Certificate",
             "URL": "https://www.bcit.ca/programs/construction-supervision-certificate-part-time-7730cert/",
             "Courses": [
@@ -3947,7 +3947,7 @@
             ]
         },
         {
-            "Title": "Magnetic Resonance Imaging",
+            "Name": "Magnetic Resonance Imaging",
             "Credential": "Advanced Certificate",
             "URL": "https://www.bcit.ca/programs/magnetic-resonance-imaging-advanced-certificate-part-time-7950ascert/",
             "Courses": [
@@ -3961,7 +3961,7 @@
             ]
         },
         {
-            "Title": "Ecological Restoration",
+            "Name": "Ecological Restoration",
             "Credential": "Bachelor of Science",
             "URL": "https://www.bcit.ca/programs/ecological-restoration-bachelor-of-science-full-time-part-time-8040bsc/",
             "Courses": [
@@ -3990,7 +3990,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Critical Care - Standard Option)",
+            "Name": "Specialty Nursing (Critical Care - Standard Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-critical-care-standard-option-bachelor-of-science-in-nursing-part-time-810absn/",
             "Courses": [
@@ -4013,7 +4013,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Emergency - Standard Option)",
+            "Name": "Specialty Nursing (Emergency - Standard Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-emergency-standard-option-bachelor-of-science-in-nursing-part-time-810bbsn/",
             "Courses": [
@@ -4038,7 +4038,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Neonatal)",
+            "Name": "Specialty Nursing (Neonatal)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-neonatal-bachelor-of-science-in-nursing-part-time-810cbsn/",
             "Courses": [
@@ -4065,7 +4065,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Nephrology)",
+            "Name": "Specialty Nursing (Nephrology)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-nephrology-bachelor-of-science-in-nursing-part-time-810dbsn/",
             "Courses": [
@@ -4091,7 +4091,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Pediatric - Standard Option)",
+            "Name": "Specialty Nursing (Pediatric - Standard Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-pediatric-standard-option-bachelor-of-science-in-nursing-part-time-810fbsn/",
             "Courses": [
@@ -4130,7 +4130,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Perinatal - Standard Option)",
+            "Name": "Specialty Nursing (Perinatal - Standard Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-perinatal-standard-option-bachelor-of-science-in-nursing-part-time-810gbsn/",
             "Courses": [
@@ -4164,7 +4164,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Perioperative)",
+            "Name": "Specialty Nursing (Perioperative)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-perioperative-bachelor-of-science-in-nursing-part-time-810hbsn/",
             "Courses": [
@@ -4194,7 +4194,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Critical Care - Combined Critical Care/Emergency Option)",
+            "Name": "Specialty Nursing (Critical Care - Combined Critical Care/Emergency Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-critical-care-combined-critical-care-emergency-option-bachelor-of-science-in-nursing-part-time-810kbsn/",
             "Courses": [
@@ -4217,7 +4217,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (High Acuity)",
+            "Name": "Specialty Nursing (High Acuity)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-high-acuity-bachelor-of-science-in-nursing-part-time-810mbsn/",
             "Courses": [
@@ -4241,7 +4241,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Emergency - Combined Emergency/Critical Care Option)",
+            "Name": "Specialty Nursing (Emergency - Combined Emergency/Critical Care Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-emergency-combined-emergency-critical-care-option-bachelor-of-science-in-nursing-part-time-810nbsn/",
             "Courses": [
@@ -4265,7 +4265,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Pediatric - Critical Care Option)",
+            "Name": "Specialty Nursing (Pediatric - Critical Care Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-pediatric-critical-care-option-bachelor-of-science-in-nursing-part-time-810qbsn/",
             "Courses": [
@@ -4288,7 +4288,7 @@
             ]
         },
         {
-            "Title": "Specialty Nursing (Perinatal - Perioperative Option)",
+            "Name": "Specialty Nursing (Perinatal - Perioperative Option)",
             "Credential": "Bachelor of Science in Nursing",
             "URL": "https://www.bcit.ca/programs/specialty-nursing-perinatal-perioperative-option-bachelor-of-science-in-nursing-part-time-810sbsn/",
             "Courses": [
@@ -4317,7 +4317,7 @@
             ]
         },
         {
-            "Title": "Environmental Engineering",
+            "Name": "Environmental Engineering",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/environmental-engineering-bachelor-of-technology-full-time-part-time-8120btech/",
             "Courses": [
@@ -4351,7 +4351,7 @@
             ]
         },
         {
-            "Title": "Bachelor of Health Science (Magnetic Resonance Imaging Option)",
+            "Name": "Bachelor of Health Science (Magnetic Resonance Imaging Option)",
             "Credential": "Bachelor of Health Science",
             "URL": "https://www.bcit.ca/programs/bachelor-of-health-science-magnetic-resonance-imaging-option-bachelor-of-health-science-part-time-830abhsc/",
             "Courses": [
@@ -4372,7 +4372,7 @@
             ]
         },
         {
-            "Title": "Geographic Information Systems",
+            "Name": "Geographic Information Systems",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/geographic-information-systems-bachelor-of-technology-full-time-part-time-8310btech/",
             "Courses": [
@@ -4415,7 +4415,7 @@
             ]
         },
         {
-            "Title": "Technology Management",
+            "Name": "Technology Management",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/technology-management-bachelor-of-technology-part-time-8350btech/",
             "Courses": [
@@ -4453,7 +4453,7 @@
             ]
         },
         {
-            "Title": "Forensic Investigation (Crime and Intelligence Analysis Option)",
+            "Name": "Forensic Investigation (Crime and Intelligence Analysis Option)",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/forensic-investigation-crime-and-intelligence-analysis-option-bachelor-of-technology-part-time-847abtech/",
             "Courses": [
@@ -4483,7 +4483,7 @@
             ]
         },
         {
-            "Title": "Forensic Investigation (Forensic Science Option)",
+            "Name": "Forensic Investigation (Forensic Science Option)",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/forensic-investigation-forensic-science-option-bachelor-of-technology-part-time-847bbtech/",
             "Courses": [
@@ -4528,7 +4528,7 @@
             ]
         },
         {
-            "Title": "Forensic Investigation (Digital Forensics and Cybersecurity Option)",
+            "Name": "Forensic Investigation (Digital Forensics and Cybersecurity Option)",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/forensic-investigation-digital-forensics-and-cybersecurity-option-bachelor-of-technology-full-time-part-time-847cbtech/",
             "Courses": [
@@ -4556,7 +4556,7 @@
             ]
         },
         {
-            "Title": "Manufacturing",
+            "Name": "Manufacturing",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/manufacturing-bachelor-of-technology-part-time-8600btech/",
             "Courses": [
@@ -4594,7 +4594,7 @@
             ]
         },
         {
-            "Title": "Accounting",
+            "Name": "Accounting",
             "Credential": "Bachelor of Accounting",
             "URL": "https://www.bcit.ca/programs/accounting-bachelor-of-accounting-full-time-part-time-8630bacc/",
             "Courses": [
@@ -4617,7 +4617,7 @@
             ]
         },
         {
-            "Title": "Applied Computer Science (Network Security Applications Development Option)",
+            "Name": "Applied Computer Science (Network Security Applications Development Option)",
             "Credential": "Bachelor of Science",
             "URL": "https://www.bcit.ca/programs/applied-computer-science-network-security-applications-development-option-bachelor-of-science-full-time-part-time-867bbsc/",
             "Courses": [
@@ -4644,7 +4644,7 @@
             ]
         },
         {
-            "Title": "Applied Computer Science (Database Option)",
+            "Name": "Applied Computer Science (Database Option)",
             "Credential": "Bachelor of Science",
             "URL": "https://www.bcit.ca/programs/applied-computer-science-database-option-bachelor-of-science-part-time-867cbsc/",
             "Courses": [
@@ -4683,7 +4683,7 @@
             ]
         },
         {
-            "Title": "Applied Computer Science (Human Computer Interface Option)",
+            "Name": "Applied Computer Science (Human Computer Interface Option)",
             "Credential": "Bachelor of Science",
             "URL": "https://www.bcit.ca/programs/applied-computer-science-human-computer-interface-option-bachelor-of-science-part-time-867dbsc/",
             "Courses": [
@@ -4722,7 +4722,7 @@
             ]
         },
         {
-            "Title": "Applied Computer Science (Network Security Administration Option)",
+            "Name": "Applied Computer Science (Network Security Administration Option)",
             "Credential": "Bachelor of Science",
             "URL": "https://www.bcit.ca/programs/applied-computer-science-network-security-administration-option-bachelor-of-science-part-time-867ebsc/",
             "Courses": [
@@ -4764,7 +4764,7 @@
             ]
         },
         {
-            "Title": "Applied Computer Science (Wireless and Mobile Applications Development Option)",
+            "Name": "Applied Computer Science (Wireless and Mobile Applications Development Option)",
             "Credential": "Bachelor of Science",
             "URL": "https://www.bcit.ca/programs/applied-computer-science-wireless-and-mobile-applications-development-option-bachelor-of-science-part-time-867fbsc/",
             "Courses": [
@@ -4803,7 +4803,7 @@
             ]
         },
         {
-            "Title": "Construction Management",
+            "Name": "Construction Management",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/construction-management-bachelor-of-technology-full-time-part-time-8800btech/",
             "Courses": [
@@ -4847,7 +4847,7 @@
             ]
         },
         {
-            "Title": "Electronics",
+            "Name": "Electronics",
             "Credential": "Bachelor of Technology",
             "URL": "https://www.bcit.ca/programs/electronics-bachelor-of-technology-part-time-8900btech/",
             "Courses": [
@@ -4883,7 +4883,7 @@
             ]
         },
         {
-            "Title": "Geographic Information Systems",
+            "Name": "Geographic Information Systems",
             "Credential": "Advanced Diploma",
             "URL": "https://www.bcit.ca/programs/geographic-information-systems-advanced-diploma-part-time-9100padvdip/",
             "Courses": [
@@ -4923,7 +4923,7 @@
             ]
         },
         {
-            "Title": "Bachelor of Business Administration",
+            "Name": "Bachelor of Business Administration",
             "Credential": "Bachelor of Business Administration",
             "URL": "https://www.bcit.ca/programs/bachelor-of-business-administration-bachelor-of-business-administration-full-time-part-time-9975bba/",
             "Courses": [
@@ -4985,7 +4985,7 @@
             ]
         },
         {
-            "Title": "Building Energy Modelling",
+            "Name": "Building Energy Modelling",
             "Credential": "Graduate Certificate",
             "URL": "https://www.bcit.ca/programs/building-energy-modelling-graduate-certificate-part-time-a200grcert/",
             "Courses": [
@@ -5000,7 +5000,7 @@
             ]
         },
         {
-            "Title": "Forensic Health Sciences",
+            "Name": "Forensic Health Sciences",
             "Credential": "Graduate Certificate",
             "URL": "https://www.bcit.ca/programs/forensic-health-sciences-graduate-certificate-part-time-a450grcert/",
             "Courses": [
@@ -5014,7 +5014,7 @@
             ]
         },
         {
-            "Title": "Building Science",
+            "Name": "Building Science",
             "Credential": "Master of Engineering",
             "URL": "https://www.bcit.ca/programs/building-science-master-of-engineering-full-time-part-time-m120meng/",
             "Courses": [
@@ -5038,7 +5038,7 @@
             ]
         },
         {
-            "Title": "Building Engineering/Building Science",
+            "Name": "Building Engineering/Building Science",
             "Credential": "Master of Applied Science",
             "URL": "https://www.bcit.ca/programs/building-engineering-building-science-master-of-applied-science-full-time-part-time-m220masc/",
             "Courses": [
@@ -5065,7 +5065,7 @@
             ]
         },
         {
-            "Title": "Smart Grid Systems and Technologies",
+            "Name": "Smart Grid Systems and Technologies",
             "Credential": "Master of Engineering",
             "URL": "https://www.bcit.ca/programs/smart-grid-systems-and-technologies-master-of-engineering-part-time-m500meng/",
             "Courses": [

@@ -3,6 +3,8 @@ from unittest.mock import MagicMock, mock_open
 
 import psycopg2
 import pytest
+from flask import Flask
+from flask.testing import FlaskCliRunner
 from sqlalchemy import text
 
 from bcitflex import create_app
@@ -187,6 +189,35 @@ class TestDBCommands:
 
         assert result.exit_code == 0
         assert f"{expected}\n" == result.output
+
+
+@dbtest
+class TestDBCommandsDB:
+    """Test DB CLI commands with DB connections."""
+
+    def test_load_subjects_command(
+        self, app: Flask, runner: FlaskCliRunner, monkeypatch
+    ):
+        """Test load-subjects command."""
+
+        # mock result.rowcount
+        mock_result = MagicMock()
+        mock_result.rowcount = 2
+
+        # mock session.execute()
+        # [2023-10-21 Jonathan B.]
+        #   The mocking here has no effect on the test.
+        #   Because I don't know how to mock the context session.
+        mock_execute = MagicMock(return_value=mock_result)
+        monkeypatch.setattr("bcitflex.db.DBSession.execute", mock_execute)
+
+        # run command
+        with app.app_context():
+            result = runner.invoke(args=["load-subjects"])
+
+        # assert command ran successfully
+        assert result.exit_code == 0
+        assert result.output.endswith("subjects into database.\n")
 
 
 @dbtest
