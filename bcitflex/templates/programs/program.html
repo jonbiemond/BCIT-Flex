@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{ program.name }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+    <script>
+    function utcTimestampToLocalizedString(timestamp){
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleString();
+        return "Last updated: " + formattedDate;
+    }
+
+    window.onload = function() {
+        document.getElementById("last_updated").innerHTML = utcTimestampToLocalizedString("{{ program.last_updated }}");
+    }
+    </script>
+
+    <p><strong>Name:</strong> {{ program.name }}</p>
+    <p><strong>Credential:</strong> {{ program.credential }}</p>
+    <p><strong>BCIT URL:</strong> <a href="{{ program.url }}">{{ program.url}}</a></p>
+
+    <h3>Courses</h3>
+
+    <table>
+     <thead>
+        <tr>
+           <th>Subject</th>
+           <th>Code</th>
+           <th>Name</th>
+        </tr>
+     </thead>
+
+     <tbody>
+        {% for course in program.courses %}
+           <tr>
+              <td>{{ course.subject_id }}</td>
+              <td>{{ course.code }}</td>
+              <td><a href="{{url_for('course.show', course_id = course.course_id)}}">{{ course.name }}</a></td>
+           </tr>
+        {% endfor %}
+     </tbody>
+    </table>
+{% endblock %}
