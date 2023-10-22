@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Programs{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+  <table>
+     <thead>
+        <tr>
+           <th>Credential</th>
+           <th>Name</th>
+        </tr>
+     </thead>
+
+     <tbody>
+        {% for program in programs %}
+           <tr>
+              <td>{{ program.credential }}</td>
+              <td><a href="{{url_for('program.show', program_id = program.program_id)}}">{{ program.name }}</a></td>
+           </tr>
+        {% endfor %}
+     </tbody>
+  </table>
+{% endblock %}
