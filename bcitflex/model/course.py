@@ -2,7 +2,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, Sequence, UniqueConstraint
-from sqlalchemy.orm import Mapped, Session, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import REAL, Integer, String, Text
 
 from . import Base
@@ -111,8 +111,3 @@ class Course(TimestampsMixin, Base):
     def last_updated(self) -> str:
         """Return a formatted string of the last_updated timestamp."""
         return self.updated_at.isoformat()
-
-    def set_id(self, session: Session) -> None:
-        """Get the course_id from the database if it exists."""
-        course = self.get_by_unique(session, (self.subject_id, self.code))
-        self.course_id = course.course_id if course else None
