@@ -118,6 +118,17 @@ class Base(SoftDeleteMixin, DeclarativeBase):
         return uq_constraint
 
     @classmethod
+    def _unique_columns(
+        cls: "_T",
+        constraint_name: str | None = None,
+    ) -> list[str]:
+        """Return the unique columns of a model."""
+        uq_constraint = cls._unique_constraint(constraint_name)
+        if uq_constraint is None:
+            raise ValueError(f"{cls.__name__} model has no unique constraints.")
+        return [c.key for c in uq_constraint.columns]
+
+    @classmethod
     def get_by_unique(
         cls: "_T",
         session: Session,
@@ -147,16 +158,48 @@ class Base(SoftDeleteMixin, DeclarativeBase):
             unique_id = (unique_id,)
 
         # get the unique column names
-        uq_constraint = cls._unique_constraint(constraint_name)
-        if uq_constraint is None:
-            raise ValueError(f"{cls.__name__} model has no unique constraints.")
-
-        unique_columns = [c.key for c in uq_constraint.columns]
+        unique_columns = cls._unique_columns(constraint_name)
 
         # get the object matching the unique id
         filters = dict(zip(unique_columns, unique_id))
         stmt = select(cls).filter_by(**filters).execution_options(include_deleted=True)
         return session.execute(stmt).scalar_one_or_none()
+
+    def set_id(self, session: Session, constraint_name: str | None = None) -> None:
+        """Set the primary key of the object using the unique constraint.
+
+        Retrieve a persistent object from the database by looking up the unique constraint.
+        Set the primary key of the object to the primary key of the persistent object.
+        If no persistent object is found, do nothing.
+
+        :param session: SQLAlchemy session
+        :param constraint_name: unique constraint name, optional
+
+        :raises ValueError: if the model has no unique fields
+
+        :return: None
+        """
+
+        cls = type(self)
+        cls_mapper = inspect(cls)
+
+        # get the unique column names
+        unique_columns = cls._unique_columns(constraint_name)
+
+        # get the unique id values
+        unique_id = tuple(getattr(self, c) for c in unique_columns)
+
+        # get the
+        persistent_obj = self.get_by_unique(session, unique_id)
+
+        # set the primary key
+        if persistent_obj is not None:
+            pk_columns = {
+                c.key: getattr(persistent_obj, db_to_attr(cls_mapper, c.key))
+                for c in cls_mapper.primary_key
+            }
+            for k, v in pk_columns.items():
+                setattr(self, k, v)
 
     def clone(
         self,

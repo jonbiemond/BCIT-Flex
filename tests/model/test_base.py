@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy import UniqueConstraint, inspect
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Course, Meeting, Offering, User
+from bcitflex.model import Course, Meeting, Offering, User, Term
 from bcitflex.model.base import Base, db_to_attr, updated_pks
 from tests import dbtest
 
@@ -22,27 +22,33 @@ class TestHelpers:
     @pytest.mark.parametrize(
         "pk_val",
         [
-            {"crn": 12345},
-            {"crn": None},
+            {"term_id": 12345},
+            {"term_id": None},
         ],
     )
     def test_get_pks_single(self, pk_val):
         """Test the updated_pks function with a single pk."""
-        obj = Offering(crn=12345)
-        assert updated_pks(obj, pk_val) == {"crn": 12345}
+        obj = Term(term_id=12345)
+        assert updated_pks(obj, pk_val) == {"term_id": 12345}
 
     @pytest.mark.parametrize(
         "pk_val, expected",
         [
-            ({"meeting_id": 15}, {"meeting_id": 15, "crn": 12345}),
-            ({"crn": 54321}, {"meeting_id": 1, "crn": 54321}),
-            ({"meeting_id": 15, "crn": 54321}, {"meeting_id": 15, "crn": 54321}),
-            ({"meeting_id": None, "crn": 54321}, {"meeting_id": None, "crn": 54321}),
+            ({"meeting_id": 15}, {"meeting_id": 15, "offering_id": 12345}),
+            ({"offering_id": 54321}, {"meeting_id": 1, "offering_id": 54321}),
+            (
+                {"meeting_id": 15, "offering_id": 54321},
+                {"meeting_id": 15, "offering_id": 54321},
+            ),
+            (
+                {"meeting_id": None, "offering_id": 54321},
+                {"meeting_id": None, "offering_id": 54321},
+            ),
         ],
     )
     def test_get_pks_multiple(self, pk_val, expected):
         """Test the updated_pks function with multiple pks."""
-        obj = Meeting(meeting_id=1, crn=12345)
+        obj = Meeting(meeting_id=1, offering_id=12345)
         assert updated_pks(obj, pk_val) == expected
 
     @pytest.mark.parametrize(
@@ -66,7 +72,7 @@ class TestPrivate:
         [
             (User, None, UniqueConstraint),
             (Course, None, UniqueConstraint),
-            (Offering, None, type(None)),
+            (Term, None, type(None)),
         ],
     )
     def test__unique_constraint(self, model: Type[Base], constraint: str, expected):
@@ -102,7 +108,23 @@ class TestGet:
     def test_get_by_unique_no_unique_error(self, session: Session):
         """Test the get_by_unique method when no unique constraint is defined."""
         with pytest.raises(ValueError):
-            Offering.get_by_unique(session, "unique")
+            Term.get_by_unique(session, "unique")
+
+    def test_set_id(self, session: Session):
+        """Test set_id method."""
+        new_course = session.get(Course, 1).clone(
+            pk_id=None, include_relationships=False
+        )
+        new_course.set_id(session)
+        assert new_course.course_id == 1
+
+    def test_set_id(self, session: Session):
+        """Test set_id method."""
+        new_course = session.get(Course, 1).clone(
+            pk_id=None, include_relationships=False
+        )
+        new_course.set_id(session)
+        assert new_course.course_id == 1
 
 
 @dbtest
@@ -111,7 +133,7 @@ class TestClone:
 
     def test_clone_offering(self, session: Session, offering: Offering) -> None:
         """Test cloning an offering."""
-        clone = offering.clone(pk_id="23498", instructor="Jane Doe", price=543.21)
+        clone = offering.clone(crn="23498", instructor="Jane Doe", price=543.21)
         session.add(clone)
         session.commit()
         assert clone.crn != offering.crn
