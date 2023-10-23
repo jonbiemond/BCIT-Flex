@@ -2,6 +2,45 @@
 
 
 
+## v3.6.0 (2023-10-23)
+
+### Chore
+
+* chore: drop unused db_config.py ([`ba2e110`](https://github.com/jonbiemond/BCIT-Flex/commit/ba2e110d3c9f5ff345d0db26e8322de70cade44d))
+
+### Ci
+
+* ci: add dev to on ci ([`c54e97e`](https://github.com/jonbiemond/BCIT-Flex/commit/c54e97e7463d5949b665a84586b0b03a19cd7b87))
+
+### Documentation
+
+* docs: instruct to target dev branch ([`5aa5d35`](https://github.com/jonbiemond/BCIT-Flex/commit/5aa5d359792c6ec69fc2a3331ede36eff7c9ea13))
+
+### Feature
+
+* feat(app): add lower navbar ([`fc9fb65`](https://github.com/jonbiemond/BCIT-Flex/commit/fc9fb65e7eb3294ffd469168537f278e63688b73))
+
+* feat(app): add program index and program page ([`dd30eaf`](https://github.com/jonbiemond/BCIT-Flex/commit/dd30eaf5b27861d34d97cb24b5557c558c310c5f))
+
+* feat(script): add load_programs script and command ([`6cc397b`](https://github.com/jonbiemond/BCIT-Flex/commit/6cc397ba3208d4d7a7cb8d4530c6489c8ff1f595))
+
+* feat(model): add Program model ([`15edaa7`](https://github.com/jonbiemond/BCIT-Flex/commit/15edaa73221631e72910c9e1f3c8d236c2114e77))
+
+* feat(db): add programs.json ([`5c92b84`](https://github.com/jonbiemond/BCIT-Flex/commit/5c92b84e678169140752e979e9c29b0276932551))
+
+### Fix
+
+* fix(scraper): undelete objects on merge
+
+On merge of an object set `deleted_at` to None, so it is un-deleted. ([`35ba339`](https://github.com/jonbiemond/BCIT-Flex/commit/35ba339cc538ab15a356fbf63d4e8f307af50e3f))
+
+### Style
+
+* style: fix table style in light mode
+
+Fixes #55 ([`5e2d1f9`](https://github.com/jonbiemond/BCIT-Flex/commit/5e2d1f9676c69dd4f2a763cedd99828bbe2178f4))
+
+
 ## v3.5.1 (2023-10-19)
 
 ### Chore
