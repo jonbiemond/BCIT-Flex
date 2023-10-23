@@ -2,7 +2,7 @@
 from itertools import chain
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Sequence, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import NUMERIC, Float, Integer, String
 
@@ -16,15 +16,27 @@ if TYPE_CHECKING:
     from . import Course, Meeting, Term
 
 
+offering_id_seq = Sequence("offering_id_seq")
+
+
 class Offering(TimestampsMixin, Base):
     __tablename__ = "offering"
-    __table_args__ = {"comment": "Course offerings."}
+    __table_args__ = (
+        UniqueConstraint("crn", "term_id"),
+        {"comment": "Course offerings."},
+    )
 
+    offering_id: Mapped[Integer] = mapped_column(
+        Integer,
+        primary_key=True,
+        doc="Offering ID",
+        comment="Unique identifier for offering.",
+        server_default=offering_id_seq.next_value(),
+    )
     crn: Mapped[String] = mapped_column(
         String(5),
-        primary_key=True,
         doc="Course Reference Number",
-        comment="Course Reference Number, unique to offering.",
+        comment="Course Reference Number, unique by term.",
     )
     instructor: Mapped[String] = mapped_column(
         String(30), doc="Instructor", comment="Instructor."
@@ -51,7 +63,7 @@ class Offering(TimestampsMixin, Base):
     )
 
     primary_meeting: Mapped["Meeting"] = relationship(
-        primaryjoin="and_(Offering.crn==Meeting.crn, Meeting.meeting_id == 1)",
+        primaryjoin="and_(Offering.offering_id==Meeting.offering_id, Meeting.meeting_id == 1)",
         viewonly=True,
     )
 

@@ -50,15 +50,15 @@ class TestOfferingDB:
         """Test adding an offering to the db."""
         session.add(new_offering)
         session.commit()
-        assert session.get(Offering, "67890") == new_offering
-        assert session.get(Offering, "67890").course.course_id == 1
+        assert session.get(Offering, 2) == new_offering
+        assert session.get(Offering, 2).course.course_id == 1
 
     def test_update_offering(self, session: Session) -> None:
         """Test updating an offering in the db."""
-        offering = session.get(Offering, "12345")
+        offering = session.get(Offering, 1)
         offering.instructor = "Jane Doe"
         session.commit()
-        assert session.get(Offering, "12345").instructor == "Jane Doe"
+        assert session.get(Offering, 1).instructor == "Jane Doe"
 
     def test_invalid_crn(self, offering: Offering, session: Session) -> None:
         """Test that adding an offering with an invalid value raises an exception."""
@@ -78,12 +78,12 @@ class TestPrimaryMeeting:
 
     def test_get_primary_meeting(self, session: Session) -> None:
         """Test offering from database includes primary meeting."""
-        offering = session.get(Offering, "12345")
+        offering = session.get(Offering, 1)
         assert offering.primary_meeting.meeting_id == 1
 
     def test_simple_properties(self, session: Session) -> None:
         """Test access attributes of primary meeting through offering."""
-        offering = session.get(Offering, "12345")
+        offering = session.get(Offering, 1)
         assert offering.start_time == datetime.time(18)
         assert offering.end_time == datetime.time(21)
         assert offering.campus == "Online"
@@ -94,7 +94,7 @@ class TestPrimaryMeeting:
         # add new meeting to db
         new_meeting = Meeting(
             meeting_id=2,
-            crn="12345",
+            offering_id=1,
             days=["Thu", "Fri"],
             start_date=datetime.date(2023, 8, 1),
             end_date=datetime.date(2023, 12, 1),
@@ -103,7 +103,7 @@ class TestPrimaryMeeting:
         session.commit()
 
         # get offering
-        offering = session.get(Offering, "12345")
+        offering = session.get(Offering, 1)
         assert offering.start_date == datetime.date(2023, 8, 1)
         assert offering.end_date == datetime.date(2023, 12, 1)
         assert offering.days == ["Wed", "Thu", "Fri"]

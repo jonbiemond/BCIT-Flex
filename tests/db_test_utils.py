@@ -108,7 +108,7 @@ def populate_db(session: Session):
         term_id="202330",
     )
     meeting = Meeting(
-        crn="12345",
+        offering_id=1,
         start_date=datetime.date(2023, 9, 13),
         end_date=datetime.date(2023, 11, 29),
         days=["Wed"],
