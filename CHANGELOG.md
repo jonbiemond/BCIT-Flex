@@ -2,6 +2,26 @@
 
 
 
+## v3.7.0 (2023-10-23)
+
+### Feature
+
+* feat(model): make course.set_id() generic and move to base
+
+Make the set_id() method of Course more general and add it to the Base model, so it can be used on other models. ([`53565cd`](https://github.com/jonbiemond/BCIT-Flex/commit/53565cd33ac6e813c50a741b4ca59355fe329321))
+
+### Fix
+
+* fix(model): add offering surrogate key
+
+Replace Offering CRN with offering_id as the primary key.
+CRN is not unique beyond terms.
+
+Fixes #60 ([`fcdaf9d`](https://github.com/jonbiemond/BCIT-Flex/commit/fcdaf9ddad8a6ec925a4153ca1d6427956afd3e0))
+
+* fix(db): include all columns in unique constraint name ([`29c6cb0`](https://github.com/jonbiemond/BCIT-Flex/commit/29c6cb0337355643e7fb35639b3c547f78084055))
+
+
 ## v3.6.0 (2023-10-23)
 
 ### Chore
