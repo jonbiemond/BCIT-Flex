@@ -13,12 +13,39 @@
     {% endif %}
   </ul>
 </nav>
+<div class="lower-nav">
+    <ul class="lower-nav">
+        <li id="courses"><a href="{{ url_for('course.index') }}">Courses</a></li>
+        <li id="programs"><a href="{{ url_for('program.index') }}">Programs</a></li>
+    </ul>
+</div>
 <section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
   {% block content %}{% endblock %}
 </section>
+<footer>
+  <p>Made by Jonathan Biemond | Source: <a href="https://github.com/jonbiemond/bcit-flex">GitHub</a></p>
+</footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the current URL path
+        const currentPath = window.location.pathname;
+
+        // Define an object to map URLs to the corresponding list item IDs
+        const urlToIdMap = {
+            '/courses': 'courses',
+            '/programs': 'programs'
+        };
+
+        // Find the list item associated with the current page and add the "active" class
+        const activePage = urlToIdMap[currentPath];
+        if (activePage) {
+            const activeListItem = document.getElementById(activePage);
+            if (activeListItem) {
+                activeListItem.classList.add('active');
+            }
+        }
+    });
+</script>
