@@ -12,7 +12,6 @@ class TestMeeting:
 
     def test_init(self, new_meeting: Meeting) -> None:
         """Test the constructor."""
-        assert new_meeting.crn == "12345"
         assert new_meeting.start_date == datetime.date(2023, 9, 13)
         assert new_meeting.end_date == datetime.date(2023, 11, 29)
         assert new_meeting.days == ["Wed"]
@@ -43,12 +42,12 @@ class TestMeetingDB:
 
     def test_get_meeting(self, session: Session) -> None:
         """Test getting a meeting from the db."""
-        meeting = session.get(Meeting, (1, "12345"))
+        meeting = session.get(Meeting, (1, 1))
         assert meeting.meeting_id == 1
 
     def test_update_meeting(self, session: Session) -> None:
         """Test updating a meeting in the db."""
-        meeting = session.get(Meeting, (1, "12345"))
+        meeting = session.get(Meeting, (1, 1))
         meeting.start_time = datetime.time(17, 30)
         session.commit()
         assert meeting.start_time == datetime.time(17, 30)
@@ -57,7 +56,7 @@ class TestMeetingDB:
         """Test adding a meeting to the db."""
         session.add(new_meeting)
         session.commit()
-        assert new_meeting.crn == "12345"
+        assert new_meeting.offering_id == 1
         assert new_meeting.meeting_id == 2
 
     def test_add_first_meeting(
@@ -68,7 +67,7 @@ class TestMeetingDB:
         new_meeting.offering = new_offering
         session.add(new_offering)
         session.commit()
-        assert new_meeting.crn == "67890"
+        assert new_meeting.offering_id == 2
         assert new_meeting.meeting_id == 1
 
     def test_add_two_meetings(
@@ -90,7 +89,7 @@ class TestMeetingDB:
         secondary_meeting.offering = new_offering
         session.add(new_offering)
         session.commit()
-        assert primary_meeting.crn == "54321"
+        assert primary_meeting.offering_id == 3
         assert primary_meeting.meeting_id == 1
-        assert secondary_meeting.crn == "54321"
+        assert secondary_meeting.offering_id == 3
         assert secondary_meeting.meeting_id == 2

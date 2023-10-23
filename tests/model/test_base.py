@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy import UniqueConstraint, inspect
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Course, Meeting, Offering, User, Term
+from bcitflex.model import Course, Meeting, Offering, Term, User
 from bcitflex.model.base import Base, db_to_attr, updated_pks
 from tests import dbtest
 
@@ -109,14 +109,6 @@ class TestGet:
         """Test the get_by_unique method when no unique constraint is defined."""
         with pytest.raises(ValueError):
             Term.get_by_unique(session, "unique")
-
-    def test_set_id(self, session: Session):
-        """Test set_id method."""
-        new_course = session.get(Course, 1).clone(
-            pk_id=None, include_relationships=False
-        )
-        new_course.set_id(session)
-        assert new_course.course_id == 1
 
     def test_set_id(self, session: Session):
         """Test set_id method."""

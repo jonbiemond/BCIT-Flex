@@ -350,6 +350,8 @@ def load_courses(session: Session, courses: Iterator[Course]) -> int:
         # get course ids and merge
         for course in courses:
             course.set_id(session)
+            for offering in course.offerings:
+                offering.set_id(session)
             session.merge(course)
 
     object_ct = len(session.dirty)

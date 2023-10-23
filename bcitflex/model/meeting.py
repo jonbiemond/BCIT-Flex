@@ -15,8 +15,10 @@ if TYPE_CHECKING:
 
 
 def nssequence(context: DefaultExecutionContext):
-    crn = context.get_current_parameters()["crn"]
-    stmt = select(func.max(Meeting.meeting_id)).where(Meeting.crn == crn)
+    offering_id = context.get_current_parameters()["offering_id"]
+    stmt = select(func.max(Meeting.meeting_id)).where(
+        Meeting.offering_id == offering_id
+    )
     max_id = context.connection.scalar(stmt)
     return max_id + 1 if max_id else 1
 
@@ -33,8 +35,10 @@ class Meeting(Base):
         comment="Serial meeting ID partitioned within crn.",
         default=nssequence,
     )
-    crn: Mapped[String] = mapped_column(
-        ForeignKey("offering.crn", ondelete="CASCADE"), primary_key=True
+    offering_id: Mapped[Integer] = mapped_column(
+        ForeignKey("offering.offering_id", ondelete="CASCADE"),
+        primary_key=True,
+        comment="Unique identifier for offering.",
     )
     start_date: Mapped[Date] = mapped_column(
         Date, doc="Start date", comment="Start date."
@@ -64,7 +68,7 @@ class Meeting(Base):
     offering: Mapped["Offering"] = relationship(back_populates="meetings")
 
     def __repr__(self):
-        return f"Meeting(id={self.meeting_id}, crn={self.crn})"
+        return f"Meeting(id={self.meeting_id}, offering_id={self.offering_id})"
 
     def __setattr__(self, key, value):
         """Set meeting_id if not set."""

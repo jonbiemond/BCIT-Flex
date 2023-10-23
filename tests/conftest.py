@@ -98,7 +98,7 @@ def course(session) -> Type[Course]:
 @pytest.fixture
 def offering(session) -> Type[Offering]:
     """Get a test offering."""
-    offering = session.get(Offering, "12345")
+    offering = session.get(Offering, 1)
     if offering is None:
         raise ValueError("Offering not found in database.")
     return offering
@@ -151,7 +151,7 @@ def new_offering() -> Offering:
 def new_meeting() -> Meeting:
     """Return a new meeting object."""
     return Meeting(
-        crn="12345",
+        offering_id=1,
         start_date=datetime.date(2023, 9, 13),
         end_date=datetime.date(2023, 11, 29),
         days=["Wed"],
