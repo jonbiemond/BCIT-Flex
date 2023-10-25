@@ -85,7 +85,7 @@ class TestCourseDB:
         """Test adding a course to the db."""
         session.add(new_course)
         session.commit()
-        assert session.get(Course, 2) == new_course
+        assert session.get(Course, 3) == new_course
 
     def test_update_course(self, session: Session):
         """Test updating a course in the db."""
