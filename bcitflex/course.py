@@ -24,7 +24,7 @@ def index():
             subject=subject,
             course_code=course_code,
             available=available,
-            name=name
+            name=name,
         )
     else:
         courses = DBSession.scalars(select(Course)).all()

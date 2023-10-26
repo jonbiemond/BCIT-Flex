@@ -84,10 +84,22 @@ def populate_db(session: Session):
         subject_id="AHVC", name="Asian History and Visual Culture", is_active=None
     )
     courses = [
-        Course(subject_id="COMP", code="1234", name="Test Course", prerequisites="COMP 1000", credits=3.0,
-               url="https://www.bcit.ca", ),
-        Course(subject_id="COMP", code="2345", name="Second Course", prerequisites="COMP 2000", credits=4.0,
-               url="https://www.bcit.ca", )
+        Course(
+            subject_id="COMP",
+            code="1234",
+            name="Test Course",
+            prerequisites="COMP 1000",
+            credits=3.0,
+            url="https://www.bcit.ca",
+        ),
+        Course(
+            subject_id="COMP",
+            code="2345",
+            name="Second Course",
+            prerequisites="COMP 2000",
+            credits=4.0,
+            url="https://www.bcit.ca",
+        ),
     ]
     program = Program(
         name="Computer Systems Technology (CST)",

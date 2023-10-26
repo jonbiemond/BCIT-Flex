@@ -6,11 +6,11 @@ from bcitflex.model import Course
 
 
 def filter_courses(
-        session: Session,
-        subject: str | None = None,
-        course_code: str | None = None,
-        available: bool | None = None,
-        name: str | None = None,
+    session: Session,
+    subject: str | None = None,
+    course_code: str | None = None,
+    available: bool | None = None,
+    name: str | None = None,
 ) -> list[Course]:
     """Return a list of courses that match the given criteria."""
     # Create a list of filters to apply to the query
