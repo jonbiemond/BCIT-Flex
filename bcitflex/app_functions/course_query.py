@@ -6,10 +6,11 @@ from bcitflex.model import Course
 
 
 def filter_courses(
-    session: Session,
-    subject: str | None = None,
-    course_code: str | None = None,
-    available: bool | None = None,
+        session: Session,
+        subject: str | None = None,
+        course_code: str | None = None,
+        available: bool | None = None,
+        name: str | None = None,
 ) -> list[Course]:
     """Return a list of courses that match the given criteria."""
     # Create a list of filters to apply to the query
@@ -20,6 +21,8 @@ def filter_courses(
         filters.append(Course.subject_id == subject)
     if course_code:
         filters.append(Course.code == course_code)
+    if name:
+        filters.append(Course.name.ilike(f"%{name}%"))
 
     # Apply the filters to the query
     query = select(Course)

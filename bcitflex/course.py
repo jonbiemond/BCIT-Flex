@@ -17,12 +17,14 @@ def index():
         subject = request.form.get("subject")
         course_code = request.form.get("course_code")
         available = request.form.get("available")
+        name = request.form.get("name")
 
         courses = filter_courses(
             session=DBSession,
             subject=subject,
             course_code=course_code,
             available=available,
+            name=name
         )
     else:
         courses = DBSession.scalars(select(Course)).all()

@@ -13,6 +13,9 @@
     <label for="code">Code:</label>
     <input type="text" id="code" name="code" placeholder="Enter code">
 
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" placeholder="Enter name">
+
     <label for="available">Available:</label>
     <input type="checkbox" id="available" name="available" value="true">
 
@@ -31,7 +34,7 @@
 
      <tbody>
         {% for course in courses %}
-           <tr>
+           <tr id="course_data">
               <td>{{ course.subject_id }}</td>
               <td>{{ course.code }}</td>
               <td><a href="{{url_for('course.show', course_id = course.course_id)}}">{{ course.name }}</a></td>
