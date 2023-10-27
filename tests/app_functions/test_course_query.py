@@ -2,7 +2,7 @@
 import pytest
 
 from bcitflex.app_functions.course_query import ModelFilter, coerce_to_column_type
-from bcitflex.model import Course, Subject
+from bcitflex.model import Course, Offering, Subject
 
 
 @pytest.fixture(scope="function")
@@ -16,7 +16,11 @@ def courses():
     """Return a list of Course instances."""
     return [
         Course(code="1234", subject=Subject(subject_id="COMP")),
-        Course(code="5678", subject=Subject(subject_id="COMP")),
+        Course(
+            code="5678",
+            subject=Subject(subject_id="COMP"),
+            offerings=[Offering(term_id="202101")],
+        ),
     ]
 
 
@@ -73,3 +77,10 @@ class TestModelFilter:
         filtered_courses = course_filter.filter(courses)
         assert len(filtered_courses) == 2
         assert filtered_courses[0].subject.subject_id == "COMP"
+
+    def test_filter_rel_collection(self, course_filter: ModelFilter, courses):
+        """Test the filter method with a relationship."""
+        course_filter.add_condition("term_id", "202101", Offering)
+        filtered_courses = course_filter.filter(courses)
+        assert len(filtered_courses) == 1
+        assert filtered_courses[0].offerings[0].term_id == "202101"
