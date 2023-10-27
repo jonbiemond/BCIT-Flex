@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bcitflex"
-version = "3.7.0"
+version = "3.8.0"
 description = "Browse BCIT Flex course offerings."
 authors = ["Jonathan Biemond <jbiemond@my.bcit.ca>"]
 license = "MIT"
