@@ -27,7 +27,7 @@ class TestCourse:
     def test_filter_courses_by_code(self, client):
         """Test that filter courses returns only courses with the given code."""
         response = client.post("/courses", data={"code": 9999})
-        assert b"COMP" not in response.data
+        assert b"1234" not in response.data
 
     def test_filter_courses_by_available(self, client):
         """Test that filter courses returns only courses with the given availability."""

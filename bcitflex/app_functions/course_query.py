@@ -48,9 +48,17 @@ class ModelFilter:
         if relation is not None:
             rel_key = self.relationships[relation]
 
-            def condition(obj: Type[Base]) -> bool:
-                model_attr = getattr(getattr(obj, rel_key), attr)
-                return model_attr == value
+            if self.mapper.relationships[rel_key].uselist:
+
+                def condition(obj: Type[Base]) -> bool:
+                    model_attr = getattr(obj, rel_key)
+                    return any(getattr(item, attr) == value for item in model_attr)
+
+            else:
+
+                def condition(obj: Type[Base]) -> bool:
+                    model_attr = getattr(getattr(obj, rel_key), attr)
+                    return model_attr == value
 
         else:
 
