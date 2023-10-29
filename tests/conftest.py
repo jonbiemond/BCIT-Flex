@@ -13,6 +13,7 @@ from bcitflex import create_app
 from bcitflex.db import DBSession, check_current_head
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
 from bcitflex.model.program import Program
+from bcitflex.model.user import UserPreference
 from tests.db_test_utils import (
     POSTGRES_HOST,
     POSTGRES_PASSWORD,
@@ -172,6 +173,12 @@ def new_user() -> User:
     """Return a new user object."""
     # return user with a unique username
     return User(username=str(uuid.uuid4())[:8], password="test")
+
+
+@pytest.fixture
+def new_user_preference() -> UserPreference:
+    """Return a new user preference object."""
+    return UserPreference(user_id=1, programs=[1, 2, 3])
 
 
 # App fixtures

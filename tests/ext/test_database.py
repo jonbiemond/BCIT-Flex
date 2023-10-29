@@ -47,10 +47,20 @@ class TestSoftDeleteDB:
 
     def test_include_option_get(self, session: Session):
         """Test that the include_deleted option includes deleted objects when used with get."""
-        # Note: this test depends on the prior test (test_hook) for efficiency
-        assert session.get(User, 2) is None
+
+        # add deleted user to database
+        deleted_user = User(username="deleted", password="test")
+        deleted_user.deleted_at = "2021-01-01"
+        session.add(deleted_user)
+        session.commit()
+        user_id = deleted_user.id
+
+        # remove deleted user from identity map
+        session.expunge_all()
+
+        assert session.get(User, user_id) is None
         assert (
-            session.get(User, 2, execution_options={"include_deleted": True})
+            session.get(User, user_id, execution_options={"include_deleted": True})
             is not None
         )
 
