@@ -10,7 +10,15 @@ import pytest
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
 
-from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
+from bcitflex.model import (
+    Course,
+    Meeting,
+    Offering,
+    Subject,
+    Term,
+    User,
+    UserPreference,
+)
 from bcitflex.model.program import Program
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
@@ -120,6 +128,11 @@ def populate_db(session: Session):
         username="test-user",
         password=generate_password_hash("test-password"),
     )
+    user_preference = UserPreference(
+        user_id=1,
+        programs=[1, 2, 3],
+    )
+    user.preference = user_preference
     session.add(comp)
     session.add(blaw)
     session.add(ahvc)

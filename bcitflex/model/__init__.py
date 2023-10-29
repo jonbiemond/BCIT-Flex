@@ -5,4 +5,4 @@ from .offering import Offering
 from .program import Program
 from .subject import Subject
 from .term import Term
-from .user import User
+from .user import User, UserPreference
