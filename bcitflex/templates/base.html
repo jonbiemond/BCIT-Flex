@@ -17,6 +17,7 @@
     <ul class="lower-nav">
         <li id="courses"><a href="{{ url_for('course.index') }}">Courses</a></li>
         <li id="programs"><a href="{{ url_for('program.index') }}">Programs</a></li>
+        <li class="split" id="account"><a href="{{ url_for('account.index') }}">Account</a></li>
     </ul>
 </div>
 <section class="content">
@@ -36,7 +37,8 @@
         // Define an object to map URLs to the corresponding list item IDs
         const urlToIdMap = {
             '/courses': 'courses',
-            '/programs': 'programs'
+            '/programs': 'programs',
+            '/account': 'account'
         };
 
         // Find the list item associated with the current page and add the "active" class

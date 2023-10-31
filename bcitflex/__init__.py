@@ -47,4 +47,10 @@ def create_app(test_config=None):
     app.register_blueprint(program.bp)
     app.add_url_rule("/programs", endpoint="index")
 
+    # Account blueprint
+    from . import account
+
+    app.register_blueprint(account.bp)
+    app.add_url_rule("/index", endpoint="account")
+
     return app
