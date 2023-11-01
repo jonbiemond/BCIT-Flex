@@ -7,8 +7,6 @@ from sqlalchemy import Column, inspect
 from bcitflex.model import Base, Course, Subject
 from bcitflex.model.enum import Match
 
-NOT_AVAILABLE = ["Full", "In Progress", "Cancelled", "Closed", "Waitlist"]
-
 
 def coerce_to_column_type(model_column: Column, value: str | int) -> str | int:
     """Coerce a value to the type of the given model column."""
