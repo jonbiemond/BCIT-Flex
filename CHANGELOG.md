@@ -2,6 +2,15 @@
 
 
 
+## v3.8.0 (2023-10-27)
+
+### Feature
+
+* feat(app): add subject and campus select elements ([`50e1af2`](https://github.com/jonbiemond/BCIT-Flex/commit/50e1af2ef4fc11281901ab4383969114cc374384))
+
+* feat(app): add course filter interface ([`0675fd9`](https://github.com/jonbiemond/BCIT-Flex/commit/0675fd94211cb00476f6e09f28aea76ed4db3aa9))
+
+
 ## v3.7.0 (2023-10-23)
 
 ### Feature

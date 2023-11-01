@@ -5,23 +5,47 @@
 {% endblock %}
 
 {% block content %}
-  <form action="/courses" method="POST">
-    <div class="display: table">
-    <label for="subject">Subject:</label>
-    <input type="text" id="subject" name="subject" placeholder="Enter subject">
+    <div class="filter">
+      <form action="/courses" method="POST">
+        <div class="display: table">
 
-    <label for="code">Code:</label>
-    <input type="text" id="code" name="code" placeholder="Enter code">
+{#        <label for="term">Term:</label>#}
+{#        <select id="term" name="term">#}
+{#          <option value="">Select term</option>#}
+{#          {% for term in terms %}#}
+{#            <option value="{{ term.term_id }}">{{ term.name }}</option>#}
+{#          {% endfor %}#}
+{#        </select>#}
 
-    <label for="name">Name:</label>
+        <label for="subject">Subject:</label>
+        <select id="subject" name="subject">
+          <option value="">Select subject</option>
+          {% for subject in subjects %}
+            <option value="{{ subject.subject_id }}">{{ subject.subject_id }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="campus">Campus:</label>
+        <select id="campus" name="campus">
+          <option value="">Select campus</option>
+          {% for campus in locations %}
+            <option value="{{ campus }}">{{ campus }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="code">Code:</label>
+        <input type="text" id="code" name="code" placeholder="Enter code">
+
+        <label for="name">Name:</label>
     <input type="text" id="name" name="name" placeholder="Enter name">
 
-    <label for="available">Available:</label>
-    <input type="checkbox" id="available" name="available" value="true">
+        <label for="available">Available:</label>
+        <input type="checkbox" id="available" name="available" value="true">
 
-    <input type="submit" value="Search">
+        <input type="submit" value="Search">
+        </div>
+      </form>
     </div>
-  </form>
 
   <table>
      <thead>
