@@ -202,4 +202,4 @@ class TestLoadData:
         courses = (course for course in [existing_course])
         assert session.get(Course, 1) is not None
         load_courses(session, courses)
-        assert session.get(Course, 3) is None
+        assert session.get(Course, 2) is None

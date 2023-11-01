@@ -3,6 +3,7 @@ import pytest
 
 from bcitflex.app_functions.course_query import ModelFilter, coerce_to_column_type
 from bcitflex.model import Course, Offering, Subject
+from bcitflex.model.enum import Match
 
 
 @pytest.fixture(scope="function")
@@ -15,10 +16,11 @@ def course_filter():
 def courses():
     """Return a list of Course instances."""
     return [
-        Course(code="1234", subject=Subject(subject_id="COMP")),
+        Course(code="1234", name="Test Course", subject=Subject(subject_id="COMP")),
         Course(
             code="5678",
             subject=Subject(subject_id="COMP"),
+            name="Second Course",
             offerings=[Offering(term_id="202101")],
         ),
     ]
@@ -84,3 +86,26 @@ class TestModelFilter:
         filtered_courses = course_filter.filter(courses)
         assert len(filtered_courses) == 1
         assert filtered_courses[0].offerings[0].term_id == "202101"
+
+    def test_filter_name_course(self, course_filter: ModelFilter, courses):
+        """Test the filter method with a relationship."""
+        course_filter.add_condition("name", "Test Course")
+        filtered_courses = course_filter.filter(courses)
+        assert len(filtered_courses) == 1
+        assert filtered_courses[0].name == "Test Course"
+
+    def test_filter_exact_match(self, course_filter: ModelFilter, courses):
+        """Test the filter method with a relationship."""
+        course_filter.add_condition("name", "cours")
+        filtered_courses = course_filter.filter(courses)
+        assert len(filtered_courses) == 0
+
+    def test_filter_partial_match(self, course_filter: ModelFilter, courses):
+        """Test the filter method with a relationship."""
+        course_filter.add_condition("name", "cours", None, Match.PARTIAL)
+        filtered_courses = course_filter.filter(courses)
+        assert len(filtered_courses) == 2
+        assert list(map(lambda x: x.name, filtered_courses)) == [
+            "Test Course",
+            "Second Course",
+        ]

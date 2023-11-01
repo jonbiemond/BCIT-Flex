@@ -5,6 +5,9 @@ from functional import seq
 from sqlalchemy import Column, inspect
 
 from bcitflex.model import Base, Course, Subject
+from bcitflex.model.enum import Match
+
+NOT_AVAILABLE = ["Full", "In Progress", "Cancelled", "Closed", "Waitlist"]
 
 
 def coerce_to_column_type(model_column: Column, value: str | int) -> str | int:
@@ -30,7 +33,11 @@ class ModelFilter:
         return f"{self.__class__.__name__}({self.conditions})"
 
     def add_condition(
-        self, attr: str, value: str | int | None, relation: Type[Base] | None = None
+        self,
+        attr: str,
+        value: str | int | None,
+        relation: Type[Base] | None = None,
+        match: Match = Match.EXACT,
     ):
         """Return a function that returns True if the given model attribute
         matches the given value.
@@ -64,7 +71,10 @@ class ModelFilter:
 
             def condition(obj: Type[Base]) -> bool:
                 model_attr = getattr(obj, attr)
-                return model_attr == value
+                if match is Match.EXACT:
+                    return model_attr == value
+                else:
+                    return value.lower() in model_attr.lower()
 
         self.conditions.append(condition)
 

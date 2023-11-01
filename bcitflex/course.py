@@ -7,6 +7,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 from bcitflex.app_functions import ModelFilter
 from bcitflex.db import DBSession
 from bcitflex.model import Course, Meeting, Offering, Subject, Term
+from bcitflex.model.enum import Match
 
 bp = Blueprint("course", __name__)
 
@@ -18,6 +19,7 @@ def filters_from_form(form: ImmutableMultiDict) -> ModelFilter:
     filters.add_condition("subject_id", form.get("subject"))
     filters.add_condition("campus", form.get("campus"), Offering)
     filters.add_condition("code", form.get("code"))
+    filters.add_condition("name", form.get("name"), None, Match.PARTIAL)
     filters.add_condition("is_available", form.get("available") == "True" or None)
     return filters
 
