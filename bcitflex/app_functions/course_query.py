@@ -1,11 +1,16 @@
 """Filter courses."""
+from enum import Enum
 from typing import Type
 
 from functional import seq
 from sqlalchemy import Column, inspect
 
 from bcitflex.model import Base, Course, Subject
-from bcitflex.model.enum import Match
+
+
+class Match(Enum):
+    EXACT = "EXACT"
+    PARTIAL = "PARTIAL"
 
 
 def coerce_to_column_type(model_column: Column, value: str | int) -> str | int:

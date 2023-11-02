@@ -1,9 +1,12 @@
 """Tests for the CourseFilter class and course query function."""
 import pytest
 
-from bcitflex.app_functions.course_query import ModelFilter, coerce_to_column_type
+from bcitflex.app_functions.course_query import (
+    Match,
+    ModelFilter,
+    coerce_to_column_type,
+)
 from bcitflex.model import Course, Offering, Subject
-from bcitflex.model.enum import Match
 
 
 @pytest.fixture(scope="function")

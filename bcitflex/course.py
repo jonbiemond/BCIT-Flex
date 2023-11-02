@@ -5,9 +5,9 @@ from sqlalchemy import select
 from werkzeug.datastructures import ImmutableMultiDict
 
 from bcitflex.app_functions import ModelFilter
+from bcitflex.app_functions.course_query import Match
 from bcitflex.db import DBSession
 from bcitflex.model import Course, Meeting, Offering, Subject, Term
-from bcitflex.model.enum import Match
 
 bp = Blueprint("course", __name__)
 
