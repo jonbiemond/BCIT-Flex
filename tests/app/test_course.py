@@ -21,17 +21,28 @@ class TestCourse:
 
     def test_filter_courses(self, client):
         """Test that filter courses returns only courses with the given subject."""
-        response = client.post("/courses", data={"subject": "COMP"})
+        response = client.get("/courses?subject=COMP")
         assert b"COMP" in response.data
 
     def test_filter_courses_by_code(self, client):
         """Test that filter courses returns only courses with the given code."""
-        response = client.post("/courses", data={"code": 9999})
+        response = client.get("/courses?code=9999")
         assert b"1234" not in response.data
 
     def test_filter_courses_by_available(self, client):
         """Test that filter courses returns only courses with the given availability."""
-        response = client.post("/courses", data={"available": "True"})
+        response = client.get("/courses?available=True")
+        assert b"COMP" in response.data
+
+    def test_paginate_courses(self, client):
+        """Test that filter courses returns only courses with the given availability."""
+        response = client.get("/courses?page=1")
+        assert b"Page 1" in response.data
+
+    def test_paginate_courses_and_subject(self, client):
+        """Test that filter courses returns only courses with the given availability."""
+        response = client.get("/courses?page=1&subject=COMP")
+        assert b"Page 1" in response.data
         assert b"COMP" in response.data
 
     def test_filter_courses_by_campus(self, client):
