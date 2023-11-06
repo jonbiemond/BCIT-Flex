@@ -60,3 +60,17 @@ footer a { text-decoration: none; }
 footer a:hover { text-decoration: underline;}
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pagination .disabled {
+    color: #aaa;  /* Grayed out color for disabled links */
+    cursor: default;
+}
+
+.pagination .current-page {
+    font-weight: bold;
+}
