@@ -2,7 +2,7 @@
 import pytest
 from sqlalchemy import Select, select
 
-from bcitflex.app_functions.course_query import ModelFilter
+from bcitflex.app_functions.course_query import ModelFilter, select_tables
 from bcitflex.model import Course, Meeting, Offering
 
 
@@ -21,6 +21,23 @@ def course_filter():
 def base_stmt(course_filter):
     """Return the base ModelFilter statement."""
     return one_line(select(Course).distinct())
+
+
+class TestHelpers:
+    """Test helper functions in the course_query module."""
+
+    @pytest.mark.parametrize(
+        "stmt, expected",
+        [
+            (select(Course), [Course]),
+            (select(Course).join(Offering), [Course, Offering]),
+            (select(Course).join(Offering).join(Meeting), [Course, Offering, Meeting]),
+        ],
+    )
+    def test_from_tables(self, stmt: Select, expected):
+        """Test that from_tables returns the correct tables."""
+        expected = [model.__table__ for model in expected]
+        assert select_tables(stmt) == expected
 
 
 class TestModelFilter:
@@ -46,6 +63,18 @@ class TestModelFilter:
         course_filter.where(Course.code == "")
         assert one_line(course_filter.stmt) == base_stmt
 
+    @pytest.mark.parametrize(
+        "condition",
+        [
+            Course.code,
+            Course.code == Course.code,
+        ],
+    )
+    def test_invalid_condition(self, course_filter: ModelFilter, condition):
+        """Test that an invalid condition raises a ValueError."""
+        with pytest.raises(ValueError):
+            course_filter.where(condition)
+
     def test_add_multi_condition(self, course_filter: ModelFilter, base_stmt: str):
         """Test adding multiple conditions."""
         base_stmt += " WHERE course.code = :code_1"
@@ -61,13 +90,25 @@ class TestModelFilter:
         course_filter.where(Offering.status == "Full")
         assert one_line(course_filter.stmt) == base_stmt
 
-    def test_add_distant_rel_condition(
+    def test_add_associated_relationship_condition(
         self, course_filter: ModelFilter, base_stmt: str
     ):
         """Test adding a condition for an indirectly related table."""
         base_stmt += " JOIN offering ON course.course_id = offering.course_id"
         base_stmt += " JOIN meeting ON offering.offering_id = meeting.offering_id"
         base_stmt += " WHERE meeting.campus = :campus_1"
+        course_filter.where(Meeting.campus == "Burnaby", [Offering])
+        assert one_line(course_filter.stmt) == base_stmt
+
+    def test_multi_condition_and_associated_relationship_condition(
+        self, course_filter: ModelFilter, base_stmt: str
+    ):
+        """Test adding a condition for an indirectly related table when it is already referenced in another condition."""
+        base_stmt += " JOIN offering ON course.course_id = offering.course_id"
+        base_stmt += " JOIN meeting ON offering.offering_id = meeting.offering_id"
+        base_stmt += " WHERE offering.status = :status_1"
+        base_stmt += " AND meeting.campus = :campus_1"
+        course_filter.where(Offering.status == "Full")
         course_filter.where(Meeting.campus == "Burnaby", [Offering])
         assert one_line(course_filter.stmt) == base_stmt
 

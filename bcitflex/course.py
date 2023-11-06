@@ -18,7 +18,7 @@ def index():
     if request.method == "POST":
         filters.where(Offering.term_id == request.form.get("term"))
         filters.where(Course.subject_id == request.form.get("subject"))
-        filters.where(Meeting.campus == request.form.get("campus"))
+        filters.where(Meeting.campus == request.form.get("campus"), links=[Offering])
         filters.where(Course.code == request.form.get("code"))
         if name := request.form.get("name"):
             filters.where(Course.name.ilike("%" + name + "%"))

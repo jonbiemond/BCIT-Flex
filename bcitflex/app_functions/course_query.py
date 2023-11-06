@@ -1,10 +1,38 @@
 """Filter courses."""
 from typing import Type
 
-from sqlalchemy import Column, ColumnExpressionArgument, Null, Select, select
-from sqlalchemy.orm import Mapper
+from sqlalchemy import (
+    BindParameter,
+    Column,
+    ColumnExpressionArgument,
+    FromClause,
+    Join,
+    Null,
+    Select,
+    Table,
+    select,
+)
 
 from bcitflex.model import Base
+
+
+def from_tables(from_: FromClause) -> list[Table]:
+    """Return a list of tables in a from clause."""
+    tables = []
+    if isinstance(from_, Table):
+        tables.append(from_)
+    elif isinstance(from_, Join):
+        tables.extend(from_tables(from_.left))
+        tables.extend(from_tables(from_.right))
+    return tables
+
+
+def select_tables(stmt: Select) -> list[Table]:
+    """Return a list of tables in a select statement."""
+    tables = []
+    for from_ in stmt.get_final_froms():
+        tables.extend(from_tables(from_))
+    return tables
 
 
 class ModelFilter:
@@ -14,12 +42,14 @@ class ModelFilter:
     :param stmt: SQLAlchemy select statement
     """
 
-    mapper: Mapper[Base]
     model: Type[Base]
     stmt: Select
 
     def __init__(self, model: Type[Base]):
-        self.conditions: list[callable] = []
+        """Initialize the select statement.
+
+        :param model: SQLAlchemy model to select
+        """
         self.model = model
         self.stmt = select(model).distinct()
 
@@ -36,9 +66,10 @@ class ModelFilter:
         """
 
         links = links or []
+        tables = select_tables(self.stmt)
 
         for model in links:
-            if model.__table__ not in self.stmt.get_final_froms():
+            if model.__table__ not in tables:
                 self.stmt = self.stmt.join(model)
 
         if not condition.is_clause_element:
@@ -47,10 +78,13 @@ class ModelFilter:
         if not isinstance(condition.left, Column):
             raise ValueError("Expected column on the left side of the expression.")
 
+        if not isinstance(condition.right, BindParameter | Null):
+            raise ValueError("Expected parameter on the right side of the expression.")
+
         if isinstance(condition.right, Null) or condition.right.value == "":
             return
 
-        if condition.left.table not in self.stmt.get_final_froms():
+        if condition.left.table not in tables:
             self.stmt = self.stmt.join(condition.left.entity_namespace)
 
         self.stmt = self.stmt.where(condition)
