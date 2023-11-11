@@ -49,3 +49,8 @@ class TestCourse:
         """Test that filter courses returns only courses with the given campus."""
         response = client.post("/courses", data={"campus": "Burnaby"})
         assert b"1234" not in response.data
+
+    def test_show_course(self, client):
+        """Test that show course returns the correct course."""
+        response = client.get("/courses/comp-1234")
+        assert b"COMP 1234" in response.data

@@ -61,7 +61,7 @@
            <tr>
               <td>{{ course.subject_id }}</td>
               <td>{{ course.code }}</td>
-              <td><a href="{{url_for('course.show', course_id = course.course_id)}}">{{ course.name }}</a></td>
+              <td><a href="{{url_for('course.show', subject_id=course.subject_id, code=course.code)}}">{{ course.name }}</a></td>
            </tr>
         {% endfor %}
      </tbody>
