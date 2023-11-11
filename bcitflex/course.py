@@ -1,4 +1,4 @@
-"""Course Blueprint"""
+"""Course Blueprint."""
 
 from flask import Blueprint, render_template, request
 from sqlalchemy import not_, select
@@ -14,6 +14,7 @@ bp = Blueprint("course", __name__)
 @bp.route("/")
 @bp.route("/courses", methods=["GET"])
 def index():
+    """List courses."""
     filters = ModelFilter(Course)
     filters.where(Offering.term_id == request.args.get("term"))
     filters.where(Course.subject_id == request.args.get("subject"))
@@ -39,7 +40,8 @@ def index():
     )
 
 
-@bp.route("/courses/<int:course_id>")
-def show(course_id):
-    course = DBSession.get(Course, course_id)
+@bp.route("/courses/<subject_id>-<code>")
+def show(subject_id, code):
+    """Display course details."""
+    course = Course.get_by_unique(DBSession, (subject_id.upper(), code))
     return render_template("courses/course.html", course=course)
