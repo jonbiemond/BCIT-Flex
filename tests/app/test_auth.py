@@ -34,6 +34,7 @@ def test_register_validate_input(client, username, password, message):
 
 @dbtest
 def test_login(client, auth):
+    """Test that login view sets the session and redirects to index."""
     assert client.get("/auth/login").status_code == 200
     response = auth.login()
     assert response.headers["Location"] == "/"
@@ -53,6 +54,7 @@ def test_login(client, auth):
     ),
 )
 def test_login_validate_input(auth, username, password, message):
+    """Test that login view validates the username and password."""
     response = auth.login(username, password)
     assert message in response.data
 
