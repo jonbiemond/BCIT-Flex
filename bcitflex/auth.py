@@ -3,6 +3,7 @@ import functools
 
 from flask import (
     Blueprint,
+    Response,
     flash,
     g,
     redirect,
@@ -18,6 +19,14 @@ from bcitflex.db import DBSession
 from bcitflex.model import User
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
+
+
+def redirect_dest(fallback: str) -> Response:
+    """Redirect to the next page after login."""
+    dest = request.args.get("next")
+    if dest is None:
+        return redirect(fallback)
+    return redirect(url_for(dest))
 
 
 @bp.route("/register", methods=("GET", "POST"))
@@ -67,7 +76,7 @@ def login():
         if error is None:
             session.clear()
             session["user_id"] = user["id"]
-            return redirect(url_for("index"))
+            return redirect_dest(url_for("index"))
 
         flash(error)
 
@@ -94,7 +103,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("auth.login", next=request.endpoint))
 
         return view(**kwargs)
 
