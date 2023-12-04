@@ -2,6 +2,28 @@
 
 
 
+## v3.9.0 (2023-11-06)
+
+### Feature
+
+* feat(app): paginate course index
+
+Closes #36 ([`8999ee8`](https://github.com/jonbiemond/BCIT-Flex/commit/8999ee8ca4f1ca2fff1859a96f3dd9902ab071f3))
+
+* feat(app): implement course filters as SQL
+
+Apply course filters via SQL instead of in state.
+It is more efficient to filter courses at the database level. ([`85b62bd`](https://github.com/jonbiemond/BCIT-Flex/commit/85b62bd2affc64fdddea81250b9a60d9f4b191df))
+
+* feat(app): add course search
+
+Closes #61 ([`b844873`](https://github.com/jonbiemond/BCIT-Flex/commit/b844873095b61b44f57c8f4ca89e0303e64ce0d4))
+
+### Fix
+
+* fix(app): handle adding already included table to ModelFilter ([`a982e5e`](https://github.com/jonbiemond/BCIT-Flex/commit/a982e5e4a96816620efbb2ba33a76f1d5f9c043e))
+
+
 ## v3.8.0 (2023-10-27)
 
 ### Feature

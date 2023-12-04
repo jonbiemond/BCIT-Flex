@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="filter">
-      <form action="/courses" method="POST">
+      <form action="/courses" method="GET">
         <div class="display: table">
 
 {#        <label for="term">Term:</label>#}
@@ -19,28 +19,31 @@
 
         <label for="subject">Subject:</label>
         <select id="subject" name="subject">
-          <option value="">Select subject</option>
-          {% for subject in subjects %}
-            <option value="{{ subject.subject_id }}">{{ subject.subject_id }}</option>
-          {% endfor %}
+            <option value="">Select subject</option>
+            {% for subject in subjects %}
+                <option value="{{ subject.subject_id }}" {% if request.args.get('subject') == subject.subject_id %}selected{% endif %}>{{ subject.subject_id }}</option>
+            {% endfor %}
         </select>
 
         <label for="campus">Campus:</label>
         <select id="campus" name="campus">
           <option value="">Select campus</option>
           {% for campus in locations %}
-            <option value="{{ campus }}">{{ campus }}</option>
+            <option value="{{ campus }}" {% if request.args.get('campus') == campus %}selected{% endif %}>{{ campus }}</option>
           {% endfor %}
         </select>
 
         <label for="code">Code:</label>
-        <input type="text" id="code" name="code" placeholder="Enter code">
+        <input type="text" id="code" name="code" placeholder="Enter code" value="{{ request.args.get('code', '') }}">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter name" value="{{ request.args.get('name', '') }}">
 
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" placeholder="Enter name">
 
         <label for="available">Available:</label>
-        <input type="checkbox" id="available" name="available" value="true">
+        <input type="checkbox" id="available" name="available" value="true" {% if request.args.get('available') == 'true' %}checked{% endif %}>
 
         <input type="submit" value="Search">
         </div>
@@ -57,7 +60,7 @@
      </thead>
 
      <tbody>
-        {% for course in courses %}
+        {% for course in pagination.items %}
            <tr>
               <td>{{ course.subject_id }}</td>
               <td>{{ course.code }}</td>
@@ -66,4 +69,22 @@
         {% endfor %}
      </tbody>
   </table>
+    <div class="pagination">
+    {%- if pagination.has_prev %}
+        <a href="{{ url_for('course.index', page=pagination.prev_num, subject=request.args.get('subject'), campus=request.form.get('campus'), code=request.form.get('code'), available=request.form.get('available') == 'true') }}">&laquo; Previous</a>
+    {%- else %}
+        <span class="disabled">&laquo; Previous</span>
+    {%- endif %}
+
+
+    <span>Page {{ pagination.page }} of {{ pagination.pages }}.</span>
+
+    {%- if pagination.has_next %}
+        <a href="{{ url_for('course.index', page=pagination.next_num, subject=request.args.get('subject'), campus=request.form.get('campus'), code=request.form.get('code'), available=request.form.get('available') == 'true') }}">Next &raquo;</a>
+    {%- else %}
+        <span class="disabled">Next &raquo;</span>
+    {%- endif %}
+
+    </div>
+
 {% endblock %}
