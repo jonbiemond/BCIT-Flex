@@ -157,6 +157,8 @@ class TestDBHelpers:
 
 
 class TestDBCommands:
+    """Test DB CLI commands."""
+
     @pytest.mark.parametrize(
         "db_created, db_url, expected",
         [
