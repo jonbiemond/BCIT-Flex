@@ -1,40 +1,90 @@
 """Filter courses."""
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from typing import Type
 
-from bcitflex.model import Course
+from sqlalchemy import (
+    BindParameter,
+    Column,
+    ColumnExpressionArgument,
+    FromClause,
+    Join,
+    Null,
+    Select,
+    Table,
+    select,
+)
+
+from bcitflex.model import Base
 
 
-def filter_courses(
-        session: Session,
-        subject: str | None = None,
-        course_code: str | None = None,
-        available: bool | None = None,
-        name: str | None = None,
-) -> list[Course]:
-    """Return a list of courses that match the given criteria."""
-    # Create a list of filters to apply to the query
-    joins = []
-    filters = []
+def from_tables(from_: FromClause) -> list[Table]:
+    """Return a list of tables in a from clause."""
+    tables = []
+    if isinstance(from_, Table):
+        tables.append(from_)
+    elif isinstance(from_, Join):
+        tables.extend(from_tables(from_.left))
+        tables.extend(from_tables(from_.right))
+    return tables
 
-    if subject:
-        filters.append(Course.subject_id == subject)
-    if course_code:
-        filters.append(Course.code == course_code)
-    if name:
-        filters.append(Course.name.ilike(f"%{name}%"))
 
-    # Apply the filters to the query
-    query = select(Course)
-    for join in joins:
-        query.join(join)
-    query = query.where(*filters)
+def select_tables(stmt: Select) -> list[Table]:
+    """Return a list of tables in a select statement."""
+    tables = []
+    for from_ in stmt.get_final_froms():
+        tables.extend(from_tables(from_))
+    return tables
 
-    # Execute the query
-    courses = session.scalars(query).all()
 
-    # Apply object filters
-    if available:
-        courses = [course for course in courses if course.is_available]
+class ModelFilter:
+    """Successively create a SQLAlchemy select statement with desired filters.
 
-    return courses
+    :param model: SQLAlchemy model to select
+    :param stmt: SQLAlchemy select statement
+    """
+
+    model: Type[Base]
+    stmt: Select
+
+    def __init__(self, model: Type[Base]):
+        """Initialize the select statement.
+
+        :param model: SQLAlchemy model to select
+        """
+        self.model = model
+        self.stmt = select(model).distinct()
+
+    def __repr__(self) -> str:
+        return f"ModelFilter({self.model.__name__})"
+
+    def where(
+        self, condition: ColumnExpressionArgument, links: list[Type[Base]] | None = None
+    ):
+        """Add a condition to the select statement.
+
+        :param condition: A SQLAlchemy ColumnExpression. Left side must be a column object.
+        :param links: A list of models defining the relationship path between the target model and the condition model.
+        """
+
+        links = links or []
+        tables = select_tables(self.stmt)
+
+        for model in links:
+            if model.__table__ not in tables:
+                self.stmt = self.stmt.join(model)
+
+        if not condition.is_clause_element:
+            raise ValueError("Condition must be valid clause.")
+
+        if not isinstance(condition.left, Column):
+            raise ValueError("Expected column on the left side of the expression.")
+
+        if not isinstance(condition.right, BindParameter | Null):
+            raise ValueError("Expected parameter on the right side of the expression.")
+
+        if isinstance(condition.right, Null) or condition.right.value == "":
+            return
+
+        if condition.left.table not in tables:
+            self.stmt = self.stmt.join(condition.left.entity_namespace)
+
+        self.stmt = self.stmt.where(condition)

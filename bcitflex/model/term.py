@@ -34,3 +34,7 @@ class Term(Base):
 
     def __repr__(self):
         return f"Term({self.term_id})"
+
+    @property
+    def name(self):
+        return f"{self.season} {self.year}"

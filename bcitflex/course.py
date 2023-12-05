@@ -1,34 +1,42 @@
 """Course Blueprint"""
 
 from flask import Blueprint, render_template, request
-from sqlalchemy import select
+from sqlalchemy import not_, select
 
-from bcitflex.app_functions import filter_courses
-from bcitflex.db import DBSession
-from bcitflex.model import Course
+from bcitflex.app_functions import ModelFilter
+from bcitflex.db import DBSession, db
+from bcitflex.model import Course, Meeting, Offering, Subject, Term
+from bcitflex.model.offering import NOT_AVAILABLE
 
 bp = Blueprint("course", __name__)
 
 
 @bp.route("/")
-@bp.route("/courses", methods=["GET", "POST"])
+@bp.route("/courses", methods=["GET"])
 def index():
-    if request.method == "POST":
-        subject = request.form.get("subject")
-        course_code = request.form.get("course_code")
-        available = request.form.get("available")
-        name = request.form.get("name")
+    filters = ModelFilter(Course)
+    filters.where(Offering.term_id == request.args.get("term"))
+    filters.where(Course.subject_id == request.args.get("subject"))
+    filters.where(Meeting.campus == request.args.get("campus"), links=[Offering])
+    filters.where(Course.code == request.args.get("code"))
+    if (name := request.args.get("name")) is not None:
+        filters.where(Course.name.ilike("%" + name + "%"))
+    if request.args.get("available") is not None:
+        filters.where(not_(Offering.status.in_(NOT_AVAILABLE)))
 
-        courses = filter_courses(
-            session=DBSession,
-            subject=subject,
-            course_code=course_code,
-            available=available,
-            name=name
-        )
-    else:
-        courses = DBSession.scalars(select(Course)).all()
-    return render_template("courses/index.html", courses=courses)
+    courses = filters.stmt
+    pagination = db.paginate(courses, per_page=25)
+    subjects = DBSession.scalars(select(Subject).where(Subject.is_active)).all()
+    terms = DBSession.scalars(select(Term).join(Offering)).unique().all()
+    locations = DBSession.scalars(select(Meeting.campus).distinct()).all()
+    return render_template(
+        "courses/index.html",
+        courses=courses,
+        pagination=pagination,
+        subjects=subjects,
+        terms=terms,
+        locations=locations,
+    )
 
 
 @bp.route("/courses/<int:course_id>")

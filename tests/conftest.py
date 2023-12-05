@@ -191,13 +191,14 @@ def app(request, database) -> Flask:
     app = create_app({"TESTING": True, "SQLALCHEMY_DATABASE_URI": DB_URL})
 
     with app.app_context():
-        # setup db
-        setup_db(DBSession())
+        if not DBSession().query(Course).count() != 0:
+            # setup db
+            setup_db(DBSession())
 
-        # populate db
-        marker = request.node.get_closest_marker("empty_db")
-        if marker is None:
-            populate_db(DBSession())
+            # populate db
+            marker = request.node.get_closest_marker("empty_db")
+            if marker is None:
+                populate_db(DBSession())
 
     yield app
 

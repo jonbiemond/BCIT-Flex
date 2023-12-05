@@ -21,6 +21,7 @@ footer { background-color: #212125; text-align: center; padding: 0.5em; font-siz
   h1 { color: #E7E8EB; }
   a { color: #8ac99e; }
   .content > header h1 { color: #8ac99e; }
+  .content select { background: #2a2a2a; color: #E7E8EB; }
   .content input, .content textarea { background: #2a2a2a; color: #E7E8EB; }
   table tbody tr:nth-child(even) { background-color: #212125; }
 }
@@ -51,9 +52,25 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .content:last-child { margin-bottom: 0; }
 .content form { margin: 0.5em 0; display: flex; flex-direction: column; padding-top: 1em}
 .content label { font-weight: bold; margin-bottom: 0.5em; }
+.content select { margin-bottom: 1em; }
 .content input, .content textarea { margin-bottom: 1em; }
 .content textarea { min-height: 12em; resize: vertical; }
+.filter { display: flex; justify-content: center; align-items: center;}
 footer a { text-decoration: none; }
 footer a:hover { text-decoration: underline;}
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pagination .disabled {
+    color: #aaa;  /* Grayed out color for disabled links */
+    cursor: default;
+}
+
+.pagination .current-page {
+    font-weight: bold;
+}
