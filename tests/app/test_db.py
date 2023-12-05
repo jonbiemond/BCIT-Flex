@@ -89,15 +89,52 @@ class TestDBHelpers:
 
     @dbtest
     @pytest.mark.parametrize(
-        "config_exists, read_data, assertion",
+        "config_exists, read_data, assertion, overwrite, db_password, expected_insert",
         [
-            (False, "", True),
-            (True, "", True),
-            (True, "SQLALCHEMY_DATABASE_URI = url", False),
+            (
+                False,
+                "",
+                True,
+                False,
+                "test_password",
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
+            ),
+            (
+                True,
+                "",
+                True,
+                False,
+                "test_password",
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
+            ),
+            (
+                True,
+                "SQLALCHEMY_DATABASE_URI = url",
+                False,
+                False,
+                "test_password",
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
+            ),
+            (
+                True,
+                "SQLALCHEMY_DATABASE_URI = url",
+                True,
+                True,
+                None,
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user@localhost:5432/test_db"\n',
+            ),
         ],
     )
     def test_config_db_url(
-        self, mock_app, monkeypatch, config_exists, read_data, assertion
+        self,
+        mock_app,
+        monkeypatch,
+        config_exists,
+        read_data,
+        assertion,
+        overwrite,
+        db_password,
+        expected_insert,
     ):
         """Test config_db_url writes to config.py."""
 
@@ -110,11 +147,11 @@ class TestDBHelpers:
         monkeypatch.setattr("pathlib.Path.exists", mock_exists)
 
         with mock_app.app_context():
-            config_db_url("test_db", "test_user", "test_password")
-        if len(read_data) == 0:
-            mo().write.assert_called_once_with(
-                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n'
+            config_db_url(
+                "test_db", "test_user", db_password, "localhost", 5432, overwrite
             )
+        if assertion:
+            mo().write.assert_called_once_with(expected_insert)
         else:
             mo().write.assert_not_called()
 
