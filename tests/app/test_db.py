@@ -40,10 +40,10 @@ class TestDBHelpers:
         "db_exists, drop, expected_ddl, assertion",
         [
             (
-                    False,
-                    False,
-                    "SELECT datname FROM pg_database WHERE datname = 'test_db';",
-                    True,
+                False,
+                False,
+                "SELECT datname FROM pg_database WHERE datname = 'test_db';",
+                True,
             ),
             (False, False, "CREATE DATABASE test_db ENCODING = 'UTF8';", True),
             (True, False, "CREATE DATABASE test_db ENCODING = 'UTF8';", False),
@@ -92,49 +92,49 @@ class TestDBHelpers:
         "config_exists, read_data, assertion, overwrite, db_password, expected_insert",
         [
             (
-                    False,
-                    "",
-                    True,
-                    False,
-                    "test_password",
-                    'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
+                False,
+                "",
+                True,
+                False,
+                "test_password",
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
             ),
             (
-                    True,
-                    "",
-                    True,
-                    False,
-                    "test_password",
-                    'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
+                True,
+                "",
+                True,
+                False,
+                "test_password",
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
             ),
             (
-                    True,
-                    "SQLALCHEMY_DATABASE_URI = url",
-                    False,
-                    False,
-                    "test_password",
-                    'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
+                True,
+                "SQLALCHEMY_DATABASE_URI = url",
+                False,
+                False,
+                "test_password",
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user:test_password@localhost:5432/test_db"\n',
             ),
             (
-                    True,
-                    "SQLALCHEMY_DATABASE_URI = url",
-                    True,
-                    True,
-                    None,
-                    'SQLALCHEMY_DATABASE_URI = "postgresql://test_user@localhost:5432/test_db"\n',
+                True,
+                "SQLALCHEMY_DATABASE_URI = url",
+                True,
+                True,
+                None,
+                'SQLALCHEMY_DATABASE_URI = "postgresql://test_user@localhost:5432/test_db"\n',
             ),
         ],
     )
     def test_config_db_url(
-            self,
-            mock_app,
-            monkeypatch,
-            config_exists,
-            read_data,
-            assertion,
-            overwrite,
-            db_password,
-            expected_insert,
+        self,
+        mock_app,
+        monkeypatch,
+        config_exists,
+        read_data,
+        assertion,
+        overwrite,
+        db_password,
+        expected_insert,
     ):
         """Test config_db_url writes to config.py."""
 
@@ -168,7 +168,7 @@ class TestDBCommands:
         ],
     )
     def test_create_db_command(
-            self, mock_app, mock_runner, monkeypatch, db_created, db_url, expected
+        self, mock_app, mock_runner, monkeypatch, db_created, db_url, expected
     ):
         # TODO: test more cases
         # mock psycopg2.connect so postgres is not required
@@ -195,15 +195,39 @@ class TestDBCommands:
     @pytest.mark.parametrize(
         "role_exists, provided_password, expected_role_creation, expected_password_message, db_url, db_name, db_role",
         [
-            (False, "custom_password", True, "custom_password", "textx1", "textx1", "textx1"),
-            (True, "known_password", False, "Role test_role already exists", 'testx2', 'testx2', 'testx2'),
-        ]
+            (
+                False,
+                "custom_password",
+                True,
+                "custom_password",
+                "textx1",
+                "textx1",
+                "textx1",
+            ),
+            (
+                True,
+                "known_password",
+                False,
+                "Role test_role already exists",
+                "testx2",
+                "testx2",
+                "testx2",
+            ),
+        ],
     )
-    def test_create_db_command_role_logic(self,
-                                          mock_app, mock_runner, monkeypatch,
-                                          role_exists, provided_password, expected_role_creation,
-                                          expected_password_message, db_url, db_name, db_role
-                                          ):
+    def test_create_db_command_role_logic(
+        self,
+        mock_app,
+        mock_runner,
+        monkeypatch,
+        role_exists,
+        provided_password,
+        expected_role_creation,
+        expected_password_message,
+        db_url,
+        db_name,
+        db_role,
+    ):
         mock_cursor = MagicMock()
         mock_cursor.fetchone.return_value = role_exists
         mock_connection = MagicMock()
@@ -219,7 +243,7 @@ class TestDBCommands:
             mock_app.instance_path = "instance"
 
             with mock_app.app_context():
-                args = ["create-db", "--dbname="+db_name, "--role-name="+db_role]
+                args = ["create-db", "--dbname=" + db_name, "--role-name=" + db_role]
                 if provided_password:
                     args += ["--role-password", provided_password]
                 result = mock_runner.invoke(args=args)
@@ -278,7 +302,7 @@ class TestDBCommandsDB:
     """Test DB CLI commands with DB connections."""
 
     def test_load_subjects_command(
-            self, app: Flask, runner: FlaskCliRunner, monkeypatch
+        self, app: Flask, runner: FlaskCliRunner, monkeypatch
     ):
         """Test load-subjects command."""
 
