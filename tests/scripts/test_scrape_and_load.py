@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering, Subject, Term
 from bcitflex.scripts.scrape_and_load import (
+    collect_response,
     CoursePage,
     extract_models,
     get_course_urls,
@@ -22,7 +23,6 @@ from bcitflex.scripts.scrape_and_load import (
     parse_offering_node,
     parse_term_node,
     prep_db,
-    collect_response,
     scrape_course_urls,
     term_nodes,
 )
@@ -206,11 +206,9 @@ class TestLoadData:
         assert session.get(Course, 2) is None
 
     def test_collect_response_failure(self, monkeypatch):
-        # Mock pre neúspešnú odpoveď
         mock_response = MagicMock()
         mock_response.status_code = 404
         monkeypatch.setattr("requests.get", MagicMock(return_value=mock_response))
 
-        # Očakávanie výnimky pre neúspešnú odpoveď
-        with pytest.raises(Exception):
+        with pytest.raises(requests.exceptions.RequestException):
             collect_response("http://example.com")
