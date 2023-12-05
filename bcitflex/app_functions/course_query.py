@@ -1,101 +1,90 @@
 """Filter courses."""
-from enum import Enum
 from typing import Type
 
-from functional import seq
-from sqlalchemy import Column, inspect
+from sqlalchemy import (
+    BindParameter,
+    Column,
+    ColumnExpressionArgument,
+    FromClause,
+    Join,
+    Null,
+    Select,
+    Table,
+    select,
+)
 
-from bcitflex.model import Base, Course, Subject
+from bcitflex.model import Base
 
 
-class Match(Enum):
-    EXACT = "EXACT"
-    PARTIAL = "PARTIAL"
+def from_tables(from_: FromClause) -> list[Table]:
+    """Return a list of tables in a from clause."""
+    tables = []
+    if isinstance(from_, Table):
+        tables.append(from_)
+    elif isinstance(from_, Join):
+        tables.extend(from_tables(from_.left))
+        tables.extend(from_tables(from_.right))
+    return tables
 
 
-def coerce_to_column_type(model_column: Column, value: str | int) -> str | int:
-    """Coerce a value to the type of the given model column."""
-    column_data_type = model_column.type.python_type
-    return column_data_type(value)
+def select_tables(stmt: Select) -> list[Table]:
+    """Return a list of tables in a select statement."""
+    tables = []
+    for from_ in stmt.get_final_froms():
+        tables.extend(from_tables(from_))
+    return tables
 
 
 class ModelFilter:
-    def __init__(self, model: Type[Base]):
-        self.conditions: list[callable] = []
-        self.model = model
-        self.mapper = inspect(model)
-        self.relationships = {
-            relationship.mapper.class_: relationship.key
-            for relationship in self.mapper.relationships
-        }
+    """Successively create a SQLAlchemy select statement with desired filters.
 
-    def __call__(self, obj: Type[Base]) -> bool:
-        return all(condition(obj) for condition in self.conditions)
+    :param model: SQLAlchemy model to select
+    :param stmt: SQLAlchemy select statement
+    """
+
+    model: Type[Base]
+    stmt: Select
+
+    def __init__(self, model: Type[Base]):
+        """Initialize the select statement.
+
+        :param model: SQLAlchemy model to select
+        """
+        self.model = model
+        self.stmt = select(model).distinct()
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.conditions})"
+        return f"ModelFilter({self.model.__name__})"
 
-    def add_condition(
-        self,
-        attr: str,
-        value: str | int | None,
-        relation: Type[Base] | None = None,
-        match: Match = Match.EXACT,
+    def where(
+        self, condition: ColumnExpressionArgument, links: list[Type[Base]] | None = None
     ):
-        """Return a function that returns True if the given model attribute
-        matches the given value.
+        """Add a condition to the select statement.
+
+        :param condition: A SQLAlchemy ColumnExpression. Left side must be a column object.
+        :param links: A list of models defining the relationship path between the target model and the condition model.
         """
 
-        if value is None or value == "":
+        links = links or []
+        tables = select_tables(self.stmt)
+
+        for model in links:
+            if model.__table__ not in tables:
+                self.stmt = self.stmt.join(model)
+
+        if not condition.is_clause_element:
+            raise ValueError("Condition must be valid clause.")
+
+        if not isinstance(condition.left, Column):
+            raise ValueError("Expected column on the left side of the expression.")
+
+        if not isinstance(condition.right, BindParameter | Null):
+            raise ValueError("Expected parameter on the right side of the expression.")
+
+        if isinstance(condition.right, Null) or condition.right.value == "":
             return
 
-        attr_model = relation or self.model
-        attr_model_mapper = inspect(attr_model)
-        if attr in attr_model_mapper.columns:
-            model_column = attr_model_mapper.columns[attr]
-            value = coerce_to_column_type(model_column, value)
+        if condition.left.table not in tables:
+            self.stmt = self.stmt.join(condition.left.entity_namespace)
 
-        if relation is not None:
-            rel_key = self.relationships[relation]
-
-            if self.mapper.relationships[rel_key].uselist:
-
-                def condition(obj: Type[Base]) -> bool:
-                    model_attr = getattr(obj, rel_key)
-                    return any(getattr(item, attr) == value for item in model_attr)
-
-            else:
-
-                def condition(obj: Type[Base]) -> bool:
-                    model_attr = getattr(getattr(obj, rel_key), attr)
-                    return model_attr == value
-
-        else:
-
-            def condition(obj: Type[Base]) -> bool:
-                model_attr = getattr(obj, attr)
-                if match is Match.EXACT:
-                    return model_attr == value
-                else:
-                    return value.lower() in model_attr.lower()
-
-        self.conditions.append(condition)
-
-    def filter(self, objs: list[Base]) -> list[Base]:
-        """Return a list of objects that match the given criteria."""
-        objs_seq = seq(objs)
-        objs_seq = objs_seq.filter(self)
-        return objs_seq.to_list()
-
-
-if __name__ == "__main__":
-    courses = [
-        Course(code="1234", subject=Subject(subject_id="COMP")),
-        Course(code="5678", subject=Subject(subject_id="COMP")),
-    ]
-
-    course_filter = ModelFilter(Course)
-    course_filter.add_condition("subject_id", "COMP", Subject)
-    course_filter.add_condition("code", "1234")
-    filtered_courses = course_filter.filter(courses)
-    print(filtered_courses)
+        self.stmt = self.stmt.where(condition)
