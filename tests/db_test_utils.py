@@ -38,6 +38,7 @@ try:
 except Exception:
     CAN_CONNECT_TO_DB = False
 
+
 dbtest = pytest.mark.skipif(
     not CAN_CONNECT_TO_DB,
     reason="Need a postgres instance at localhost accessible by user 'postgres'",
@@ -83,29 +84,19 @@ def populate_db(session: Session):
     ahvc = Subject(
         subject_id="AHVC", name="Asian History and Visual Culture", is_active=None
     )
-    courses = [
-        Course(
-            subject_id="COMP",
-            code="1234",
-            name="Test Course",
-            prerequisites="COMP 1000",
-            credits=3.0,
-            url="https://www.bcit.ca",
-        ),
-        Course(
-            subject_id="COMP",
-            code="2345",
-            name="Second Course",
-            prerequisites="COMP 2000",
-            credits=4.0,
-            url="https://www.bcit.ca",
-        ),
-    ]
+    course = Course(
+        subject_id="COMP",
+        code="1234",
+        name="Test Course",
+        prerequisites="COMP 1000",
+        credits=3.0,
+        url="https://www.bcit.ca",
+    )
     program = Program(
         name="Computer Systems Technology (CST)",
         credential="Statement of Completion",
         url="https://www.bcit.ca",
-        courses=[courses[0]],
+        courses=[course],
     )
     offering = Offering(
         crn="12345",
@@ -132,7 +123,7 @@ def populate_db(session: Session):
     session.add(comp)
     session.add(blaw)
     session.add(ahvc)
-    session.add_all(courses)
+    session.add(course)
     session.add(program)
     session.add(offering)
     session.add(meeting)
