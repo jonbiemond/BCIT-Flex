@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering, Subject, Term
 from bcitflex.scripts.scrape_and_load import (
+    collect_response,
     CoursePage,
     extract_models,
     get_course_urls,
@@ -202,4 +203,13 @@ class TestLoadData:
         courses = (course for course in [existing_course])
         assert session.get(Course, 1) is not None
         load_courses(session, courses)
-        assert session.get(Course, 3) is None
+        assert session.get(Course, 2) is None
+
+    def test_collect_response_failure(self, monkeypatch):
+        mock_response = MagicMock()
+        mock_response.status_code = 404
+        monkeypatch.setattr("requests.get", MagicMock(return_value=mock_response))
+
+        with pytest.raises(Exception) as exc_info:
+            collect_response("http://example.com")
+            assert "Collect response status code" in str(exc_info.value)
