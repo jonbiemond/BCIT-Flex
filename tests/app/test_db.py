@@ -1,5 +1,5 @@
 """Test the app db connection."""
-from unittest.mock import MagicMock, mock_open
+from unittest.mock import MagicMock, mock_open, patch
 
 import psycopg2
 import pytest
@@ -191,6 +191,75 @@ class TestDBCommands:
 
         assert result.exit_code == 0
         assert expected in result.output
+
+    @pytest.mark.parametrize(
+        "role_exists, provided_password, expected_role_creation, expected_password_message, db_url, db_name, db_role",
+        [
+            (
+                False,
+                "custom_password",
+                True,
+                "custom_password",
+                "textx1",
+                "textx1",
+                "textx1",
+            ),
+            (
+                True,
+                "known_password",
+                False,
+                "Role test_role already exists",
+                "testx2",
+                "testx2",
+                "testx2",
+            ),
+        ],
+    )
+    def test_create_db_command_role_logic(
+        self,
+        mock_app,
+        mock_runner,
+        monkeypatch,
+        role_exists,
+        provided_password,
+        expected_role_creation,
+        expected_password_message,
+        db_url,
+        db_name,
+        db_role,
+    ):
+        mock_cursor = MagicMock()
+        mock_cursor.fetchone.return_value = role_exists
+        mock_connection = MagicMock()
+        mock_connection.cursor.return_value.__enter__.return_value = mock_cursor
+        monkeypatch.setattr("psycopg2.connect", MagicMock(return_value=mock_connection))
+
+        def execute_test():
+            # mock config_db_url()
+            mock_config_db_url = MagicMock(return_value=db_url)
+            monkeypatch.setattr("bcitflex.db.config_db_url", mock_config_db_url)
+
+            # set mock_app.instance_path
+            mock_app.instance_path = "instance"
+
+            with mock_app.app_context():
+                args = ["create-db", "--dbname=" + db_name, "--role-name=" + db_role]
+                if provided_password:
+                    args += ["--role-password", provided_password]
+                result = mock_runner.invoke(args=args)
+
+            assert result.exit_code == 0
+            if expected_role_creation:
+                assert f"Role {db_role} created." in result.output
+                assert expected_password_message in result.output
+            else:
+                assert f"Role {db_role} already exists." in result.output
+
+        if provided_password is None:
+            with patch("secrets.choice", MagicMock(side_effect="a")):
+                execute_test()
+        else:
+            execute_test()
 
     @pytest.mark.parametrize(
         "db_exists, expected",
