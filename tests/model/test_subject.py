@@ -19,23 +19,23 @@ class TestSubject:
 class TestSubjectDB:
     """Test the Subject class with a database session."""
 
-    def test_get_subject(self, session: Session) -> None:
+    def test_get_subject(self, db_session: Session) -> None:
         """Test getting a subject from the db."""
-        subject = session.get(Subject, "COMP")
+        subject = db_session.get(Subject, "COMP")
         assert len(subject.courses) == 1
 
-    def test_add_subject(self, new_subject, session: Session) -> None:
+    def test_add_subject(self, new_subject, db_session: Session) -> None:
         """Test adding a subject to the db."""
-        session.add(new_subject)
-        session.commit()
-        assert session.get(Subject, "MATH") == new_subject
+        db_session.add(new_subject)
+        db_session.commit()
+        assert db_session.get(Subject, "MATH") == new_subject
 
-    def test_update_subject(self, session: Session) -> None:
+    def test_update_subject(self, db_session: Session) -> None:
         """Test updating a subject in the db."""
-        subject = session.get(Subject, "COMP")
+        subject = db_session.get(Subject, "COMP")
         subject.name = "Comp Sci"
-        session.commit()
-        assert session.get(Subject, "COMP").name == "Comp Sci"
+        db_session.commit()
+        assert db_session.get(Subject, "COMP").name == "Comp Sci"
 
     def test_get_course(self, subject: Subject) -> None:
         """Test retrieving a course from a subject by code."""
@@ -43,11 +43,11 @@ class TestSubjectDB:
         assert course.course_id == 1
         assert subject.get_course("abcd") is None
 
-    def test_delete_subject(self, session: Session) -> None:
+    def test_delete_subject(self, db_session: Session) -> None:
         """Test deleting a subject from the db."""
-        subject = session.get(Subject, "COMP")
-        session.delete(subject)
-        session.commit()
-        assert session.get(Subject, "COMP") is None
-        assert session.get(Course, 1) is None
-        assert session.get(Offering, "12345") is None
+        subject = db_session.get(Subject, "COMP")
+        db_session.delete(subject)
+        db_session.commit()
+        assert db_session.get(Subject, "COMP") is None
+        assert db_session.get(Course, 1) is None
+        assert db_session.get(Offering, "12345") is None

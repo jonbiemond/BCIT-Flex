@@ -23,6 +23,14 @@
     <p><strong>Credential:</strong> {{ program.credential }}</p>
     <p><strong>BCIT URL:</strong> <a href="{{ program.url }}">{{ program.url}}</a></p>
 
+    <form action="/programs/{{ program.program_id }}" method="POST">
+        <div class="display: table">
+            <label for="favourite">Favourite:</label>
+            <input type="checkbox" name="favourite" value="true" {% if program.program_id in favourites%}checked{% endif %}>
+            <input type="submit" value="Save">
+        </div>
+    </form>
+
     <h3>Courses</h3>
 
     <table>

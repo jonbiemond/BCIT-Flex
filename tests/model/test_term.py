@@ -23,7 +23,7 @@ class TestTerm:
 class TestTermDB:
     """Test the Term class with a database session."""
 
-    def test_get_term(self, session: Session) -> None:
+    def test_get_term(self, db_session: Session) -> None:
         """Test getting a term."""
-        term = session.get(Term, "202330")
+        term = db_session.get(Term, "202330")
         assert term.term_id == "202330"

@@ -31,9 +31,9 @@ from tests.db_test_utils import populate_db
 
 
 @pytest.fixture(scope="function")
-def session(session) -> Session:
+def session(db_session) -> Session:
     """Return a new session for each function."""
-    return session
+    return db_session
 
 
 @pytest.fixture

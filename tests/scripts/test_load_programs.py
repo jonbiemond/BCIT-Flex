@@ -76,25 +76,25 @@ class TestExtractPrograms:
 class TestProgramsDB:
     """Test loading programs into the database."""
 
-    def test_delete_and_load_programs(self, session: Session, programs: list[dict]):
+    def test_delete_and_load_programs(self, db_session: Session, programs: list[dict]):
         """Test deleting and loading programs."""
 
-        assert len(session.execute(select(Program)).scalars().all()) == 1
+        assert len(db_session.execute(select(Program)).scalars().all()) == 1
 
         # remove courses from programs
         for program in programs:
             program.pop("courses")
 
-        delete_and_load_programs(session, programs)
-        db_programs = session.execute(select(Program)).scalars().all()
+        delete_and_load_programs(db_session, programs)
+        db_programs = db_session.execute(select(Program)).scalars().all()
         assert len(db_programs) == 2
 
     def test_delete_and_load_programs_rollback(
-        self, session: Session, programs: list[dict], monkeypatch
+        self, db_session: Session, programs: list[dict], monkeypatch
     ):
         """Test deleting and loading programs with rollback."""
 
-        program_ct = len(session.execute(select(Program)).scalars().all())
+        program_ct = len(db_session.execute(select(Program)).scalars().all())
 
         # remove courses from programs and force integrity error
         for program in programs:
@@ -102,10 +102,10 @@ class TestProgramsDB:
             program["program_id"] = 1
 
         with pytest.raises(IntegrityError):
-            delete_and_load_programs(session, programs)
+            delete_and_load_programs(db_session, programs)
 
         # confirm programs were not removed or added
-        db_programs = session.execute(select(Program)).scalars().all()
+        db_programs = db_session.execute(select(Program)).scalars().all()
         assert len(db_programs) == program_ct
 
 

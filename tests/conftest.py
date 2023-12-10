@@ -5,7 +5,7 @@ from typing import Type
 import pytest
 from alembic import config
 from flask import Flask
-from flask.testing import FlaskCliRunner
+from flask.testing import FlaskClient, FlaskCliRunner
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -43,7 +43,7 @@ def database():
 
 
 @pytest.fixture(scope="class")
-def session(request, database) -> Session:
+def db_session(request, database) -> Session:
     """Create a database and return a session to that database."""
 
     # connect to the database with sqlalchemy
@@ -79,27 +79,27 @@ def session(request, database) -> Session:
 
 # Model fixtures
 @pytest.fixture
-def subject(session) -> Type[Subject]:
+def subject(db_session) -> Type[Subject]:
     """Get a test subject."""
-    subject = session.get(Subject, "COMP")
+    subject = db_session.get(Subject, "COMP")
     if subject is None:
         raise ValueError("Subject not found in database.")
     return subject
 
 
 @pytest.fixture
-def course(session) -> Type[Course]:
+def course(db_session) -> Type[Course]:
     """Get a test course."""
-    course = session.get(Course, 1)
+    course = db_session.get(Course, 1)
     if course is None:
         raise ValueError("Course not found in database.")
     return course
 
 
 @pytest.fixture
-def offering(session) -> Type[Offering]:
+def offering(db_session) -> Type[Offering]:
     """Get a test offering."""
-    offering = session.get(Offering, 1)
+    offering = db_session.get(Offering, 1)
     if offering is None:
         raise ValueError("Offering not found in database.")
     return offering
@@ -232,15 +232,20 @@ def mock_runner(mock_app: Flask) -> FlaskCliRunner:
 
 
 class AuthActions(object):
-    def __init__(self, client):
+    """Perform authentication actions on the client."""
+
+    def __init__(self, client: FlaskClient):
+        """Initialize the AuthActions object."""
         self._client = client
 
     def login(self, username="test-user", password="test-password"):
+        """Login with the given username and password."""
         return self._client.post(
             "/auth/login", data={"username": username, "password": password}
         )
 
     def logout(self):
+        """Logout."""
         return self._client.get("/auth/logout")
 
 
