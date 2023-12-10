@@ -9,7 +9,7 @@
     <p><strong>Programs:</strong></p>
     <ul>
         {% for program in programs %}
-            <li>{{ program.name }}</li>
+            <li><a href="{{ url_for('program.show', program_id = program.program_id)}}">{{ program.name }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

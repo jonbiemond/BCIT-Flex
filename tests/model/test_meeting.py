@@ -40,38 +40,40 @@ class TestMeeting:
 class TestMeetingDB:
     """Test the Offering class with a database session."""
 
-    def test_get_meeting(self, session: Session) -> None:
+    def test_get_meeting(self, db_session: Session) -> None:
         """Test getting a meeting from the db."""
-        meeting = session.get(Meeting, (1, 1))
+        meeting = db_session.get(Meeting, (1, 1))
         assert meeting.meeting_id == 1
 
-    def test_update_meeting(self, session: Session) -> None:
+    def test_update_meeting(self, db_session: Session) -> None:
         """Test updating a meeting in the db."""
-        meeting = session.get(Meeting, (1, 1))
+        meeting = db_session.get(Meeting, (1, 1))
         meeting.start_time = datetime.time(17, 30)
-        session.commit()
+        db_session.commit()
         assert meeting.start_time == datetime.time(17, 30)
 
-    def test_add_second_meeting(self, session: Session, new_meeting: Meeting) -> None:
+    def test_add_second_meeting(
+        self, db_session: Session, new_meeting: Meeting
+    ) -> None:
         """Test adding a meeting to the db."""
-        session.add(new_meeting)
-        session.commit()
+        db_session.add(new_meeting)
+        db_session.commit()
         assert new_meeting.offering_id == 1
         assert new_meeting.meeting_id == 2
 
     def test_add_first_meeting(
-        self, session: Session, new_offering: Offering, new_meeting: Meeting
+        self, db_session: Session, new_offering: Offering, new_meeting: Meeting
     ) -> None:
         """Test adding the first meeting of an offering."""
         # new_offering.meetings.append(new_meeting)
         new_meeting.offering = new_offering
-        session.add(new_offering)
-        session.commit()
+        db_session.add(new_offering)
+        db_session.commit()
         assert new_meeting.offering_id == 2
         assert new_meeting.meeting_id == 1
 
     def test_add_two_meetings(
-        self, session: Session, new_offering: Offering, new_meeting: Meeting
+        self, db_session: Session, new_offering: Offering, new_meeting: Meeting
     ) -> None:
         """Test adding two meetings to an offering."""
         primary_meeting = new_meeting
@@ -87,8 +89,8 @@ class TestMeetingDB:
         new_offering.crn = "54321"
         primary_meeting.offering = new_offering
         secondary_meeting.offering = new_offering
-        session.add(new_offering)
-        session.commit()
+        db_session.add(new_offering)
+        db_session.commit()
         assert primary_meeting.offering_id == 3
         assert primary_meeting.meeting_id == 1
         assert secondary_meeting.offering_id == 3

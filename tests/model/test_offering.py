@@ -46,29 +46,29 @@ class TestOffering:
 class TestOfferingDB:
     """Test the Offering class with a database session."""
 
-    def test_add_offering(self, new_offering: Offering, session: Session) -> None:
+    def test_add_offering(self, new_offering: Offering, db_session: Session) -> None:
         """Test adding an offering to the db."""
-        session.add(new_offering)
-        session.commit()
-        assert session.get(Offering, 2) == new_offering
-        assert session.get(Offering, 2).course.course_id == 1
+        db_session.add(new_offering)
+        db_session.commit()
+        assert db_session.get(Offering, 2) == new_offering
+        assert db_session.get(Offering, 2).course.course_id == 1
 
-    def test_update_offering(self, session: Session) -> None:
+    def test_update_offering(self, db_session: Session) -> None:
         """Test updating an offering in the db."""
-        offering = session.get(Offering, 1)
+        offering = db_session.get(Offering, 1)
         offering.instructor = "Jane Doe"
-        session.commit()
-        assert session.get(Offering, 1).instructor == "Jane Doe"
+        db_session.commit()
+        assert db_session.get(Offering, 1).instructor == "Jane Doe"
 
-    def test_invalid_crn(self, offering: Offering, session: Session) -> None:
+    def test_invalid_crn(self, offering: Offering, db_session: Session) -> None:
         """Test that adding an offering with an invalid value raises an exception."""
         offering.crn = "abcdef"
         with pytest.raises(DataError):
             try:
-                session.add(offering)
-                session.commit()
+                db_session.add(offering)
+                db_session.commit()
             except DataError as e:
-                session.rollback()
+                db_session.rollback()
                 raise e
 
 
@@ -76,19 +76,19 @@ class TestOfferingDB:
 class TestPrimaryMeeting:
     """Test the primary meeting and attributes of the offering class."""
 
-    def test_get_primary_meeting(self, session: Session) -> None:
+    def test_get_primary_meeting(self, db_session: Session) -> None:
         """Test offering from database includes primary meeting."""
-        offering = session.get(Offering, 1)
+        offering = db_session.get(Offering, 1)
         assert offering.primary_meeting.meeting_id == 1
 
-    def test_simple_properties(self, session: Session) -> None:
+    def test_simple_properties(self, db_session: Session) -> None:
         """Test access attributes of primary meeting through offering."""
-        offering = session.get(Offering, 1)
+        offering = db_session.get(Offering, 1)
         assert offering.start_time == datetime.time(18)
         assert offering.end_time == datetime.time(21)
         assert offering.campus == "Online"
 
-    def test_aggregate_properties(self, session: Session) -> None:
+    def test_aggregate_properties(self, db_session: Session) -> None:
         """Test properties that query against all related meetings."""
 
         # add new meeting to db
@@ -99,11 +99,11 @@ class TestPrimaryMeeting:
             start_date=datetime.date(2023, 8, 1),
             end_date=datetime.date(2023, 12, 1),
         )
-        session.add(new_meeting)
-        session.commit()
+        db_session.add(new_meeting)
+        db_session.commit()
 
         # get offering
-        offering = session.get(Offering, 1)
+        offering = db_session.get(Offering, 1)
         assert offering.start_date == datetime.date(2023, 8, 1)
         assert offering.end_date == datetime.date(2023, 12, 1)
         assert offering.days == ["Wed", "Thu", "Fri"]

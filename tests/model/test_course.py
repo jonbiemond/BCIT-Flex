@@ -76,47 +76,47 @@ class TestCourse:
 class TestCourseDB:
     """Test the Course class with a database session."""
 
-    def test_get_course(self, session: Session):
+    def test_get_course(self, db_session: Session):
         """Test getting a course from the db."""
-        course = session.get(Course, 1)
+        course = db_session.get(Course, 1)
         assert course.subject.subject_id == "COMP"
 
-    def test_add_course(self, new_course: Course, session: Session):
+    def test_add_course(self, new_course: Course, db_session: Session):
         """Test adding a course to the db."""
-        session.add(new_course)
-        session.commit()
-        assert session.get(Course, 2) == new_course
+        db_session.add(new_course)
+        db_session.commit()
+        assert db_session.get(Course, 2) == new_course
 
-    def test_update_course(self, session: Session):
+    def test_update_course(self, db_session: Session):
         """Test updating a course in the db."""
-        course = session.get(Course, 1)
+        course = db_session.get(Course, 1)
         course.name = "New Name"
-        session.commit()
-        assert session.get(Course, 1).name == "New Name"
+        db_session.commit()
+        assert db_session.get(Course, 1).name == "New Name"
 
-    def test_unique_constraint(self, session: Session):
+    def test_unique_constraint(self, db_session: Session):
         """Test unique constraint on subject_id and code."""
-        new_course = session.get(Course, 1).clone(
+        new_course = db_session.get(Course, 1).clone(
             course_id=None, include_relationships=False
         )
-        session.add(new_course)
+        db_session.add(new_course)
         with pytest.raises(IntegrityError):
-            session.commit()
-        session.rollback()
+            db_session.commit()
+        db_session.rollback()
 
-    def test_merge(self, session: Session):
+    def test_merge(self, db_session: Session):
         """Test merge doesn't create a new object when code and subject_id already exist."""
-        course_ct = len(session.scalars(select(Course)).all())
-        new_course = session.get(Course, 1).clone(
+        course_ct = len(db_session.scalars(select(Course)).all())
+        new_course = db_session.get(Course, 1).clone(
             pk_id=None, include_relationships=False
         )
-        new_course.set_id(session)
-        session.merge(new_course)
-        session.commit()
-        assert len(session.scalars(select(Course)).all()) == course_ct
+        new_course.set_id(db_session)
+        db_session.merge(new_course)
+        db_session.commit()
+        assert len(db_session.scalars(select(Course)).all()) == course_ct
 
-    def test_delete_course_cascade(self, session: Session):
-        course = session.get(Course, 1)
-        session.delete(course)
-        session.commit()
-        assert session.get(Offering, "12345") is None
+    def test_delete_course_cascade(self, db_session: Session):
+        course = db_session.get(Course, 1)
+        db_session.delete(course)
+        db_session.commit()
+        assert db_session.get(Offering, "12345") is None

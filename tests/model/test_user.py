@@ -43,47 +43,47 @@ class TestUserPreference:
 class TestUserDB:
     """Test the User class with a database session."""
 
-    def test_save(self, new_user: User, session: Session):
+    def test_save(self, new_user: User, db_session: Session):
         """Test the save method."""
-        session.add(new_user)
-        session.commit()
+        db_session.add(new_user)
+        db_session.commit()
         assert new_user.id is not None
 
-    def test_integrity_error(self, session: Session):
+    def test_integrity_error(self, db_session: Session):
         """Test that the database rejects duplicate usernames."""
-        session.add(User(username="test", password="test"))
-        session.commit()
+        db_session.add(User(username="test", password="test"))
+        db_session.commit()
         with pytest.raises(IntegrityError):
-            with session.begin():
-                session.add(User(username="test", password="test"))
+            with db_session.begin():
+                db_session.add(User(username="test", password="test"))
 
-    def test_hash_password(self, new_user: User, session: Session):
+    def test_hash_password(self, new_user: User, db_session: Session):
         """Test database accepts hashed password."""
         new_user.password = generate_password_hash("test")
-        session.add(new_user)
-        session.commit()
+        db_session.add(new_user)
+        db_session.commit()
         assert new_user.password != "test"
 
-    def test_user_preference(self, session: Session):
+    def test_user_preference(self, db_session: Session):
         """Test the user preference relationship."""
-        user = session.execute(select(User)).scalar()
+        user = db_session.execute(select(User)).scalar()
         assert user.preference is not None
         assert user.preference.user_id == user.id
         assert user.preference.programs == [1, 2, 3]
 
-    def test_user_preference_programs(self, session: Session):
+    def test_user_preference_programs(self, db_session: Session):
         """Test selecting programs by user preference."""
-        user = session.execute(select(User)).scalar()
-        programs = session.scalars(
+        user = db_session.execute(select(User)).scalar()
+        programs = db_session.scalars(
             select(Program).where(Program.program_id.in_(user.preference.programs))
         ).all()
         assert len(programs) > 0
 
-    def test_user_preference_is_not_none(self, session: Session):
+    def test_user_preference_is_not_none(self, db_session: Session):
         """Test that the user has a row in the user_preference table."""
         new_user = User(username="no_preference", password="test")
-        session.add(new_user)
-        session.commit()
+        db_session.add(new_user)
+        db_session.commit()
 
-        new_user = User.get_by_unique(session, "no_preference")
+        new_user = User.get_by_unique(db_session, "no_preference")
         assert new_user.preference is not None

@@ -10,7 +10,7 @@ from tests import dbtest
 class TestProgramDB:
     """Test the Program class with a database session."""
 
-    def test_get_programs(self, session: Session):
+    def test_get_programs(self, db_session: Session):
         """Test the get_programs method."""
-        program = session.get(Program, 1)
+        program = db_session.get(Program, 1)
         assert program.name == "Computer Systems Technology (CST)"
