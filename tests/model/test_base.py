@@ -95,27 +95,27 @@ class TestPrivate:
 class TestGet:
     """Test the get functions."""
 
-    def test_get_by_unique(self, session: Session):
+    def test_get_by_unique(self, db_session: Session):
         """Test the get_by_unique method."""
-        product_type = User.get_by_unique(session, "test-user")
+        product_type = User.get_by_unique(db_session, "test-user")
         assert product_type.username == "test-user"
 
-    def test_get_by_unique_none(self, session: Session):
+    def test_get_by_unique_none(self, db_session: Session):
         """Test the get_by_unique method returns None when no results are found."""
-        product_type = User.get_by_unique(session, "not_a_username")
+        product_type = User.get_by_unique(db_session, "not_a_username")
         assert product_type is None
 
-    def test_get_by_unique_no_unique_error(self, session: Session):
+    def test_get_by_unique_no_unique_error(self, db_session: Session):
         """Test the get_by_unique method when no unique constraint is defined."""
         with pytest.raises(ValueError):
-            Term.get_by_unique(session, "unique")
+            Term.get_by_unique(db_session, "unique")
 
-    def test_set_id(self, session: Session):
+    def test_set_id(self, db_session: Session):
         """Test set_id method."""
-        new_course = session.get(Course, 1).clone(
+        new_course = db_session.get(Course, 1).clone(
             pk_id=None, include_relationships=False
         )
-        new_course.set_id(session)
+        new_course.set_id(db_session)
         assert new_course.course_id == 1
 
 
@@ -123,26 +123,26 @@ class TestGet:
 class TestClone:
     """Test the clone method."""
 
-    def test_clone_offering(self, session: Session, offering: Offering) -> None:
+    def test_clone_offering(self, db_session: Session, offering: Offering) -> None:
         """Test cloning an offering."""
         clone = offering.clone(crn="23498", instructor="Jane Doe", price=543.21)
-        session.add(clone)
-        session.commit()
+        db_session.add(clone)
+        db_session.commit()
         assert clone.crn != offering.crn
         assert clone.course_id == offering.course_id
         assert len(clone.meetings) == len(offering.meetings)
 
     def test_clone_without_relationships(
-        self, session: Session, course: Course
+        self, db_session: Session, course: Course
     ) -> None:
         """Test cloning a course without relationships."""
         clone = course.clone(pk_id=2, code="9999", include_relationships=False)
-        session.add(clone)
-        session.commit()
+        db_session.add(clone)
+        db_session.commit()
         assert clone.course_id != course.course_id
         assert clone.subject_id == course.subject_id
 
-    def test_clone_missing_pk_id(self, session: Session, offering: Offering) -> None:
+    def test_clone_missing_pk_id(self, db_session: Session, offering: Offering) -> None:
         """Test clone without passing a new pk_id."""
         clone = offering.clone(instructor="Jane Doe", price=543.21)
         assert clone.crn == offering.crn
@@ -154,19 +154,19 @@ class TestClone:
 class TestTimestamps:
     """Test the timestamps mixin."""
 
-    def test_created_at(self, session: Session):
+    def test_created_at(self, db_session: Session):
         """Test created_at column exists."""
-        user = session.get(User, 1)
+        user = db_session.get(User, 1)
         assert isinstance(user.created_at, datetime.datetime)
         assert isinstance(user.updated_at, datetime.datetime)
 
     #
-    def test_updated_at(self, session: Session):
+    def test_updated_at(self, db_session: Session):
         """Test updated_at value changes on update."""
-        user = session.get(User, 1)
+        user = db_session.get(User, 1)
         dt_1 = user.updated_at  # noqa: F841
         user.username = "New Name"
-        session.commit()
+        db_session.commit()
 
         dt_2 = user.updated_at  # noqa: F841
 

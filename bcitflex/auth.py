@@ -76,6 +76,7 @@ def login():
         if error is None:
             session.clear()
             session["user_id"] = user["id"]
+            session["programs"] = user.preference.programs
             return redirect_dest(url_for("index"))
 
         flash(error)
