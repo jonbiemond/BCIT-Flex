@@ -12,6 +12,7 @@ from sqlalchemy import (
     Table,
     select,
 )
+from sqlalchemy.orm.decl_api import DeclarativeAttributeIntercept
 
 from bcitflex.model import Base
 
@@ -38,8 +39,8 @@ def select_tables(stmt: Select) -> list[Table]:
 class ModelFilter:
     """Successively create a SQLAlchemy select statement with desired filters.
 
-    :param model: SQLAlchemy model to select
-    :param stmt: SQLAlchemy select statement
+    :ivar model: SQLAlchemy model to select
+    :ivar stmt: SQLAlchemy select statement
     """
 
     model: Type[Base]
@@ -62,15 +63,18 @@ class ModelFilter:
         """Add a condition to the select statement.
 
         :param condition: A SQLAlchemy ColumnExpression. Left side must be a column object.
-        :param links: A list of models defining the relationship path between the target model and the condition model.
+        :param links: A list of models or relation properties
+        defining the relationship path between the target model and the condition model.
         """
 
-        links = links or []
-        tables = select_tables(self.stmt)
-
-        for model in links:
-            if model.__table__ not in tables:
-                self.stmt = self.stmt.join(model)
+        for link in links or []:
+            if (
+                isinstance(link, DeclarativeAttributeIntercept)
+                and issubclass(link, Base)
+                and link.__table__ in select_tables(self.stmt)
+            ):
+                continue
+            self.stmt = self.stmt.join(link)
 
         if not condition.is_clause_element:
             raise ValueError("Condition must be valid clause.")
@@ -84,7 +88,7 @@ class ModelFilter:
         if isinstance(condition.right, Null) or condition.right.value == "":
             return
 
-        if condition.left.table not in tables:
+        if condition.left.table not in select_tables(self.stmt):
             self.stmt = self.stmt.join(condition.left.entity_namespace)
 
         self.stmt = self.stmt.where(condition)
