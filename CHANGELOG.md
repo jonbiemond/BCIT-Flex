@@ -2,6 +2,64 @@
 
 
 
+## v3.10.0 (2023-12-11)
+
+### Chore
+
+* chore(deps): bump werkzeug from 2.3.7 to 2.3.8
+
+Bumps [werkzeug](https://github.com/pallets/werkzeug) from 2.3.7 to 2.3.8.
+- [Release notes](https://github.com/pallets/werkzeug/releases)
+- [Changelog](https://github.com/pallets/werkzeug/blob/main/CHANGES.rst)
+- [Commits](https://github.com/pallets/werkzeug/compare/2.3.7...2.3.8)
+
+---
+updated-dependencies:
+- dependency-name: werkzeug
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`b6f9ff4`](https://github.com/jonbiemond/BCIT-Flex/commit/b6f9ff44814a0356c34b35545c90529335401022))
+
+### Feature
+
+* feat(app): filter courses by favourite programs
+
+Resolves #64, resolves #71 ([`777011b`](https://github.com/jonbiemond/BCIT-Flex/commit/777011b6da16315fd174f780a6078b2ce1b83526))
+
+* feat(backend): support relation properties as links in ModelFilter ([`c8394ca`](https://github.com/jonbiemond/BCIT-Flex/commit/c8394ca9d9d88eaae063842d64b67b52ad94e48d))
+
+* feat(app): mark program as favourite
+
+Add the ability for user to mark a program as favourite.
+Display favourite programs on account page.
+
+Refactor session fixture to db_session,
+to avoid name conflict with Flask session. ([`cb69bc8`](https://github.com/jonbiemond/BCIT-Flex/commit/cb69bc822c818965c753fa95359a134c1ac90d94))
+
+* feat(app): redirect to the requested page after login ([`5b38f62`](https://github.com/jonbiemond/BCIT-Flex/commit/5b38f621dcaac04ba2c035924cc6a6ee155847ca))
+
+* feat(app): add account page ([`61d1558`](https://github.com/jonbiemond/BCIT-Flex/commit/61d15584d52f31d5fdc1df29f6b3fc5ee2c28739))
+
+* feat(model): add UserPreference model ([`f1047b5`](https://github.com/jonbiemond/BCIT-Flex/commit/f1047b5207cea239681ffdf69bf53523c2a1b4e9))
+
+* feat(app): rebuild course route to include subject and code ([`0b05b44`](https://github.com/jonbiemond/BCIT-Flex/commit/0b05b44d5ad233f82dd3925a03df5a34ac93983b))
+
+### Test
+
+* test: improve test coverage (#79)
+
+Add tests for authorization and `create_db` command. ([`182f19f`](https://github.com/jonbiemond/BCIT-Flex/commit/182f19f25c4d62eae07e3c9c7db608e3852673ab))
+
+* test: improve test coverage (#78)
+
+Improve coverage of scrape and db tests.
+
+---------
+
+Co-authored-by: Dominik Imrich &lt;dominik.imrich@student.tuke.sk&gt; ([`fc1e2d0`](https://github.com/jonbiemond/BCIT-Flex/commit/fc1e2d0561c519dad200e0f7498cb97d481238b2))
+
+
 ## v3.9.0 (2023-11-06)
 
 ### Feature
