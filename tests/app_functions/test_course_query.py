@@ -3,7 +3,7 @@ import pytest
 from sqlalchemy import Select, select
 
 from bcitflex.app_functions.course_query import ModelFilter, select_tables
-from bcitflex.model import Course, Meeting, Offering
+from bcitflex.model import Course, Meeting, Offering, Program
 
 
 def one_line(stmt: Select) -> str:
@@ -123,4 +123,12 @@ class TestModelFilter:
         """Test the filter method with a relationship."""
         base_stmt += " WHERE lower(course.name) LIKE lower(:name_1)"
         course_filter.where(Course.name.ilike("%cours%"))
+        assert one_line(course_filter.stmt) == base_stmt
+
+    def test_association_table(self, course_filter: ModelFilter, base_stmt: str):
+        """Test that the association table is used when filtering by a many-to-many relationship."""
+        base_stmt += " JOIN program_course_association AS program_course_association_1 ON course.course_id = program_course_association_1.course_id"
+        base_stmt += " JOIN program ON program.program_id = program_course_association_1.program_id"
+        base_stmt += " WHERE program.program_id = :program_id_1"
+        course_filter.where(Program.program_id == 1, [Course.programs])
         assert one_line(course_filter.stmt) == base_stmt
