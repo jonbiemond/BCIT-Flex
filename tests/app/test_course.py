@@ -47,10 +47,19 @@ class TestCourse:
 
     def test_filter_courses_by_campus(self, client):
         """Test that filter courses returns only courses with the given campus."""
-        response = client.post("/courses", data={"campus": "Burnaby"})
+        response = client.get("/courses?campus=Burnaby")
         assert b"1234" not in response.data
 
     def test_show_course(self, client):
         """Test that show course returns the correct course."""
         response = client.get("/courses/comp-1234")
         assert b"COMP 1234" in response.data
+
+    def test_filter_courses_by_program(self, client):
+        """Test that filter courses returns only courses with the given program."""
+        with client.session_transaction() as session:
+            session["programs"] = [1]
+
+        response = client.get("/courses?program=1")
+        assert b"COMP" in response.data
+        assert b"COMM" not in response.data
