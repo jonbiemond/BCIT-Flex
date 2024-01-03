@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from bcitflex import create_app
 from bcitflex.db import DBSession, check_current_head
 from bcitflex.model import Course, Meeting, Offering, Subject, Term, User
+from bcitflex.model.prerequisite import PrerequisiteAnd, PrerequisiteOr
 from bcitflex.model.program import Program
 from bcitflex.model.user import UserPreference
 from tests.db_test_utils import (
@@ -118,7 +119,7 @@ def new_course() -> Course:
         subject_id="COMP",
         code="5678",
         name="Test Course",
-        prerequisites="COMP 1000",
+        prerequisites_raw="COMP 1000",
         credits=3.0,
         url="https://www.bcit.ca",
     )
@@ -179,6 +180,24 @@ def new_user() -> User:
 def new_user_preference() -> UserPreference:
     """Return a new user preference object."""
     return UserPreference(user_id=1, programs=[1, 2, 3])
+
+
+@pytest.fixture
+def new_prereq_and() -> PrerequisiteAnd:
+    """Return a new prerequisite object."""
+    return PrerequisiteAnd(
+        course_id=1,
+    )
+
+
+@pytest.fixture
+def new_prereq_or() -> PrerequisiteOr:
+    """Return a new prerequisite object."""
+    return PrerequisiteOr(
+        prereq_and_id=1,
+        course_id=3,
+        criteria="Test Criteria",
+    )
 
 
 # App fixtures

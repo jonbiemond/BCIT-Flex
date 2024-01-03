@@ -19,6 +19,7 @@ from bcitflex.model import (
     User,
     UserPreference,
 )
+from bcitflex.model.prerequisite import PrerequisiteAnd, PrerequisiteOr
 from bcitflex.model.program import Program
 
 POSTGRES_USER = getenv("PGUSER", "postgres")
@@ -92,11 +93,27 @@ def populate_db(session: Session):
     ahvc = Subject(
         subject_id="AHVC", name="Asian History and Visual Culture", is_active=None
     )
-    course = Course(
+    course1 = Course(
         subject_id="COMP",
         code="1234",
         name="Test Course",
-        prerequisites="COMP 1000",
+        prerequisites_raw="COMP 1000",
+        credits=3.0,
+        url="https://www.bcit.ca",
+    )
+    course2 = Course(
+        subject_id="COMP",
+        code="1000",
+        name="Test Course",
+        prerequisites_raw="None",
+        credits=3.0,
+        url="https://www.bcit.ca",
+    )
+    course3 = Course(
+        subject_id="COMP",
+        code="3000",
+        name="Test Course",
+        prerequisites_raw="None",
         credits=3.0,
         url="https://www.bcit.ca",
     )
@@ -104,7 +121,7 @@ def populate_db(session: Session):
         name="Computer Systems Technology (CST)",
         credential="Statement of Completion",
         url="https://www.bcit.ca",
-        courses=[course],
+        courses=[course1],
     )
     offering = Offering(
         crn="12345",
@@ -133,12 +150,22 @@ def populate_db(session: Session):
         programs=[1, 2, 3],
     )
     user.preference = user_preference
+    prereq_and = PrerequisiteAnd(course_id=1)
+    prereq_or = PrerequisiteOr(
+        prereq_and_id=1,
+        course_id=2,
+        criteria="60%",
+    )
     session.add(comp)
     session.add(blaw)
     session.add(ahvc)
-    session.add(course)
+    session.add(course1)
+    session.add(course2)
+    session.add(course3)
     session.add(program)
     session.add(offering)
     session.add(meeting)
     session.add(user)
+    session.add(prereq_and)
+    session.add(prereq_or)
     session.commit()

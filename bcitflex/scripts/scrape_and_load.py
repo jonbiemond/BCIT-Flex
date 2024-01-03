@@ -230,7 +230,7 @@ def parse_course_info(page: CoursePage) -> Course:
         subject_id=subject,
         code=code,
         name=name,
-        prerequisites=prerequisites,
+        prerequisites_raw=prerequisites,
         credits=credit_hours,
         url=page.url,
         deleted_at=None,

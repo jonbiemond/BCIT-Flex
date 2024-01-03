@@ -7,6 +7,7 @@ from sqlalchemy.types import REAL, Integer, String, Text
 
 from . import Base
 from .base import TimestampsMixin
+from .prerequisite import PrerequisiteAnd, PrerequisiteOr
 from .program import Program, program_course_association
 from .subject import Subject
 
@@ -18,6 +19,22 @@ course_id_seq = Sequence("course_course_id_seq")
 
 
 class Course(TimestampsMixin, Base):
+    """Course model.
+
+    :ivar course_id: Course ID
+    :ivar subject_id: 4 letter subject ID
+    :ivar code: Course code
+    :ivar name: Course name
+    :ivar prerequisites_raw: Prerequisites as string
+    :ivar credits: Credit hours
+    :ivar url: BCIT Course URL
+    :ivar subject: Subject relation
+    :ivar programs: Programs relation
+    :ivar offerings: Offerings relation
+    :ivar prerequisites: Prerequisites relation
+    :ivar prerequisites_of: PrerequisitesOr relation
+    """
+
     __tablename__ = "course"
     __table_args__ = (
         UniqueConstraint("subject_id", "code"),
@@ -44,7 +61,7 @@ class Course(TimestampsMixin, Base):
         doc="Course Name",
         comment="Course name.",
     )
-    prerequisites: Mapped[Text] = mapped_column(
+    prerequisites_raw: Mapped[Text] = mapped_column(
         Text,
         doc="Prerequisites",
         comment="Prerequisites as strings.",
@@ -69,7 +86,17 @@ class Course(TimestampsMixin, Base):
 
     offerings: Mapped[list["Offering"]] = relationship(
         back_populates="course",
-        cascade="all, delete, delete-orphan",
+        cascade="all, delete-orphan",
+    )
+
+    prerequisites: Mapped[list["PrerequisiteAnd"]] = relationship(
+        back_populates="course",
+        cascade="all, delete-orphan",
+    )
+
+    prerequisites_of: Mapped[list["PrerequisiteOr"]] = relationship(
+        back_populates="course",
+        cascade="all",
     )
 
     def __repr__(self):
@@ -79,7 +106,7 @@ class Course(TimestampsMixin, Base):
         course_str = (
             f"Course: {self.fullcode}\n"
             f"Name: {self.name}\n"
-            f"Prerequisites: {self.prerequisites}\n"
+            f"Prerequisites: {self.prerequisites_raw}\n"
             f"Credits: {self.credits}\n"
             f"URL: {self.url}\n"
         )

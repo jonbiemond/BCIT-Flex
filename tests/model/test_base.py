@@ -136,7 +136,7 @@ class TestClone:
         self, db_session: Session, course: Course
     ) -> None:
         """Test cloning a course without relationships."""
-        clone = course.clone(pk_id=2, code="9999", include_relationships=False)
+        clone = course.clone(pk_id=None, code="9999", include_relationships=False)
         db_session.add(clone)
         db_session.commit()
         assert clone.course_id != course.course_id

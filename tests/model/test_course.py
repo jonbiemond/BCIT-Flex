@@ -2,19 +2,27 @@
 import datetime
 
 import pytest
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering
+from bcitflex.model.prerequisite import PrerequisiteAnd, PrerequisiteOr
 from tests import dbtest
 
 
 @pytest.fixture
-def new_course(new_offering: Offering, new_course: Course) -> Course:
+def new_course(
+    new_offering: Offering,
+    new_course: Course,
+    new_prereq_and: PrerequisiteAnd,
+    new_prereq_or: PrerequisiteOr,
+) -> Course:
     """Return a new course object."""
     new_offering.course_id = 2
     new_course.offerings = [new_offering]
+    new_prereq_and.children = [new_prereq_or]
+    new_course.prerequisites = [new_prereq_and]
     return new_course
 
 
@@ -27,7 +35,7 @@ class TestCourse:
         assert new_course.subject_id == "COMP"
         assert new_course.code == "5678"
         assert new_course.name == "Test Course"
-        assert new_course.prerequisites == "COMP 1000"
+        assert new_course.prerequisites_raw == "COMP 1000"
         assert new_course.credits == 3.0
         assert new_course.url == "https://www.bcit.ca"
         assert new_course.offerings == [new_offering]
@@ -83,9 +91,10 @@ class TestCourseDB:
 
     def test_add_course(self, new_course: Course, db_session: Session):
         """Test adding a course to the db."""
+        max_id = db_session.scalar(text("SELECT MAX(course_id) FROM course"))
         db_session.add(new_course)
         db_session.commit()
-        assert db_session.get(Course, 2) == new_course
+        assert db_session.get(Course, max_id + 1) == new_course
 
     def test_update_course(self, db_session: Session):
         """Test updating a course in the db."""
