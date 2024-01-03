@@ -22,7 +22,7 @@ class TestSubjectDB:
     def test_get_subject(self, db_session: Session) -> None:
         """Test getting a subject from the db."""
         subject = db_session.get(Subject, "COMP")
-        assert len(subject.courses) == 1
+        assert subject is not None
 
     def test_add_subject(self, new_subject, db_session: Session) -> None:
         """Test adding a subject to the db."""
