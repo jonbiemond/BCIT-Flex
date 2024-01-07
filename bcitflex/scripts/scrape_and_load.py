@@ -15,6 +15,7 @@ from sqlalchemy import create_engine, or_, select
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Meeting, Offering, Subject, Term
+from bcitflex.model.prerequisite import PrerequisiteAnd, PrerequisiteOr
 
 TERMS = {10: "Winter", 20: "Spring/Summer", 30: "Fall"}
 WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -215,6 +216,45 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
     )
 
 
+def parse_prerequisites(session: Session, course: Course) -> list[PrerequisiteAnd]:
+    """Parse the prerequisite string of a Course and return a list of PrerequisiteAnd objects.
+
+    :param session: SQLAlchemy session
+    :param course: Course object with prerequisites.
+    """
+
+    pattern = re.compile(r"((\d\d%).?\sin\s)?([A-Z]{4})\s(\d{4})")
+    prereqs = []
+
+    for prereq_no, prereq_and_str in enumerate(
+        course.prerequisites_raw.split(" and "), 1
+    ):
+        prereq_and = PrerequisiteAnd(prereq_no=prereq_no, course_id=course.course_id)
+        prereq_and.set_id(session)
+        criteria = None
+        for prereq_or_str in prereq_and_str.split(" or "):
+            for match in pattern.finditer(prereq_or_str):
+                criteria = match.group(2) or criteria
+                prereq_course_uq_id = (match.group(3), match.group(4))
+                if prereq_course_uq_id == (course.subject_id, course.code):
+                    continue
+                prereq_course = Course.get_by_unique(session, prereq_course_uq_id)
+                if not prereq_course:
+                    continue
+                prereq_or = PrerequisiteOr(
+                    prereq_and_id=prereq_and.id,
+                    course_id=prereq_course.course_id,
+                    criteria=criteria,
+                    course=prereq_course,
+                )
+                prereq_or.set_id(session)
+                prereq_and.children.append(prereq_or)
+        if prereq_and.children:
+            prereqs.append(prereq_and)
+
+    return prereqs
+
+
 def parse_course_info(page: CoursePage) -> Course:
     """Parse the course info and return the course."""
 
@@ -223,14 +263,14 @@ def parse_course_info(page: CoursePage) -> Course:
     )
     subject, code = code_and_name[-9:].split(" ")
     name = code_and_name[:-9]
-    prerequisites = page.tree.css_first('div[id="prereq"] ul li').text()
+    prerequisites_str = page.tree.css_first('div[id="prereq"] ul li').text()
     credit_hours = float(page.tree.css_first('div[id="credits"] p').text(False))
 
     return Course(
         subject_id=subject,
         code=code,
         name=name,
-        prerequisites_raw=prerequisites,
+        prerequisites_raw=prerequisites_str,
         credits=credit_hours,
         url=page.url,
         deleted_at=None,
@@ -350,6 +390,7 @@ def load_courses(session: Session, courses: Iterator[Course]) -> int:
         # get course ids and merge
         for course in courses:
             course.set_id(session)
+            course.prerequisites = parse_prerequisites(session, course)
             for offering in course.offerings:
                 offering.set_id(session)
             session.merge(course)
@@ -363,9 +404,6 @@ def load_courses(session: Session, courses: Iterator[Course]) -> int:
 
 def bcit_to_sql(db_url: str, all_subjects: bool = False):
     """Parse BCIT Flex course pages and load them into the SQL database."""
-    # [2023-09-10 Jonathan B.]
-    #   It probably makes sense to refactor this function into load_db_command
-    #   and lose the `if __name__ == "__main__"` block.
 
     # check response status
     collect_response(BASE_URL)
@@ -414,7 +452,3 @@ def load_db_command(all_subjects: bool = False):
     """Get data and replace what's in the database."""
     db_url = current_app.config["SQLALCHEMY_DATABASE_URI"]
     bcit_to_sql(db_url, all_subjects)
-
-
-if __name__ == "__main__":
-    bcit_to_sql("postgresql://python_app@localhost:5432/bcitflex")
