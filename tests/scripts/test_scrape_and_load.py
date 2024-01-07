@@ -2,7 +2,7 @@
 import datetime
 import re
 from pickle import load
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, Mock
 
 import pytest
 import requests
@@ -11,6 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering, Subject, Term
+from bcitflex.model.prerequisite import PrerequisiteAnd
 from bcitflex.scripts.scrape_and_load import (
     CoursePage,
     collect_response,
@@ -22,6 +23,7 @@ from bcitflex.scripts.scrape_and_load import (
     parse_course_info,
     parse_meeting_node,
     parse_offering_node,
+    parse_prerequisites,
     parse_term_node,
     prep_db,
     scrape_course_urls,
@@ -129,6 +131,121 @@ class TestParseNodes:
         assert meeting.room is None or isinstance(meeting.room, str)
 
 
+class TestParsePrerequisites:
+    """Test the parse prerequisites function."""
+
+    @staticmethod
+    def reduce_prereqs(prereqs: [PrerequisiteAnd]) -> [[tuple[str, str, str | None]]]:
+        """Reduce Prerequisite objects to builtin types."""
+        return [
+            [
+                (
+                    prereq_or.course.subject_id,
+                    prereq_or.course.code,
+                    prereq_or.criteria,
+                )
+                for prereq_or in prereq.children
+            ]
+            for prereq in prereqs
+        ]
+
+    @pytest.mark.parametrize(
+        "string, expected",
+        [
+            ("COMP 1002", [[("COMP", "1002", None)]]),
+            ("60% in COMP 1002", [[("COMP", "1002", "60%")]]),
+            (
+                "60% in COMP 2362 or 60% in COMP 2364",
+                [[("COMP", "2362", "60%"), ("COMP", "2364", "60%")]],
+            ),
+            (
+                "A final grade of 70%+ in COMM 1100 or COMM 1103 or COMM 1106 or equivalent.",
+                [
+                    [
+                        ("COMM", "1100", "70%"),
+                        ("COMM", "1103", "70%"),
+                        ("COMM", "1106", "70%"),
+                    ]
+                ],
+            ),
+            (
+                "60% in COMP 7003 and 60% in COMP 7005 and 60% in COMP 8800† († may be taken concurrently)",
+                [
+                    [("COMP", "7003", "60%")],
+                    [("COMP", "7005", "60%")],
+                    [("COMP", "8800", "60%")],
+                ],
+            ),
+            (
+                "60% in COMP 1630 and (60% in COMP 2362 or 60% in COMP 2364) and 60% in MATH 1060",
+                [
+                    [("COMP", "1630", "60%")],
+                    [("COMP", "2362", "60%"), ("COMP", "2364", "60%")],
+                    [("MATH", "1060", "60%")],
+                ],
+            ),
+        ],
+    )
+    def test_parse_prerequisites(self, string, expected, monkeypatch):
+        """Test the parse prerequisites function."""
+        # mock Course.get_by_unique() to return a course
+        monkeypatch.setattr(
+            Course,
+            "get_by_unique",
+            lambda _, ids: Course(subject_id=ids[0], code=ids[1]),
+        )
+        prereqs = parse_prerequisites(Mock(), Course(prerequisites_raw=string))
+        assert self.reduce_prereqs(prereqs) == expected
+        assert [prereq.prereq_no for prereq in prereqs] == list(
+            range(1, len(prereqs) + 1)
+        )
+
+    def test_parse_prerequisites_missing_course(self, monkeypatch):
+        """Test that a missing course is omitted from the prerequisites."""
+        # mock Course.get_by_unique() to return None
+        monkeypatch.setattr(Course, "get_by_unique", Mock(return_value=None))
+        prereqs = parse_prerequisites(Mock(), Course(prerequisites_raw="COMP 1002"))
+        assert self.reduce_prereqs(prereqs) == [[]]
+        parse_prerequisites(Mock(), Course(prerequisites_raw="COMP 1002"))
+
+    def test_parse_prerequisites_self_reference(self, monkeypatch):
+        """Test that a reference to the course itself is omitted from the prerequisites."""
+        # mock Course.get_by_unique() to return a course
+        monkeypatch.setattr(
+            Course,
+            "get_by_unique",
+            lambda _, ids: Course(subject_id=ids[0], code=ids[1]),
+        )
+        prereqs = parse_prerequisites(
+            Mock(),
+            Course(subject_id="COMP", code="1002", prerequisites_raw="COMP 1002"),
+        )
+        assert self.reduce_prereqs(prereqs) == [[]]
+
+    def test_parse_prerequisites_duplicates(self, monkeypatch):
+        """Test that duplicate courses are omitted from the prerequisites."""
+        string = "For admission into COMM 0005, students must have completed ONE of the following: (1) COMM 0015 (placement at the COMM 0005 level) within the past 12 months OR (2) Completion of COMM 0004 within the last 12 months OR (3) CLB/LINC or CELPIP score of 8 in both reading and writing within the last 12 months OR (4) IELTS (academic format only) of 6.0 or better in both reading and writing within the last 24 months OR (5) Completion of ELSK 820 through the VCC Pathway program OR (6) Completion of ISEP Level 5 with 50% or better in each course (if taken before January 2021) OR (7) TAE 4 with 50% (if taken after January 2021) OR (8) CAEL score of 50 or better within the last 12 months OR (9) Previous completion of English 12 with a minimum score of 50% OR (10) An official placement into COMM 0005 from the Immigrant Services Society (ISS) OR (11) TOEFL overall score of 60 or better within the last 24 months OR (12) Completion of LEAP 7 and 8 or LEAP 8 in the Langara LEAP program. Please check our website for other placement level(s) if your scores do not meet the prerequisites for COMM 0005: https://www.bcit.ca/computing-academic-studies/communication/professional-english-language-development/placement/"
+        expected = [
+            [
+                ("COMM", "0015", None),
+                ("COMM", "0004", None),
+            ],
+            [],
+            [],
+            [],
+        ]
+        # mock Course.get_by_unique() to return a course
+        monkeypatch.setattr(
+            Course,
+            "get_by_unique",
+            lambda _, ids: Course(subject_id=ids[0], code=ids[1]),
+        )
+        prereqs = parse_prerequisites(
+            Mock(), Course(subject_id="COMM", code="0005", prerequisites_raw=string)
+        )
+        assert self.reduce_prereqs(prereqs) == expected
+
+
 class TestExtractModels:
     def test_scrape_course_urls(self, monkeypatch):
         """Test urls are scraped from mock response."""
@@ -186,6 +303,10 @@ class TestExtractModels:
 
 @dbtest
 class TestLoadData:
+    """Test loading data into the database.
+
+    Note: Tests are interdependent and must be run in order."""
+
     pytestmark = pytest.mark.empty_db
 
     def test_prep_db(self, session: Session):
