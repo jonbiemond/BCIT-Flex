@@ -2,6 +2,59 @@
 
 
 
+## v3.11.0 (2024-01-16)
+
+### Chore
+
+* chore(deps-dev): bump gitpython from 3.1.37 to 3.1.41
+
+Bumps [gitpython](https://github.com/gitpython-developers/GitPython) from 3.1.37 to 3.1.41.
+- [Release notes](https://github.com/gitpython-developers/GitPython/releases)
+- [Changelog](https://github.com/gitpython-developers/GitPython/blob/main/CHANGES)
+- [Commits](https://github.com/gitpython-developers/GitPython/compare/3.1.37...3.1.41)
+
+---
+updated-dependencies:
+- dependency-name: gitpython
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`408b0fe`](https://github.com/jonbiemond/BCIT-Flex/commit/408b0feb6b671668b99f3704105b0a8d49086c2b))
+
+* chore(deps): bump jinja2 from 3.1.2 to 3.1.3
+
+Bumps [jinja2](https://github.com/pallets/jinja) from 3.1.2 to 3.1.3.
+- [Release notes](https://github.com/pallets/jinja/releases)
+- [Changelog](https://github.com/pallets/jinja/blob/main/CHANGES.rst)
+- [Commits](https://github.com/pallets/jinja/compare/3.1.2...3.1.3)
+
+---
+updated-dependencies:
+- dependency-name: jinja2
+  dependency-type: indirect
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`e91b2f6`](https://github.com/jonbiemond/BCIT-Flex/commit/e91b2f669bf221e9b900c4d9f8e7b8f131683cf8))
+
+### Feature
+
+* feat(app): add prereq table to course page
+
+Add a table listing prerequisite courses to the course page.
+
+Closes #86 ([`7488e79`](https://github.com/jonbiemond/BCIT-Flex/commit/7488e793db37ba5d6e0a2e8f2bf7d4d654e5806f))
+
+* feat(scraper): parse prerequisites into db objects
+
+Add function to parse Course prerequisite string into database objects.
+
+Closes #84 ([`3e6d2a8`](https://github.com/jonbiemond/BCIT-Flex/commit/3e6d2a8a5bd83111b2d4c1a2d548c76bf26e59a0))
+
+* feat(model): add Prerequisite model
+
+- Update parsing tests to be regex based. ([`bae9f63`](https://github.com/jonbiemond/BCIT-Flex/commit/bae9f63aac6675219fb11759185168d89f93a034))
+
+
 ## v3.10.0 (2023-12-11)
 
 ### Chore
