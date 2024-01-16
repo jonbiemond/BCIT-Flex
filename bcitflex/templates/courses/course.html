@@ -20,10 +20,35 @@
 
     <h1>{{ course.subject_id }} {{ course.code }} - {{ course.name }}</h1>
 
-    <p><strong>Prerequisites:</strong> {{ course.prerequisites_raw }}</p>
     <p><strong>Credits:</strong> {{ course.credits }}</p>
     <p><strong>Available:</strong> {{ course.is_available }}</p>
     <p><strong>BCIT URL:</strong> <a href="{{ course.url }}">{{ course.url}}</a></p>
+    <h3>Prerequisites:</h3>
+    <p>{{ course.prerequisites_raw }}</p>
+    {% if course.prerequisites %}
+        <table>
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Courses</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for prerequisite in course.prerequisites %}
+                <tr>
+                    <td>{{ prerequisite.prereq_no }}</td>
+                    <td>
+                    {% for prereq in prerequisite.children %}
+                    {% if not loop.first %}, {% endif %}
+                    <a href="{{ url_for('course.show', subject_id=prereq.course.subject_id, code=prereq.course.code) }}">
+                    {{ prereq.course.subject_id }} {{ prereq.course.code}}</a>
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 
     <h3>Offerings</h3>
     <table>
