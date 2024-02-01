@@ -53,4 +53,10 @@ def create_app(test_config=None):
     app.register_blueprint(account.bp)
     app.add_url_rule("/index", endpoint="account")
 
+    # Error blueprint
+    from . import errors
+
+    app.register_blueprint(errors.bp)
+    app.register_error_handler(404, errors.error_page)
+
     return app
