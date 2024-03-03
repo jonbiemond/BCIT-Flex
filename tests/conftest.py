@@ -22,6 +22,7 @@ from tests.db_test_utils import (
     POSTGRES_USER,
     create_db,
     db_connection,
+    dbtest,
     drop_tables,
     populate_db,
     setup_db,
@@ -29,6 +30,11 @@ from tests.db_test_utils import (
 
 DB_NAME = "_test_bcitflex"
 DB_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{DB_NAME}"
+
+
+def pytest_configure(config):
+    if config.getoption("-m") == "not dbtest":
+        dbtest.kwargs["condition"] = True
 
 
 # Database fixtures

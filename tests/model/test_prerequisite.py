@@ -1,6 +1,7 @@
 """Test for the prerequisite model."""
 import pytest
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course
@@ -72,14 +73,15 @@ class TestPrerequisiteDB:
         assert db_session.get(PrerequisiteOr, 1) is None
         assert db_session.get(Course, course_id) is not None
 
+    @pytest.mark.skip(
+        "_soft_delete rule prevents a delete from being emitted and a violation made"
+    )
     def test_delete_prerequisite_course_error(self, db_session: Session):
         """Test that deleting a course that is a prerequisite raises an error."""
-        # course = db_session.get(Course, 1).prerequisites[0].courses[0]
-        # with pytest.raises(IntegrityError):
-        #     db_session.delete(course)
-        #     db_session.commit()
-        # _soft_delete rule prevents a delete from being emitted and a violation made
-        pass
+        course = db_session.get(Course, 1).prerequisites[0].children[0].course
+        with pytest.raises(IntegrityError):
+            db_session.delete(course)
+            db_session.commit()
 
     def test_delete_prerequisite_course(self, db_session: Session):
         """Test that deleting a course that is a prerequisite deletes the prerequisite.

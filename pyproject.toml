@@ -70,6 +70,7 @@ extend-exclude = ["bcitflex/alembic/*"]
 
 [tool.pytest.ini_options]
 markers = [
+    "dbtest: marks tests that require a db connection (deselect with '-m \"not dbtest\"')",
     "empty_db: mark test to run with an empty database",
 ]
 

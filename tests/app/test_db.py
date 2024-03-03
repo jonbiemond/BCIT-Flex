@@ -261,6 +261,7 @@ class TestDBCommands:
         else:
             execute_test()
 
+    @pytest.mark.skip("DB connection not mocked.")
     @pytest.mark.parametrize(
         "db_exists, expected",
         [
@@ -272,8 +273,6 @@ class TestDBCommands:
         self, db_exists, expected, mock_app, mock_runner, monkeypatch
     ):
         """Test upgrade-db command."""
-
-        return True
 
         # mock SQLAlchemy
         class MockSQLAlchemy:
