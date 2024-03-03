@@ -122,7 +122,6 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
         status=status,
         course=course,
         term_id=term.term_id,
-        deleted_at=None,
     )
 
     # parse meeting times
@@ -212,7 +211,6 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
         building=building,
         room=room,
         offering=offering,
-        deleted_at=None,
     )
 
 
@@ -273,7 +271,6 @@ def parse_course_info(page: CoursePage) -> Course:
         prerequisites_raw=prerequisites_str,
         credits=credit_hours,
         url=page.url,
-        deleted_at=None,
     )
 
 
@@ -381,11 +378,7 @@ def load_courses(session: Session, courses: Iterator[Course]) -> int:
 
     with session.no_autoflush:
         # read all existing courses into the identity map where merge can find them
-        _ = (
-            session.execute(select(Course), execution_options={"include_deleted": True})
-            .scalars()
-            .all()
-        )
+        _ = session.execute(select(Course)).scalars().all()
 
         # get course ids and merge
         for course in courses:

@@ -102,7 +102,6 @@ class TestParseNodes:
     def test_parse_course_info(self, course_page: CoursePage):
         """Test the parse course function."""
         course = parse_course_info(course_page)
-        assert course.deleted_at is None
         assert course.credits > 0
 
     def test_parse_offering_node(
@@ -110,7 +109,6 @@ class TestParseNodes:
     ):
         """Test the parse offering node function."""
         offering = parse_offering_node(offering_node, existing_course, new_term)
-        assert offering.deleted_at is None
         assert offering.price > 0
         assert re.match(r"^\d{5}$", offering.crn)
 
@@ -119,7 +117,6 @@ class TestParseNodes:
     ):
         """Test the parse meeting node function."""
         meeting = parse_meeting_node(meeting_node, new_offering, new_term)
-        assert meeting.deleted_at is None
         assert isinstance(meeting.start_date, datetime.date)
         assert isinstance(meeting.end_date, datetime.date)
         assert meeting.days is None or len(meeting.days) > 0

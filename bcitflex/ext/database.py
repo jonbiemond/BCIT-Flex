@@ -1,13 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy as SQLAlchemyBase
-from sqlalchemy.event import listens_for
-from sqlalchemy.orm import (
-    DeclarativeBase,
-    ORMExecuteState,
-    Session,
-    with_loader_criteria,
-)
-
-from bcitflex.model.base import SoftDeleteMixin
+from sqlalchemy.orm import DeclarativeBase
 
 
 class SQLAlchemy(SQLAlchemyBase):
@@ -22,18 +14,3 @@ class SQLAlchemy(SQLAlchemyBase):
     def _make_declarative_base(self, *args, **kwargs):
         """Creates or extends the declarative base."""
         return self.Model
-
-
-# Soft delete hook functions
-@listens_for(Session, identifier="do_orm_execute")
-def soft_delete_execute(state: ORMExecuteState):
-    """Activate an event hook to rewrite the queries."""
-
-    if state.is_select and not state.execution_options.get("include_deleted"):
-        state.statement = state.statement.options(
-            with_loader_criteria(
-                SoftDeleteMixin,
-                lambda cls: cls.deleted_at.is_(None),
-                include_aliases=True,
-            )
-        )

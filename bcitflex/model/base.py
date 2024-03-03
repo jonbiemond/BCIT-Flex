@@ -59,21 +59,7 @@ def updated_pks(obj: _T, new_pk_vals: dict) -> dict:
     return pk_vals
 
 
-class SoftDeleteMixin:
-    """Soft delete mixin."""
-
-    __abstract__ = True
-
-    __mapper_args__ = {"confirm_deleted_rows": False}
-
-    deleted_at = Column(
-        "deleted_at",
-        TIMESTAMP(timezone=True),
-        nullable=True,
-    )
-
-
-class Base(SoftDeleteMixin, DeclarativeBase):
+class Base(DeclarativeBase):
     """Base class for SQLAlchemy model definitions."""
 
     metadata = MetaData(naming_convention=convention)
@@ -162,7 +148,7 @@ class Base(SoftDeleteMixin, DeclarativeBase):
 
         # get the object matching the unique id
         filters = dict(zip(unique_columns, unique_id))
-        stmt = select(cls).filter_by(**filters).execution_options(include_deleted=True)
+        stmt = select(cls).filter_by(**filters)
         return session.execute(stmt).scalar_one_or_none()
 
     def set_id(self, session: Session, constraint_name: str | None = None) -> None:
