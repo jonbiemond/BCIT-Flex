@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
 
 from bcitflex.model import (
+    BatchProcess,
     Course,
     Meeting,
     Offering,
@@ -88,6 +89,7 @@ def setup_db(session: Session):
 
 def populate_db(session: Session):
     """Populate the database with test data."""
+    batch_process = BatchProcess()
     comp = Subject(subject_id="COMP", name="Computer Systems", is_active=True)
     blaw = Subject(subject_id="BLAW", name="Business Law", is_active=False)
     ahvc = Subject(
@@ -156,6 +158,7 @@ def populate_db(session: Session):
         course_id=2,
         criteria="60%",
     )
+    session.add(batch_process)
     session.add(comp)
     session.add(blaw)
     session.add(ahvc)
