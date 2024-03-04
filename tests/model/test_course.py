@@ -32,7 +32,7 @@ class TestCourse:
     def test_init(self, new_course: Course, new_offering: Offering):
         """Test the constructor."""
         assert new_course.course_id is None
-        assert new_course.subject_id == "COMP"
+        assert new_course.subject_id == 1
         assert new_course.code == "5678"
         assert new_course.name == "Test Course"
         assert new_course.prerequisites_raw == "COMP 1000"
@@ -43,7 +43,8 @@ class TestCourse:
     def test_str(self, new_course: Course):
         """Test the string representation"""
         assert (
-            str(new_course) == "Course: COMP 5678\n"
+            str(new_course) == "Subject: None\n"
+            "Code: 5678\n"
             "Name: Test Course\n"
             "Prerequisites: COMP 1000\n"
             "Credits: 3.0\n"
@@ -87,7 +88,7 @@ class TestCourseDB:
     def test_get_course(self, db_session: Session):
         """Test getting a course from the db."""
         course = db_session.get(Course, 1)
-        assert course.subject.subject_id == "COMP"
+        assert course.subject.code == "COMP"
 
     def test_add_course(self, new_course: Course, db_session: Session):
         """Test adding a course to the db."""

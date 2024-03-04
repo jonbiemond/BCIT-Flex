@@ -32,7 +32,7 @@
         <select id="subject" name="subject">
             <option value="">Select subject</option>
             {% for subject in subjects %}
-                <option value="{{ subject.subject_id }}" {% if request.args.get('subject') == subject.subject_id %}selected{% endif %}>{{ subject.subject_id }}</option>
+                <option value="{{ subject.code }}" {% if request.args.get('subject') == subject.code %}selected{% endif %}>{{ subject.code }}</option>
             {% endfor %}
         </select>
 
@@ -78,9 +78,9 @@
          <tbody>
             {% for course in pagination.items %}
                <tr>
-                  <td>{{ course.subject_id }}</td>
+                  <td>{{ course.subject.code }}</td>
                   <td>{{ course.code }}</td>
-                  <td><a href="{{url_for('course.show', subject_id=course.subject_id, code=course.code)}}">{{ course.name }}</a></td>
+                  <td><a href="{{url_for('course.show', subject_code=course.subject.code, course_code=course.code)}}">{{ course.name }}</a></td>
                </tr>
             {% endfor %}
          </tbody>

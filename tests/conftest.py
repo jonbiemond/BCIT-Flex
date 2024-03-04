@@ -88,7 +88,7 @@ def db_session(request, database) -> Session:
 @pytest.fixture
 def subject(db_session) -> Type[Subject]:
     """Get a test subject."""
-    subject = db_session.get(Subject, "COMP")
+    subject = db_session.get(Subject, 1)
     if subject is None:
         raise ValueError("Subject not found in database.")
     return subject
@@ -115,14 +115,14 @@ def offering(db_session) -> Type[Offering]:
 @pytest.fixture
 def new_subject() -> Subject:
     """Return a new subject object."""
-    return Subject(subject_id="MATH", name="Mathematics", is_active=True)
+    return Subject(code="MATH", name="Mathematics", is_active=True)
 
 
 @pytest.fixture
 def new_course() -> Course:
     """Return a new course object."""
     return Course(
-        subject_id="COMP",
+        subject_id=1,
         code="5678",
         name="Test Course",
         prerequisites_raw="COMP 1000",

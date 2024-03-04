@@ -10,7 +10,7 @@ class TestSubject:
 
     def test_init(self, new_subject) -> None:
         """Test the constructor."""
-        assert new_subject.subject_id == "MATH"
+        assert new_subject.code == "MATH"
         assert new_subject.name == "Mathematics"
         assert new_subject.is_active is True
 
@@ -21,21 +21,21 @@ class TestSubjectDB:
 
     def test_get_subject(self, db_session: Session) -> None:
         """Test getting a subject from the db."""
-        subject = db_session.get(Subject, "COMP")
+        subject = db_session.get(Subject, 1)
         assert subject is not None
 
     def test_add_subject(self, new_subject, db_session: Session) -> None:
         """Test adding a subject to the db."""
         db_session.add(new_subject)
         db_session.commit()
-        assert db_session.get(Subject, "MATH") == new_subject
+        assert Subject.get_by_unique(db_session, "MATH") == new_subject
 
     def test_update_subject(self, db_session: Session) -> None:
         """Test updating a subject in the db."""
-        subject = db_session.get(Subject, "COMP")
+        subject = Subject.get_by_unique(db_session, "COMP")
         subject.name = "Comp Sci"
         db_session.commit()
-        assert db_session.get(Subject, "COMP").name == "Comp Sci"
+        assert Subject.get_by_unique(db_session, "COMP").name == "Comp Sci"
 
     def test_get_course(self, subject: Subject) -> None:
         """Test retrieving a course from a subject by code."""
@@ -45,9 +45,9 @@ class TestSubjectDB:
 
     def test_delete_subject(self, db_session: Session) -> None:
         """Test deleting a subject from the db."""
-        subject = db_session.get(Subject, "COMP")
+        subject = db_session.get(Subject, 1)
         db_session.delete(subject)
         db_session.commit()
-        assert db_session.get(Subject, "COMP") is None
+        assert db_session.get(Subject, 1) is None
         assert db_session.get(Course, 1) is None
         assert db_session.get(Offering, "12345") is None

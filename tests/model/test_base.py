@@ -60,7 +60,7 @@ class TestHelpers:
     )
     def test_update_pks_default(self, pk_val, expected):
         """Test the update_pks function when there are default values."""
-        obj = Course(subject_id="COMP", code="1001", name="Test Course")
+        obj = Course(subject_id=1, code="1001", name="Test Course")
         assert updated_pks(obj, pk_val) == expected
 
 

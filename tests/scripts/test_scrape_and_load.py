@@ -69,7 +69,7 @@ def existing_course(
 ) -> Course:
     """Return a course object that matches an existing row in the course table."""
     new_course.code = "1234"
-    new_course.subject_id = "COMP"
+    new_course.subject = Subject(id=1)
     new_course.offerings = [new_offering]
     return new_course
 
@@ -137,7 +137,7 @@ class TestParsePrerequisites:
         return [
             [
                 (
-                    prereq_or.course.subject_id,
+                    prereq_or.course.subject.code,
                     prereq_or.course.code,
                     prereq_or.criteria,
                 )
@@ -186,13 +186,17 @@ class TestParsePrerequisites:
     )
     def test_parse_prerequisites(self, string, expected, monkeypatch):
         """Test the parse prerequisites function."""
+        # mock Subject.get_by_unique() to return a subject
+        monkeypatch.setattr(Subject, "get_by_unique", lambda _, ids: Subject(id=ids))
         # mock Course.get_by_unique() to return a course
         monkeypatch.setattr(
             Course,
             "get_by_unique",
-            lambda _, ids: Course(subject_id=ids[0], code=ids[1]),
+            lambda _, ids: Course(subject=Subject(code=ids[0]), code=ids[1]),
         )
-        prereqs = parse_prerequisites(Mock(), Course(prerequisites_raw=string))
+        prereqs = parse_prerequisites(
+            Mock(), Course(subject=Subject(code="COMP"), prerequisites_raw=string)
+        )
         assert self.reduce_prereqs(prereqs) == expected
         assert [prereq.prereq_no for prereq in prereqs] == list(
             range(1, len(prereqs) + 1)
@@ -204,10 +208,11 @@ class TestParsePrerequisites:
         monkeypatch.setattr(Course, "get_by_unique", Mock(return_value=None))
         prereqs = parse_prerequisites(Mock(), Course(prerequisites_raw="COMP 1002"))
         assert self.reduce_prereqs(prereqs) == []
-        parse_prerequisites(Mock(), Course(prerequisites_raw="COMP 1002"))
 
     def test_parse_prerequisites_self_reference(self, monkeypatch):
         """Test that a reference to the course itself is omitted from the prerequisites."""
+        # mock Subject.get_by_unique() to return a subject
+        monkeypatch.setattr(Subject, "get_by_unique", Mock(return_value=Subject(id=1)))
         # mock Course.get_by_unique() to return a course
         monkeypatch.setattr(
             Course,
@@ -216,7 +221,7 @@ class TestParsePrerequisites:
         )
         prereqs = parse_prerequisites(
             Mock(),
-            Course(subject_id="COMP", code="1002", prerequisites_raw="COMP 1002"),
+            Course(subject_id=1, code="1002", prerequisites_raw="COMP 1002"),
         )
         assert self.reduce_prereqs(prereqs) == []
 
@@ -229,14 +234,17 @@ class TestParsePrerequisites:
                 ("COMM", "0004", None),
             ],
         ]
+        # mock Subject.get_by_unique() to return a subject
+        monkeypatch.setattr(Subject, "get_by_unique", lambda _, ids: Subject(id=ids))
         # mock Course.get_by_unique() to return a course
         monkeypatch.setattr(
             Course,
             "get_by_unique",
-            lambda _, ids: Course(subject_id=ids[0], code=ids[1]),
+            lambda _, ids: Course(subject=Subject(code=ids[0]), code=ids[1]),
         )
         prereqs = parse_prerequisites(
-            Mock(), Course(subject_id="COMM", code="0005", prerequisites_raw=string)
+            Mock(),
+            Course(subject_id="COMM", code="0005", prerequisites_raw=string),
         )
         assert self.reduce_prereqs(prereqs) == expected
 

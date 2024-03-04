@@ -90,13 +90,11 @@ def setup_db(session: Session):
 def populate_db(session: Session):
     """Populate the database with test data."""
     batch_process = BatchProcess()
-    comp = Subject(subject_id="COMP", name="Computer Systems", is_active=True)
-    blaw = Subject(subject_id="BLAW", name="Business Law", is_active=False)
-    ahvc = Subject(
-        subject_id="AHVC", name="Asian History and Visual Culture", is_active=None
-    )
+    comp = Subject(code="COMP", name="Computer Systems", is_active=True)
+    blaw = Subject(code="BLAW", name="Business Law", is_active=False)
+    ahvc = Subject(code="AHVC", name="Asian History and Visual Culture", is_active=None)
     course1 = Course(
-        subject_id="COMP",
+        subject_id=1,
         code="1234",
         name="Test Course",
         prerequisites_raw="COMP 1000",
@@ -104,7 +102,7 @@ def populate_db(session: Session):
         url="https://www.bcit.ca",
     )
     course2 = Course(
-        subject_id="COMP",
+        subject_id=1,
         code="1000",
         name="Test Course",
         prerequisites_raw="None",
@@ -112,7 +110,7 @@ def populate_db(session: Session):
         url="https://www.bcit.ca",
     )
     course3 = Course(
-        subject_id="COMP",
+        subject_id=1,
         code="3000",
         name="Test Course",
         prerequisites_raw="None",
