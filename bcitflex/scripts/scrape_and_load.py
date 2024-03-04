@@ -122,7 +122,6 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
         status=status,
         course=course,
         term_id=term.term_id,
-        deleted_at=None,
     )
 
     # parse meeting times
@@ -212,7 +211,6 @@ def parse_meeting_node(node: Node, offering: Offering, term: Term) -> Meeting:
         building=building,
         room=room,
         offering=offering,
-        deleted_at=None,
     )
 
 
@@ -235,7 +233,8 @@ def parse_prerequisites(session: Session, course: Course) -> list[PrerequisiteAn
         for prereq_or_str in prereq_and_str.split(" or "):
             for match in pattern.finditer(prereq_or_str):
                 criteria = match.group(2) or criteria
-                prereq_course_uq_id = (match.group(3), match.group(4))
+                subject = Subject.get_by_unique(session, match.group(3))
+                prereq_course_uq_id = (subject.id, match.group(4))
                 if prereq_course_uq_id == (course.subject_id, course.code):
                     continue
                 prereq_course = Course.get_by_unique(session, prereq_course_uq_id)
@@ -273,7 +272,6 @@ def parse_course_info(page: CoursePage) -> Course:
         prerequisites_raw=prerequisites_str,
         credits=credit_hours,
         url=page.url,
-        deleted_at=None,
     )
 
 
@@ -330,7 +328,7 @@ def prep_db(session: Session):
 
 
 def scrape_course_urls(bcit_active_urls_url: str) -> dict[str, list[str]]:
-    """Return list of urls for each subject_id key."""
+    """Return list of urls for each subject code."""
 
     course_url_list = collect_response(bcit_active_urls_url)
     subject_urls = defaultdict(list)
@@ -339,8 +337,8 @@ def scrape_course_urls(bcit_active_urls_url: str) -> dict[str, list[str]]:
         pattern = re.compile(r"([a-z]{4})-\d{4}/$")
         match = pattern.search(url)
         if match:
-            subject_id = match.group(1).upper()
-            subject_urls[subject_id] += [url]
+            subject_code = match.group(1).upper()
+            subject_urls[subject_code] += [url]
 
     return subject_urls
 
@@ -363,8 +361,8 @@ def get_course_urls(session: Session, all_subjects: bool = False) -> list[str]:
     urls = []
 
     for subject in subjects:
-        if subject.subject_id in subject_urls.keys():
-            urls.extend(subject_urls[subject.subject_id])
+        if subject.code in subject_urls.keys():
+            urls.extend(subject_urls[subject.code])
 
     return urls
 
@@ -381,11 +379,7 @@ def load_courses(session: Session, courses: Iterator[Course]) -> int:
 
     with session.no_autoflush:
         # read all existing courses into the identity map where merge can find them
-        _ = (
-            session.execute(select(Course), execution_options={"include_deleted": True})
-            .scalars()
-            .all()
-        )
+        _ = session.execute(select(Course)).scalars().all()
 
         # get course ids and merge
         for course in courses:

@@ -9,7 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from bcitflex.model import Course
+from bcitflex.model import Course, Subject
 from bcitflex.model.program import Program
 from bcitflex.scripts.load_programs import (
     delete_and_load_programs,
@@ -68,7 +68,7 @@ class TestExtractPrograms:
 
     def test_filter_programs(self, programs: list[dict]):
         """Test filtering programs to those with courses in the database."""
-        course = Course(subject_id="TEST", code="1234", name="Test Course")
+        course = Course(subject=Subject(code="TEST"), code="1234", name="Test Course")
         assert len(filter_programs([course], programs)) == 1
 
 

@@ -68,7 +68,10 @@ class Offering(TimestampsMixin, Base):
     )
 
     def __repr__(self):
-        return f"Offering(course={self.course.fullcode if self.course else None}, crn={self.crn}, instructor={self.instructor},  status={self.status})"
+        return f"Offering({self.offering_id})"
+
+    def __str__(self):
+        return f"Offering(crn={self.crn}, instructor={self.instructor},  status={self.status})"
 
     @property
     def available(self):

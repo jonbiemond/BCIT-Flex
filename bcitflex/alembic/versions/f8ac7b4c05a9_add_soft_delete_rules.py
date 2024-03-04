@@ -55,4 +55,4 @@ def upgrade() -> None:
 def downgrade() -> None:
     TABLES.extend(["offering", "meeting", "user"])
     for table in TABLES:
-        op.execute(f"ALTER TABLE {table} DROP RULE _soft_delete;")
+        op.execute(f'DROP RULE _soft_delete ON "{table}";')

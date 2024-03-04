@@ -1,5 +1,5 @@
 INSERT INTO
-    subject (subject_id, name, is_active)
+    subject (code, name, is_active)
 VALUES
     ('MATH', 'Mathematics', TRUE)
     ,('COMP', 'Computer Systems', TRUE)
@@ -148,5 +148,5 @@ VALUES
     ,('XSMP', NULL, NULL)
     ,('XTMB', NULL, NULL)
     ,('XZEB', NULL, NULL)
-    ON CONFLICT (subject_id) DO UPDATE SET name = EXCLUDED.name, is_active = EXCLUDED.is_active
+    ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name, is_active = EXCLUDED.is_active
 ;

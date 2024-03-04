@@ -22,7 +22,7 @@ class Course(TimestampsMixin, Base):
     """Course model.
 
     :ivar course_id: Course ID
-    :ivar subject_id: 4 letter subject ID
+    :ivar subject_id: Subject ID
     :ivar code: Course code
     :ivar name: Course name
     :ivar prerequisites_raw: Prerequisites as string
@@ -49,7 +49,7 @@ class Course(TimestampsMixin, Base):
         server_default=course_id_seq.next_value(),
     )
     subject_id: Mapped[String] = mapped_column(
-        ForeignKey("subject.subject_id", ondelete="CASCADE")
+        ForeignKey("subject.id", ondelete="CASCADE")
     )
     code: Mapped[String] = mapped_column(
         String(4),
@@ -100,22 +100,18 @@ class Course(TimestampsMixin, Base):
     )
 
     def __repr__(self):
-        return f"Course(course={self.fullcode}, name={self.name})"
+        return f"Course({self.course_id})"
 
     def __str__(self):
         course_str = (
-            f"Course: {self.fullcode}\n"
+            f"Subject: {self.subject}\n"
+            f"Code: {self.code}\n"
             f"Name: {self.name}\n"
             f"Prerequisites: {self.prerequisites_raw}\n"
             f"Credits: {self.credits}\n"
             f"URL: {self.url}\n"
         )
         return course_str
-
-    @property
-    def fullcode(self) -> str:
-        """Concat of subject_id and course_code."""
-        return f"{self.subject_id} {self.code}"
 
     def offering_count(self, available_only=False) -> int:
         """Return count of course offerings."""

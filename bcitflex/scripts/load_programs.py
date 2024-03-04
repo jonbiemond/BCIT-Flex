@@ -30,15 +30,15 @@ def filter_programs(courses: Sequence[Course], programs: list[dict]) -> list[dic
     """Filter to list of programs with courses in the database."""
 
     # Create dictionary of courses by fullcode
-    course_dict = {course.fullcode.replace(" ", ""): course for course in courses}
+    course_dict = {course.subject.code + course.code: course for course in courses}
 
     # Filter to programs with courses in the database and add courses
     filtered_programs = []
     for program in programs:
         program["courses"] = [
-            course_dict[course_id]
-            for course_id in program["courses"]
-            if course_id in course_dict.keys()
+            course_dict[course_fullcode]
+            for course_fullcode in program["courses"]
+            if course_fullcode in course_dict.keys()
         ]
         if program["courses"]:
             filtered_programs.append(program)

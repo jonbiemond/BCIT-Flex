@@ -18,7 +18,7 @@
     }
     </script>
 
-    <h1>{{ course.subject_id }} {{ course.code }} - {{ course.name }}</h1>
+    <h1>{{ course.subject.code }} {{ course.code }} - {{ course.name }}</h1>
 
     <p><strong>Credits:</strong> {{ course.credits }}</p>
     <p><strong>Available:</strong> {{ course.is_available }}</p>
@@ -41,8 +41,8 @@
                     <td>
                     {% for prereq in prerequisite.children %}
                     {% if not loop.first %}, {% endif %}
-                    <a href="{{ url_for('course.show', subject_id=prereq.course.subject_id, code=prereq.course.code) }}">
-                    {{ prereq.course.subject_id }} {{ prereq.course.code}}</a>
+                    <a href="{{ url_for('course.show', subject_code=prereq.course.subject.code, course_code=prereq.course.code) }}">
+                    {{ prereq.course.subject.code }} {{ prereq.course.code}}</a>
                     {% endfor %}
                     </td>
                 </tr>

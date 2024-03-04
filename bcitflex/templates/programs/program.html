@@ -45,9 +45,9 @@
      <tbody>
         {% for course in program.courses %}
            <tr>
-              <td>{{ course.subject_id }}</td>
+              <td>{{ course.subject.code }}</td>
               <td>{{ course.code }}</td>
-              <td><a href="{{url_for('course.show', subject_id=course.subject_id, code=course.code)}}">{{ course.name }}</a></td>
+              <td><a href="{{url_for('course.show', subject_code=course.subject.code, course_code=course.code)}}">{{ course.name }}</a></td>
            </tr>
         {% endfor %}
      </tbody>

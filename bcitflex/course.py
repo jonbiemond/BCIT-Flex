@@ -19,7 +19,7 @@ def index():
     # apply filters from get request
     filters = ModelFilter(Course)
     filters.where(Offering.term_id == request.args.get("term"))
-    filters.where(Course.subject_id == request.args.get("subject"))
+    filters.where(Subject.code == request.args.get("subject"))
     filters.where(Meeting.campus == request.args.get("campus"), links=[Offering])
     filters.where(Course.code == request.args.get("code"))
     if (name := request.args.get("name")) is not None:
@@ -51,8 +51,9 @@ def index():
     )
 
 
-@bp.route("/courses/<subject_id>-<code>")
-def show(subject_id, code):
+@bp.route("/courses/<subject_code>-<course_code>")
+def show(subject_code, course_code):
     """Display course details."""
-    course = Course.get_by_unique(DBSession, (subject_id.upper(), code))
+    subject = Subject.get_by_unique(DBSession, subject_code.upper())
+    course = Course.get_by_unique(DBSession, (subject.id, course_code))
     return render_template("courses/course.html", course=course)
