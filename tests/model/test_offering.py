@@ -1,4 +1,5 @@
 """Tests for the offering model."""
+
 import datetime
 
 import pytest

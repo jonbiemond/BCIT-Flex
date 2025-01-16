@@ -1,4 +1,5 @@
 """Test the app db connection."""
+
 from unittest.mock import MagicMock, mock_open, patch
 
 import psycopg2

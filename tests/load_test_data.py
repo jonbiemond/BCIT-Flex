@@ -1,4 +1,5 @@
 """Get course url response and dump to a pickle file for testing."""
+
 from pickle import dump
 
 from bcitflex.scripts.scrape_and_load import collect_response

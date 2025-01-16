@@ -1,4 +1,5 @@
 """Offering Meeting declaration."""
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, func, inspect, select

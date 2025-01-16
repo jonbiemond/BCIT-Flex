@@ -1,4 +1,5 @@
 """Tests for the User model."""
+
 import pytest
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError

@@ -1,4 +1,5 @@
 """Tests for the subject model."""
+
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Course, Offering, Subject

@@ -1,4 +1,5 @@
 """Authentication Blueprint"""
+
 import functools
 
 from flask import (

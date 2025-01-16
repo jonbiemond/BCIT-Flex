@@ -1,4 +1,5 @@
 """Tests for the model Base class"""
+
 import datetime
 from typing import Type
 
