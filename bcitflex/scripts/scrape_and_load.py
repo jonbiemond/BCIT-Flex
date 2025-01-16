@@ -80,6 +80,7 @@ def get_page_responses(urls: list[str]) -> list[Response]:
 
 def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
     """Parse the offering node and return the offering."""
+    INSTRUCT_NONE = "Not Available"
 
     # get crn
     crn = node.css_first('li[class="sctn-block-list-item crn"] span').text(False)
@@ -88,7 +89,7 @@ def parse_offering_node(node: Node, course: Course, term: Term) -> Offering:
     instructor_node = node.css_first('div[class="sctn-instructor"] p')
 
     if instructor_node is None:
-        instructor = "Not Available"
+        instructor = INSTRUCT_NONE
     else:
         instructor = instructor_node.text(False)
 
