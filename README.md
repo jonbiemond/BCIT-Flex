@@ -1,6 +1,8 @@
 [![ci](https://github.com/jonbiemond/BCIT-Flex/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jonbiemond/BCIT-Flex/actions/workflows/ci.yml)
 # BCIT Flex
-[www.bcitflex.tech](http://www.bcitflex.tech)
+
+> [!NOTE]
+> ARCHIVED: Feel free to make a fork.
 
 A website for easily viewing BCIT course offerings.
 Features a course filter to aid in course selection.
@@ -68,3 +70,4 @@ flask --app bcitflex run
 
 - Sam - [0x53616D75656C](https://github.com/0x53616D75656C)
 - Jonathan - [jonbiemond](https://github.com/jonbiemond)
+
