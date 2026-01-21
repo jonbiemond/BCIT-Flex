@@ -1,4 +1,5 @@
 """Test extracting course data from the BCIT website."""
+
 import datetime
 import re
 from pickle import load

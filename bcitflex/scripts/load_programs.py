@@ -1,4 +1,5 @@
 """Script to load programs from JSON file into database."""
+
 import json
 from typing import Sequence
 

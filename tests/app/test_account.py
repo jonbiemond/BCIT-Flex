@@ -1,4 +1,5 @@
 """Test the account blueprint."""
+
 from tests import dbtest
 
 

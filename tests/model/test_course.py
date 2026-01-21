@@ -1,4 +1,5 @@
 """Tests for the course model."""
+
 import datetime
 
 import pytest

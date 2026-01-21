@@ -1,4 +1,5 @@
 """Tests for the meeting model."""
+
 import datetime
 
 from sqlalchemy.orm import Session

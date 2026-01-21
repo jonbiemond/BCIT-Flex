@@ -1,4 +1,5 @@
 """Filter courses."""
+
 from typing import Type
 
 from sqlalchemy import (

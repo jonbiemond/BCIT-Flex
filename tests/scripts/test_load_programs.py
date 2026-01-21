@@ -1,4 +1,5 @@
 """Test for the load_programs.py script."""
+
 import os.path
 from unittest.mock import MagicMock
 

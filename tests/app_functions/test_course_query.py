@@ -1,4 +1,5 @@
 """Tests for the CourseFilter class and course query function."""
+
 import pytest
 from sqlalchemy import Select, select
 

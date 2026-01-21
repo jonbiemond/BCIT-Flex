@@ -1,4 +1,5 @@
 """App db config"""
+
 import os
 import secrets
 import string

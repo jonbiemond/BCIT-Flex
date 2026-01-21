@@ -1,4 +1,5 @@
 """Program model declaration."""
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, ForeignKey, Sequence, Table

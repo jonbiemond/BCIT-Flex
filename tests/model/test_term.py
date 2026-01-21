@@ -1,4 +1,5 @@
 """Tests for the term model."""
+
 from sqlalchemy.orm import Session
 
 from bcitflex.model import Term

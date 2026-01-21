@@ -1,4 +1,5 @@
 """Test the program blueprint."""
+
 from flask import Flask, session
 from flask.testing import FlaskClient
 

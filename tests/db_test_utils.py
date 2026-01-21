@@ -2,6 +2,7 @@
 
 Source: pgcli https://github.com/dbcli/pgcli
 """
+
 import datetime
 from os import getenv
 

@@ -1,4 +1,5 @@
 """Course model declaration."""
+
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, Sequence, UniqueConstraint

@@ -1,4 +1,5 @@
-"""Script to scrape course data and load it to the database. """
+"""Script to scrape course data and load it to the database."""
+
 import datetime
 import re
 from collections import defaultdict

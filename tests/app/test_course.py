@@ -1,4 +1,5 @@
 """Test the course blueprint."""
+
 from tests import dbtest
 
 
